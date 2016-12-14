@@ -1,0 +1,66 @@
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\WebApplication.dll.config
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\WebApplication.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\WebApplication.pdb
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetection.Interfaces.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetectionApi.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetectionAPIFacade.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\MockApi.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\System.IO.FileSystem.Primitives.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\System.IO.FileSystem.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetection.Interfaces.pdb
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetection.Interfaces.xml
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetectionAPIFacade.pdb
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetectionApi.pdb
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\AnomalyDetectionApi.xml
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\bin\MockApi.pdb
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\obj\Debug\WebApplication.dll
+C:\SE-2015-2016\StudentProjects\ANOMALY-DETECTION\AnomalyDet_Ranjana_WithAPI\AnomalyDetection\WebApplication\obj\Debug\WebApplication.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\WebApplication.dll.config
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\WebApplication.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\WebApplication.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetectionApi.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetectionAPIFacade.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\MockApi.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\System.IO.FileSystem.Primitives.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\System.IO.FileSystem.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetectionAPIFacade.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetectionApi.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetectionApi.xml
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\MockApi.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\obj\Debug\WebApplication.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\obj\Debug\WebApplication.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetection.Interface.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetection.Interface.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetection\WebApplication\bin\AnomalyDetection.Interface.xml
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\WebApplication.dll.config
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\WebApplication.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\WebApplication.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\AnomalyDetectionApi.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\AnomalyDetectionApi.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\AnomalyDetectionApi.xml
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\obj\Debug\WebApplication.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\obj\Debug\WebApplication.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\AnomalyDetection.Interfaces.dll
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\AnomalyDetection.Interfaces.pdb
+C:\SE-2014-2015\StudentProjects\AnomalyDetectionGitHub\WebApplication\bin\AnomalyDetection.Interfaces.xml
+D:\AnomalyDetectionGitHub\WebApplication\bin\WebApplication.dll.config
+D:\AnomalyDetectionGitHub\WebApplication\bin\WebApplication.dll
+D:\AnomalyDetectionGitHub\WebApplication\bin\WebApplication.pdb
+D:\AnomalyDetectionGitHub\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
+D:\AnomalyDetectionGitHub\WebApplication\obj\Debug\WebApplication.dll
+D:\AnomalyDetectionGitHub\WebApplication\obj\Debug\WebApplication.pdb
+C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\WebApplication\bin\WebApplication.dll.config
+C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\WebApplication\bin\WebApplication.dll
+C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\WebApplication\bin\WebApplication.pdb
+C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
+C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\WebApplication\obj\Debug\WebApplication.dll
+C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\WebApplication\obj\Debug\WebApplication.pdb
+C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\bin\WebApplication.dll.config
+C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\bin\WebApplication.dll
+C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\bin\WebApplication.pdb
+C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
+C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\obj\Debug\WebApplication.dll
+C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\obj\Debug\WebApplication.pdb

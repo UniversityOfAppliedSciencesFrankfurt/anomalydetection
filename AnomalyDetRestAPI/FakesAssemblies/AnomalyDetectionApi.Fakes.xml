@@ -1,0 +1,317 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AnomalyDetectionApi.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI">
+            <summary>Shim type of AnomalyDetectionApi.AnomalyDetectionAPI</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.#ctor(AnomalyDetectionApi.AnomalyDetectionAPI)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="T:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.CentroidsGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_Centroids()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.CentroidsSetDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_Centroids(Double[][] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.CheckSampleCheckingSampleSettingsInt32Out">
+            <summary>Sets the shim of AnomalyDetectionAPI.CheckSample(CheckingSampleSettings Settings, Int32&amp; ClusterIndex)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.DataToClusterMappingGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_DataToClusterMapping()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.DataToClusterMappingSetInt32Array">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_DataToClusterMapping(Int32[] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.GetPreviousSamplesSaveLoadSettingsDoubleArrayArrayOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.GetPreviousSamples(SaveLoadSettings LoadSettings, Double[][]&amp; OldSamples)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.GetResultsSaveLoadSettingsClusteringResultsArrayOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.GetResults(SaveLoadSettings LoadSettings, ClusteringResults[]&amp; Result)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.ImportNewDataForClusteringClusteringSettings">
+            <summary>Sets the shim of AnomalyDetectionAPI.ImportNewDataForClustering(ClusteringSettings Settings)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.InClusterMaxDistanceGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_InClusterMaxDistance()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.InClusterMaxDistanceSetDoubleArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_InClusterMaxDistance(Double[] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.NumberOfClustersGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_NumberOfClusters()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.NumberOfClustersSetInt32">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_NumberOfClusters(Int32 value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.RawDataGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_RawData()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.RawDataSetDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_RawData(Double[][] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllInstances.RecommendedNumberOfClustersDoubleArrayArrayInt32Int32Int32Int32Int32DoubleArrayInt32OutInt32">
+            <summary>Sets the shim of AnomalyDetectionAPI.RecommendedNumberOfClusters(Double[][] RawData, Int32 KmeansMaxIterations, Int32 NumberOfAttributes, Int32 MaxNumberOfClusters, Int32 MinNumberOfClusters, Int32 Method, Double[] StdDev, Int32&amp; RecNumberOfClusters, Int32 KmeansAlgorithm)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AllocateInt32Int32">
+            <summary>Sets the shim of AnomalyDetectionAPI.Allocate(Int32 numClusters, Int32 numAttributes)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.AssignDoubleArrayArrayInt32ArrayDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.Assign(Double[][] rawData, Int32[] clustering, Double[][] centroids)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.Bind(AnomalyDetection.Interfaces.IAnomalyDetectionApi)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.CalculateDistanceDoubleArrayDoubleArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.CalculateDistance(Double[] FirstElement, Double[] SecondElement)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.CentroidsGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_Centroids()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.CentroidsSetDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_Centroids(Double[][] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.CheckSampleCheckingSampleSettingsInt32Out">
+            <summary>Sets the shim of AnomalyDetectionAPI.CheckSample(CheckingSampleSettings Settings, Int32&amp; ClusterIndex)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.ComputeCentroidDoubleArrayArrayInt32ArrayInt32DoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.ComputeCentroid(Double[][] rawData, Int32[] clustering, Int32 cluster, Double[][] means)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.ConstructorDoubleArrayArrayInt32">
+            <summary>Sets the shim of AnomalyDetectionAPI.AnomalyDetectionAPI(Double[][] RawData, Int32 NumberOfClusters)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.DataToClusterMappingGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_DataToClusterMapping()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.DataToClusterMappingSetInt32Array">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_DataToClusterMapping(Int32[] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.GetInitialGuessDoubleArrayArrayInt32DoubleArrayArrayOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.GetInitialGuess(Double[][] RawData, Int32 NumberOfClusters, Double[][]&amp; Means)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.GetPreviousSamplesSaveLoadSettingsDoubleArrayArrayOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.GetPreviousSamples(SaveLoadSettings LoadSettings, Double[][]&amp; OldSamples)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.GetResultsSaveLoadSettingsClusteringResultsArrayOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.GetResults(SaveLoadSettings LoadSettings, ClusteringResults[]&amp; Result)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.ImportNewDataForClusteringClusteringSettings">
+            <summary>Sets the shim of AnomalyDetectionAPI.ImportNewDataForClustering(ClusteringSettings Settings)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.InClusterMaxDistanceGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_InClusterMaxDistance()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.InClusterMaxDistanceSetDoubleArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_InClusterMaxDistance(Double[] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.InitClusteringInt32Int32Int32">
+            <summary>Sets the shim of AnomalyDetectionAPI.InitClustering(Int32 numTuples, Int32 numClusters, Int32 randomSeed)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.KMeansClusteringAlgDoubleArrayArrayInt32Int32Int32Int32BooleanDoubleArrayArrayOutInt32Out">
+            <summary>Sets the shim of AnomalyDetectionAPI.KMeansClusteringAlg(Double[][] rawData, Int32 numClusters, Int32 numAttributes, Int32 maxCount, Int32 KmeansAlgortihm, Boolean InitialGuess, Double[][]&amp; centroids, Int32&amp; IterationReached)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.MinIndexDoubleArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.MinIndex(Double[] distances)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.NumberOfClustersGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_NumberOfClusters()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.NumberOfClustersSetInt32">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_NumberOfClusters(Int32 value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.PreproccessingOfParametersDoubleArrayArrayInt32Int32Int32Int32SaveLoadSettingsSaveLoadSettingsSaveLoadSettingsOutSaveLoadSettingsOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.PreproccessingOfParameters(Double[][] RawData, Int32 KmeansAlgorithm, Int32 KmeansMaxIterations, Int32 NumberOfClusters, Int32 NumberOfAttributes, SaveLoadSettings SaveObj, SaveLoadSettings LoadObj, SaveLoadSettings&amp; CheckedSaveObj, SaveLoadSettings&amp; CheckedLoadObj)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.PrivateCheckSamplesDoubleArrayArrayDoubleArrayArrayDoubleArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.PrivateCheckSamples(Double[][] RawData, Double[][] Centroids, Double[] InClusterMaxDistance)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.RadialClustersCheckClusteringResultsArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.RadialClustersCheck(ClusteringResults[] Results)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.RawDataGet">
+            <summary>Sets the shim of AnomalyDetectionAPI.get_RawData()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.RawDataSetDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.set_RawData(Double[][] value)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.SelectInterfaceTypeSaveLoadSettingsISaveLoadOut">
+            <summary>Sets the shim of AnomalyDetectionAPI.SelectInterfaceType(SaveLoadSettings SaveLoadObject, ISaveLoad&amp; SaveInterface)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.StdDeviationClustersCheckClusteringResultsArrayDoubleArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.StdDeviationClustersCheck(ClusteringResults[] Results, Double[] StdDeviation)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.UpdateCentroidsDoubleArrayArrayInt32ArrayDoubleArrayArrayDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.UpdateCentroids(Double[][] rawData, Int32[] clustering, Double[][] means, Double[][] centroids)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.UpdateMeansDoubleArrayArrayInt32ArrayDoubleArrayArray">
+            <summary>Sets the shim of AnomalyDetectionAPI.UpdateMeans(Double[][] rawData, Int32[] clustering, Double[][] means)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimAnomalyDetectionAPI.VerifyRawDataConsistencyDoubleArrayArrayInt32">
+            <summary>Sets the shim of AnomalyDetectionAPI.VerifyRawDataConsistency(Double[][] RawData, Int32 NumberOfAttributes)</summary>
+        </member>
+        <member name="T:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad">
+            <summary>Shim type of AnomalyDetectionApi.JSON_SaveLoad</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.#ctor(AnomalyDetectionApi.JSON_SaveLoad)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="T:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances.LoadChecksSaveLoadSettingsSaveLoadSettingsOut">
+            <summary>Sets the shim of JSON_SaveLoad.LoadChecks(SaveLoadSettings LoadObject, SaveLoadSettings&amp; CheckedLoadObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances.Load_AnomalyDetectionAPISaveLoadSettings">
+            <summary>Sets the shim of JSON_SaveLoad.Load_AnomalyDetectionAPI(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances.Load_ClusteringResultsSaveLoadSettings">
+            <summary>Sets the shim of JSON_SaveLoad.Load_ClusteringResults(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances.SaveChecksSaveLoadSettingsSaveLoadSettingsOut">
+            <summary>Sets the shim of JSON_SaveLoad.SaveChecks(SaveLoadSettings SaveObject, SaveLoadSettings&amp; CheckedSaveObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances.SaveSaveLoadSettingsAnomalyDetectionAPI">
+            <summary>Sets the shim of JSON_SaveLoad.Save(SaveLoadSettings SaveObject, AnomalyDetectionAPI Instance)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.AllInstances.SaveSaveLoadSettingsClusteringResultsArray">
+            <summary>Sets the shim of JSON_SaveLoad.Save(SaveLoadSettings SaveObject, ClusteringResults[] Results)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.Bind(AnomalyDetectionApi.ISaveLoad)">
+            <summary>Binds the members of the interface to the shim.</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.CheckPathStringStringOut">
+            <summary>Sets the shim of JSON_SaveLoad.CheckPath(String InputPath, String&amp; OutputPath)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.Constructor">
+            <summary>Sets the shim of JSON_SaveLoad.JSON_SaveLoad()</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.LoadChecksSaveLoadSettingsSaveLoadSettingsOut">
+            <summary>Sets the shim of JSON_SaveLoad.LoadChecks(SaveLoadSettings LoadObject, SaveLoadSettings&amp; CheckedLoadObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.Load_AnomalyDetectionAPISaveLoadSettings">
+            <summary>Sets the shim of JSON_SaveLoad.Load_AnomalyDetectionAPI(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.Load_ClusteringResultsSaveLoadSettings">
+            <summary>Sets the shim of JSON_SaveLoad.Load_ClusteringResults(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.SaveChecksSaveLoadSettingsSaveLoadSettingsOut">
+            <summary>Sets the shim of JSON_SaveLoad.SaveChecks(SaveLoadSettings SaveObject, SaveLoadSettings&amp; CheckedSaveObject)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.SaveSaveLoadSettingsAnomalyDetectionAPI">
+            <summary>Sets the shim of JSON_SaveLoad.Save(SaveLoadSettings SaveObject, AnomalyDetectionAPI Instance)</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.ShimJSON_SaveLoad.SaveSaveLoadSettingsClusteringResultsArray">
+            <summary>Sets the shim of JSON_SaveLoad.Save(SaveLoadSettings SaveObject, ClusteringResults[] Results)</summary>
+        </member>
+        <member name="T:AnomalyDetectionApi.Fakes.StubAnomalyDetectionAPI">
+            <summary>Stub type of AnomalyDetectionApi.AnomalyDetectionAPI</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubAnomalyDetectionAPI.#ctor(System.Double[][],System.Int32)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.StubAnomalyDetectionAPI.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubAnomalyDetectionAPI.InitializeStub">
+            <summary>Initializes a new instance of type StubAnomalyDetectionAPI</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.StubAnomalyDetectionAPI.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.StubAnomalyDetectionAPI.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:AnomalyDetectionApi.Fakes.StubISaveLoad">
+            <summary>Stub type of AnomalyDetectionApi.ISaveLoad</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.#ctor">
+            <summary>Initializes a new instance of type StubISaveLoad</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.AnomalyDetectionApi#ISaveLoad#LoadChecks(AnomalyDetection.Interfaces.SaveLoadSettings,AnomalyDetection.Interfaces.SaveLoadSettings@)">
+            <summary>Sets the stub of ISaveLoad.LoadChecks(SaveLoadSettings LoadObject, SaveLoadSettings&amp; CheckedLoadObject)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.AnomalyDetectionApi#ISaveLoad#Load_AnomalyDetectionAPI(AnomalyDetection.Interfaces.SaveLoadSettings)">
+            <summary>Sets the stub of ISaveLoad.Load_AnomalyDetectionAPI(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.AnomalyDetectionApi#ISaveLoad#Load_ClusteringResults(AnomalyDetection.Interfaces.SaveLoadSettings)">
+            <summary>Sets the stub of ISaveLoad.Load_ClusteringResults(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.AnomalyDetectionApi#ISaveLoad#Save(AnomalyDetection.Interfaces.SaveLoadSettings,AnomalyDetectionApi.AnomalyDetectionAPI)">
+            <summary>Sets the stub of ISaveLoad.Save(SaveLoadSettings SaveObject, AnomalyDetectionAPI Instance)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.AnomalyDetectionApi#ISaveLoad#Save(AnomalyDetection.Interfaces.SaveLoadSettings,AnomalyDetection.Interfaces.ClusteringResults[])">
+            <summary>Sets the stub of ISaveLoad.Save(SaveLoadSettings SaveObject, ClusteringResults[] Results)</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubISaveLoad.AnomalyDetectionApi#ISaveLoad#SaveChecks(AnomalyDetection.Interfaces.SaveLoadSettings,AnomalyDetection.Interfaces.SaveLoadSettings@)">
+            <summary>Sets the stub of ISaveLoad.SaveChecks(SaveLoadSettings SaveObject, SaveLoadSettings&amp; CheckedSaveObject)</summary>
+        </member>
+        <member name="F:AnomalyDetectionApi.Fakes.StubISaveLoad.LoadChecksSaveLoadSettingsSaveLoadSettingsOut">
+            <summary>Sets the stub of ISaveLoad.LoadChecks(SaveLoadSettings LoadObject, SaveLoadSettings&amp; CheckedLoadObject)</summary>
+        </member>
+        <member name="F:AnomalyDetectionApi.Fakes.StubISaveLoad.Load_AnomalyDetectionAPISaveLoadSettings">
+            <summary>Sets the stub of ISaveLoad.Load_AnomalyDetectionAPI(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="F:AnomalyDetectionApi.Fakes.StubISaveLoad.Load_ClusteringResultsSaveLoadSettings">
+            <summary>Sets the stub of ISaveLoad.Load_ClusteringResults(SaveLoadSettings LoadObject)</summary>
+        </member>
+        <member name="F:AnomalyDetectionApi.Fakes.StubISaveLoad.SaveChecksSaveLoadSettingsSaveLoadSettingsOut">
+            <summary>Sets the stub of ISaveLoad.SaveChecks(SaveLoadSettings SaveObject, SaveLoadSettings&amp; CheckedSaveObject)</summary>
+        </member>
+        <member name="F:AnomalyDetectionApi.Fakes.StubISaveLoad.SaveSaveLoadSettingsAnomalyDetectionAPI">
+            <summary>Sets the stub of ISaveLoad.Save(SaveLoadSettings SaveObject, AnomalyDetectionAPI Instance)</summary>
+        </member>
+        <member name="F:AnomalyDetectionApi.Fakes.StubISaveLoad.SaveSaveLoadSettingsClusteringResultsArray">
+            <summary>Sets the stub of ISaveLoad.Save(SaveLoadSettings SaveObject, ClusteringResults[] Results)</summary>
+        </member>
+        <member name="T:AnomalyDetectionApi.Fakes.StubJSON_SaveLoad">
+            <summary>Stub type of AnomalyDetectionApi.JSON_SaveLoad</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubJSON_SaveLoad.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.StubJSON_SaveLoad.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="M:AnomalyDetectionApi.Fakes.StubJSON_SaveLoad.InitializeStub">
+            <summary>Initializes a new instance of type StubJSON_SaveLoad</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.StubJSON_SaveLoad.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:AnomalyDetectionApi.Fakes.StubJSON_SaveLoad.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:Microsoft.QualityTools.Testing.Fakes.Delegates.AnomalyDetectionApiDelegates">
+            <summary>Contains custom delegates used for the stubs and shims of AnomalyDetectionApi</summary>
+        </member>
+    </members>
+</doc>

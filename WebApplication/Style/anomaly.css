@@ -1,0 +1,210 @@
+﻿.PageHeaderH {
+    border: 1px ridge #cb842e ;
+    color:brown;
+    padding: 8px;
+}
+element.style {
+}
+.markdown-body h2 .anchor {
+    line-height: 1;
+}
+
+.markdown-body .anchor {
+    display: inline-block;
+    padding-right: 2px;
+    margin-left: -18px;
+}
+a {
+    color: #4078c0;
+    text-decoration: none;
+}
+
+a {
+    background-color: transparent;
+}
+
+* {
+    box-sizing: border-box;
+}
+user agent stylesheeta:-webkit-any-link {
+    color: -webkit-link;
+    text-decoration: underline;
+    cursor: auto;
+}
+
+.markdown-body h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+    margin-top: 1em;
+    margin-bottom: 16px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+
+h2 {
+    font-size: 21px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    line-height: 1.1;
+}
+user agent stylesheeth2 {
+    display: block;
+    font-size: 1.5em;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+#readme .markdown-body, #readme .plain {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    padding: 45px;
+    word-wrap: break-word;
+}
+.markdown-body {
+    font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+body {
+    word-wrap: break-word;
+}
+
+body {
+    font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: #333;
+    background-color: #fff;
+}
+table, td {
+            border: 2px solid grey;
+           
+            padding: 5px;
+        }
+tr:nth-child(even) {background-color: #85e62a}
+tr:nth-child(odd) {background-color: #4af18d}
+th 
+        {
+            border: 2px solid grey;
+            background-color:#051249; color:white;
+        }
+table.planeTable,td.planeTable, tr.planeTable 
+        {
+            border: 0px;
+            padding: 5px;
+            background-color:transparent;
+        }
+
+.submit {
+	-moz-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+	box-shadow:inset 0px 1px 0px 0px #d9fbbe;
+	background-color:#8FB164;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #83c41a;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #86ae47;
+}
+.submit:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a5cc52), color-stop(1, #b8e356));
+	background:-moz-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+	background:-webkit-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+	background:-o-linear-gradient(top, #a5cc52 5%, #b8e356 100%);
+	background:linear-gradient(to bottom, #a5cc52 5%, #b8e356 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#a5cc52', endColorstr='#b8e356',GradientType=0);
+	background-color:#a5cc52;
+    color:#000000;
+}
+
+.submit:active {
+	position:relative;
+	top:1px;
+    background-color:#000000;
+    color:#a5cc52;
+
+}
+.submit:disabled{
+	position:relative;
+	top:1px;
+    background-color:#ddd;
+    color:brown;
+}
+div.import>div>input[type="file"] {
+  color: transparent;
+  padding: 0;
+}
+
+div.import>div>input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+div.import>div>input[type="file"]::before {
+  content: 'Select some files';
+  display: inline-block;
+  background-image: linear-gradient(to top, #f9f9f9 0px, #f9f9f9 50%, #e3e3e3 50%, #e3e3e3 100% );
+  color: #444;
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 14px;
+}
+div.import>div>input[type="file"]:hover::before {
+  border-color: black;
+}
+div.import>div>input[type="file"]:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+div.block {
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+}
+
+div.block.left {
+}
+
+div.block>div.content {
+  border: 5px dashed #d6492f;
+  background: none;
+  padding: 0px;
+  border-radius: 3px;
+}
+
+div.block>div.content>pre {
+  font-size: 15px;
+  font-family: 'Courier';
+  background: #F0F0F0;
+  padding: 10px;
+  margin: 0;
+}
+
+
