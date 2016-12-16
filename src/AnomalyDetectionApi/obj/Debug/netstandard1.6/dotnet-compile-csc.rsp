@@ -8,8 +8,8 @@
 -debug:full
 -nostdlib
 -nologo
-"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\obj\Debug\netstandard1.6\dotnet-compile.assemblyinfo.cs"
--out:"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\bin\Debug\netstandard1.6\AnomalyDetectionApi.dll"
+"C:\GitHub\anomalydetection\src\AnomalyDetectionApi\obj\Debug\netstandard1.6\dotnet-compile.assemblyinfo.cs"
+-out:"C:\GitHub\anomalydetection\src\AnomalyDetectionApi\bin\Debug\netstandard1.6\AnomalyDetectionApi.dll"
 -r:"C:\Users\mhoshen\.nuget\packages\Microsoft.Win32.Primitives\4.0.1\ref\netstandard1.3\Microsoft.Win32.Primitives.dll"
 -r:"C:\Users\mhoshen\.nuget\packages\System.AppContext\4.1.0\ref\netstandard1.6\System.AppContext.dll"
 -r:"C:\Users\mhoshen\.nuget\packages\System.Collections\4.3.0\ref\netstandard1.3\System.Collections.dll"
@@ -60,8 +60,8 @@
 -r:"C:\Users\mhoshen\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll"
 -r:"C:\Users\mhoshen\.nuget\packages\System.Xml.XmlDocument\4.3.0\ref\netstandard1.3\System.Xml.XmlDocument.dll"
 -r:"C:\Users\mhoshen\.nuget\packages\System.Xml.XmlSerializer\4.3.0\ref\netstandard1.3\System.Xml.XmlSerializer.dll"
--r:"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetection.Interfaces\bin\Debug\netstandard1.6\AnomalyDetection.Interfaces.dll"
-"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionAPI.cs"
-"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\ISaveLoad.cs"
-"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\JSON_SaveLoad.cs"
-"C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\Properties\AssemblyInfo.cs"
+-r:"C:\GitHub\anomalydetection\src\AnomalyDetection.Interfaces\bin\Debug\netstandard1.6\AnomalyDetection.Interfaces.dll"
+"C:\GitHub\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionAPI.cs"
+"C:\GitHub\anomalydetection\src\AnomalyDetectionApi\ISaveLoad.cs"
+"C:\GitHub\anomalydetection\src\AnomalyDetectionApi\JSON_SaveLoad.cs"
+"C:\GitHub\anomalydetection\src\AnomalyDetectionApi\Properties\AssemblyInfo.cs"

@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AnomalyDetection.Interfaces;
 
-// For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace AnomalyDetectionRestApi.Controllers
 {
-    [Route("api/anomalydetection")]
-    public class AnomalyAPIController : Controller
+    [Route("api/[controller]")]
+    public class AnomalyAPI2Controller : Controller
     {
 
         #region Test
@@ -18,7 +16,14 @@ namespace AnomalyDetectionRestApi.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new string[] { "Test", "Function" };
+            return new string[] { "value1", "value2" };
+        }
+
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return "value";
         }
 
         #endregion
@@ -45,7 +50,6 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <returns></returns>
 
         [HttpGet]
-        [Route("ImportNewDataForClustering/{FileName}/{SavePath}/{LoadimpPath}/{numClusters}/{numOfAttributes}/{kmeansMaxIterations}")]
         public AnomalyDetectionResponse ImportNewDataForClustering(string FileName, string SavePath, string LoadimpPath, int numClusters, int numOfAttributes, int kmeansMaxIterations)
         {
             ClusteringSettings Settings;
@@ -58,13 +62,13 @@ namespace AnomalyDetectionRestApi.Controllers
             ImportData = SaveLoadSettings.JSON_Settings(SavePath, out SaveObject, true);
             LoadimpPath = @"C:\Data\Result\" + LoadimpPath.TrimEnd() + ".json";
             ImportData = SaveLoadSettings.JSON_Settings(LoadimpPath, out LoadObject, true);
-            if (LoadimpPath.Equals("NewData"))
+            if (LoadimpPath.Equals("NewData") )
             {
                 Settings = new ClusteringSettings(RawData, kmeansMaxIterations, numClusters, numOfAttributes, SaveObject, Replace: true);
             }
             else
             {
-                Settings = new ClusteringSettings(RawData, kmeansMaxIterations, numClusters, numOfAttributes, SaveObject, 1, false, LoadObject, Replace: true);
+                Settings = new ClusteringSettings(RawData, kmeansMaxIterations, numClusters, numOfAttributes, SaveObject,1,false, LoadObject, Replace: true);
             }
 
             ImportData = AnoDet_Api.ImportNewDataForClustering(Settings);
@@ -78,7 +82,6 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <param name="LoadPath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ADClusteredData/{dataId}/{loadPath}")]
         public ClusteringResults[] ClusteredDatadirect(int DataId, string LoadPath)
         {
             ClusteringResults[] Result;
@@ -100,7 +103,6 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <param name="Tol"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetClusId/{fileName}/{xaxis}/{yaxis}/{zaxis}/{Tol}")]
         public AnomalyDetectionResponse GetSingleSampleClusterId(string fileName, double xaxis, double? yaxis, double? zaxis, double Tol)
         {
             int ClusterIndex;
@@ -108,7 +110,7 @@ namespace AnomalyDetectionRestApi.Controllers
             SaveLoadSettings LoadObject;
             double[] SampletoCheck;
             string LoadPath = @"C:\data\" + fileName.TrimEnd() + ".json";
-
+            
             AnoResponse = SaveLoadSettings.JSON_Settings(LoadPath, out LoadObject, true);
             if (yaxis.HasValue && !zaxis.HasValue)
                 SampletoCheck = new double[] { xaxis, (double)yaxis };
@@ -117,21 +119,20 @@ namespace AnomalyDetectionRestApi.Controllers
             else
                 SampletoCheck = new double[] { xaxis };
             CheckingSampleSettings SampleSettings = new CheckingSampleSettings(LoadObject, SampletoCheck, Tol);
-
+            
 
             AnoResponse = AnoDet_Api.CheckSample(SampleSettings, out ClusterIndex);
             return AnoResponse;
         }
 
-        /// <summary>
-        /// This is for getting the previously saved clustered data
-        /// </summary>
-        /// <param name="DataId"></param>
-        /// <param name="LoadPath"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetPreviousSamplesRest/{DataId}/{LoadPath}")]
-        public double[][] GetPreviousSamplesRest(int DataId, string LoadPath)
+     /// <summary>
+     /// This is for getting the previously saved clustered data
+     /// </summary>
+     /// <param name="DataId"></param>
+     /// <param name="LoadPath"></param>
+     /// <returns></returns>
+       [HttpGet]
+        public double[][] GetPreviousSamplesRest(int DataId,string LoadPath)
         {
             AnomalyDetectionResponse AnoResponse;
             SaveLoadSettings LoadObject;
@@ -170,7 +171,7 @@ namespace AnomalyDetectionRestApi.Controllers
         //    return DataTypelData;
         //}
 
-        static AnomalyAPIController()
+        static AnomalyAPI2Controller()
         {
 
         }

@@ -1,4 +1,4 @@
-#:C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj
-C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj|C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
-C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj|C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetectionApi\AnomalyDetectionApi.xproj
-C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\Users\mhoshen\documents\visual studio 2015\Projects\AnomalyDetectionCore\src\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\GitHub\anomalydetection\UnitTest\UnitTest.xproj
+C:\GitHub\anomalydetection\UnitTest\UnitTest.xproj|C:\GitHub\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\GitHub\anomalydetection\UnitTest\UnitTest.xproj|C:\GitHub\anomalydetection\src\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+C:\GitHub\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\GitHub\anomalydetection\src\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj

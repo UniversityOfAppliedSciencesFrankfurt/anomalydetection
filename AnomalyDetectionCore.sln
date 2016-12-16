@@ -18,6 +18,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AnomalyDetectionRestApi", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{7E3D7A53-2378-4A1F-8A9B-CB2AE55631E5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{BC9F5095-8C98-49B2-B637-C12DAFAADDC5}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTest", "UnitTest\UnitTest.xproj", "{27688541-0572-4393-AD10-E3FB4EFB49C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,10 @@ Global
 		{7E3D7A53-2378-4A1F-8A9B-CB2AE55631E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E3D7A53-2378-4A1F-8A9B-CB2AE55631E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E3D7A53-2378-4A1F-8A9B-CB2AE55631E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27688541-0572-4393-AD10-E3FB4EFB49C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27688541-0572-4393-AD10-E3FB4EFB49C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27688541-0572-4393-AD10-E3FB4EFB49C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27688541-0572-4393-AD10-E3FB4EFB49C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,26 +56,6 @@ Global
 		{4380429B-9D5C-4A19-B6B2-A2EC3D61B408} = {68E6E2C8-1467-46A5-AD83-2C810BD8A9C5}
 		{CC9311A2-1F11-4248-92D7-67E207421327} = {68E6E2C8-1467-46A5-AD83-2C810BD8A9C5}
 		{2A182FFB-0CEC-45D9-B556-0117948205E3} = {68E6E2C8-1467-46A5-AD83-2C810BD8A9C5}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://daenet.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = src\\AnomalyDetection.Interfaces\\AnomalyDetection.Interfaces.xproj
-		SccProjectTopLevelParentUniqueName1 = AnomalyDetectionCore.sln
-		SccProjectName1 = src/AnomalyDetection.Interfaces
-		SccLocalPath1 = src\\AnomalyDetection.Interfaces
-		SccProjectUniqueName2 = src\\AnomalyDetectionApi\\AnomalyDetectionApi.xproj
-		SccProjectTopLevelParentUniqueName2 = AnomalyDetectionCore.sln
-		SccProjectName2 = src/AnomalyDetectionApi
-		SccLocalPath2 = src\\AnomalyDetectionApi
-		SccProjectUniqueName3 = src\\AnomalyDetectionRestApi\\AnomalyDetectionRestApi.xproj
-		SccProjectTopLevelParentUniqueName3 = AnomalyDetectionCore.sln
-		SccProjectName3 = src/AnomalyDetectionRestApi
-		SccLocalPath3 = src\\AnomalyDetectionRestApi
-		SccProjectUniqueName4 = WebApplication\\WebApplication.csproj
-		SccProjectName4 = WebApplication
-		SccLocalPath4 = WebApplication
+		{27688541-0572-4393-AD10-E3FB4EFB49C9} = {BC9F5095-8C98-49B2-B637-C12DAFAADDC5}
 	EndGlobalSection
 EndGlobal

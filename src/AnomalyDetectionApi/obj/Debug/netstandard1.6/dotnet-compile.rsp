@@ -1,5 +1,5 @@
---temp-output:C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\obj\Debug\netstandard1.6\
---out:C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\bin\Debug\netstandard1.6\AnomalyDetectionApi.dll
+--temp-output:C:\GitHub\anomalydetection\src\AnomalyDetectionApi\obj\Debug\netstandard1.6\
+--out:C:\GitHub\anomalydetection\src\AnomalyDetectionApi\bin\Debug\netstandard1.6\AnomalyDetectionApi.dll
 --define:DEBUG
 --define:TRACE
 --define:NETSTANDARD1_6
@@ -62,8 +62,8 @@
 --reference:C:\Users\mhoshen\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll
 --reference:C:\Users\mhoshen\.nuget\packages\System.Xml.XmlDocument\4.3.0\ref\netstandard1.3\System.Xml.XmlDocument.dll
 --reference:C:\Users\mhoshen\.nuget\packages\System.Xml.XmlSerializer\4.3.0\ref\netstandard1.3\System.Xml.XmlSerializer.dll
---reference:C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetection.Interfaces\bin\Debug\netstandard1.6\AnomalyDetection.Interfaces.dll
-C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionAPI.cs
-C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\ISaveLoad.cs
-C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\JSON_SaveLoad.cs
-C:\GitHub\AnomalyDetection\anomalydetection\src\AnomalyDetectionApi\Properties\AssemblyInfo.cs
+--reference:C:\GitHub\anomalydetection\src\AnomalyDetection.Interfaces\bin\Debug\netstandard1.6\AnomalyDetection.Interfaces.dll
+C:\GitHub\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionAPI.cs
+C:\GitHub\anomalydetection\src\AnomalyDetectionApi\ISaveLoad.cs
+C:\GitHub\anomalydetection\src\AnomalyDetectionApi\JSON_SaveLoad.cs
+C:\GitHub\anomalydetection\src\AnomalyDetectionApi\Properties\AssemblyInfo.cs

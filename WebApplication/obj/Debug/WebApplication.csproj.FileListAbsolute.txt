@@ -64,3 +64,9 @@ C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\bin\WebApplication.pd
 C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache
 C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\obj\Debug\WebApplication.dll
 C:\GitHub\AnomalyDetection\anomalydetection\WebApplication\obj\Debug\WebApplication.pdb
+C:\GitHub\anomalydetection\WebApplication\bin\WebApplication.dll.config
+C:\GitHub\anomalydetection\WebApplication\bin\WebApplication.dll
+C:\GitHub\anomalydetection\WebApplication\bin\WebApplication.pdb
+C:\GitHub\anomalydetection\WebApplication\obj\Debug\WebApplication.dll
+C:\GitHub\anomalydetection\WebApplication\obj\Debug\WebApplication.pdb
+C:\GitHub\anomalydetection\WebApplication\obj\Debug\WebApplication.csprojResolveAssemblyReference.cache

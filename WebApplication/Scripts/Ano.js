@@ -12,7 +12,7 @@
 
     app.controller('AnomalyAPIController', function ($scope, $http) {
 
-        var m_SvcUri = "http://localhost:17742/anomalydetection";
+        var m_SvcUri = "http://localhost:5436/api/anomalydetection";
         $scope.anchorClicks = 0;
         this.viewModel = {};
         $scope.onlyNumbers = /^\d+$/;
@@ -454,7 +454,7 @@
             //}
             //else
             {
-                var uri = m_SvcUri + "/importNewDataForClustering/" + fileName + "/" + saveName + "/NewData/" + numberOfClusters + "/" + numberOfAttributes + "/" + kmeansMaxIterations;
+                var uri = m_SvcUri + "/ImportNewDataForClustering/" + fileName + "/" + saveName + "/NewData/" + numberOfClusters + "/" + numberOfAttributes + "/" + kmeansMaxIterations;
             }
         
             $http.get(uri)
