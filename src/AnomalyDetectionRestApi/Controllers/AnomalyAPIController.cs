@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AnomalyDetection.Interfaces;
+using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -78,7 +80,7 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <param name="LoadPath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ADClusteredData/{dataId}/{loadPath}")]
+        [Route("ADClusteredData/{DataId}/{LoadPath}")]
         public ClusteringResults[] ClusteredDatadirect(int DataId, string LoadPath)
         {
             ClusteringResults[] Result;
@@ -148,27 +150,92 @@ namespace AnomalyDetectionRestApi.Controllers
         ///// </summary>
         ///// <param name="type"></param>
         ///// <returns></returns>
-        //public IEnumerable<AnomalyDet01_DataSet_Type> GetAllAnoDD(string type)
-        //{
-        //    IEnumerable<AnomalyDet01_DataSet_Type> DataTypelData;
-        //    AnoDetDataDataContext db = new AnoDetDataDataContext();
-        //    if (type == "2D")
-        //    {
-        //        DataTypelData = from q in db.AnomalyDet01_DataSet_Types
-        //                        where (q.DataSet_Scalar_1 != null && q.DataSet_Scalar_2 != null && q.DataSet_Scalar_3 == null)
-        //                        select q;
-        //    }
-        //    else if (type == "3D")
-        //    {
-        //        DataTypelData = from r in db.AnomalyDet01_DataSet_Types
-        //                        where (r.DataSet_Scalar_1 != null && r.DataSet_Scalar_2 != null && r.DataSet_Scalar_3 != null)
-        //                        select r;
-        //    }
-        //    else
-        //        DataTypelData = from p in db.AnomalyDet01_DataSet_Types
-        //                        select p;
-        //    return DataTypelData;
-        //}
+        [HttpGet]
+        [Route("Anodropdown/{type}")]
+        public IEnumerable<AnomalyDet01_DataSet_Type> GetAllAnoDD(string type)
+        {
+            List<AnomalyDet01_DataSet_Type> dataSet_Types = new List<AnomalyDet01_DataSet_Type>();
+
+            using (SqlConnection conn = new SqlConnection(buildCfg().GetConnectionString("ProtocolAdapterDb")))
+            {
+                conn.Open();
+                SqlCommand cmd = conn.CreateCommand();
+
+                if (type == "2D")
+                {
+                    cmd.CommandText = "select * from AnomalyDet01_DataSet_Type where DataSet_Scalar_1 is not null and DataSet_Scalar_2 is not null and DataSet_Scalar_3 is null or Data_Id = 10";
+                }
+                else if (type == "3D")
+                {
+                    cmd.CommandText = "select * from AnomalyDet01_DataSet_Type where DataSet_Scalar_1 is not null and DataSet_Scalar_2 is not null and DataSet_Scalar_3 is not null or Data_Id = 20";
+                }
+                else
+                {
+                    cmd.CommandText = "select * from AnomalyDet01_DataSet_Type";
+                }
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var dataset = mapToAnomalyDet01_DataSet_Type(reader);
+                        if (dataset != null)
+                        {
+                            dataSet_Types.Add(dataset);
+                        }
+                        else
+                        {
+                            throw new Exception("Queury is not currect.");
+                        }
+                    }
+                }
+            }
+
+            return dataSet_Types;
+
+        }
+
+        private AnomalyDet01_DataSet_Type mapToAnomalyDet01_DataSet_Type(SqlDataReader reader)
+        {
+            var dataset_type =  new AnomalyDet01_DataSet_Type();
+            dataset_type.Data_Id = ConvertFromDBVal<int>(reader["Data_Id"]);
+            dataset_type.DataSet_Name = ConvertFromDBVal<string>(reader["DataSet_Name"]);
+            dataset_type.DataSet_Scalar_1 = ConvertFromDBVal<int>(reader["DataSet_Scalar_1"]);
+            dataset_type.DataSet_Scalar_2 = ConvertFromDBVal<int>(reader["DataSet_Scalar_2"]);
+            dataset_type.DataSet_Scalar_3 = ConvertFromDBVal<int>(reader["DataSet_Scalar_3"]);
+            dataset_type.Max_Threshhold_Distance = ConvertFromDBVal<decimal>(reader["Max_Threshhold_Distance"]);
+            dataset_type.Description = ConvertFromDBVal<string>(reader["Description"]);
+            dataset_type.DataSource = ConvertFromDBVal<string>(reader["DataSource"]);
+            dataset_type.Dimension = ConvertFromDBVal<int>(reader["Dimension"]);
+
+            return dataset_type;
+        }
+
+        public static T ConvertFromDBVal<T>(object obj)
+        {
+            if (obj == null || obj == DBNull.Value)
+            {
+                return default(T); // returns the default value for the type
+            }
+            else
+            {
+                return (T)obj;
+            }
+        }
+
+        private static IConfigurationRoot buildCfg()
+        {
+            IConfigurationRoot Configuration;
+            string basePath = System.IO.Directory.GetCurrentDirectory();
+
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            Configuration = builder.Build();
+
+            return Configuration;
+        }
 
         static AnomalyAPIController()
         {
