@@ -185,9 +185,5 @@
 --resource:"C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\obj\Debug\netcoreapp1.0\AnomalyDetectionRestApidotnet-compile.deps.json",AnomalyDetectionRestApi.deps.json
 C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Program.cs
 C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Startup.cs
-C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Controllers\AnomalyAPI2Controller.cs
 C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Controllers\AnomalyAPIController.cs
-C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Controllers\Hello.cs
-C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Controllers\MyController.cs
-C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Controllers\ValuesController.cs
 C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\Models\AnomalyDet01_DataSet_Type.cs
