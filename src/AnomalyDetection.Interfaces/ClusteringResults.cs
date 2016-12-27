@@ -17,82 +17,96 @@ namespace AnomalyDetection.Interfaces
         /// </summary>
         [DataMember]
         public int[] ClusterDataOriginalIndex { get; internal set; }
+
         /// <summary>
         /// the samples that belong to this cluster
         /// </summary>
         [DataMember]
         public double[][] ClusterData { get; internal set; }
+
         /// <summary>
         /// distance between eanch sample of this cluster and it's cetroid
         /// </summary>
         [DataMember]
         public double[] ClusterDataDistanceToCentroid { get; internal set; }
+
         /// <summary>
         /// the centroid of the cluster
         /// </summary>
         [DataMember]
         public double[] Centroid { get; internal set; }
+
         /// <summary>
         /// the mean of the cluster
         /// </summary>
         [DataMember]
         public double[] Mean { get; internal set; }
+
         /// <summary>
         /// the standard deviation in the cluster
         /// </summary>
         [DataMember]
         public double[] StandardDeviation { get; internal set; }
+
         /// <summary>
         /// the index of the farthest sample, of this cluster, from centroid (not original index)
         /// </summary>
         [DataMember]
         public int InClusterFarthestSampleIndex { get; internal set; }
+
         /// <summary>
         /// the farthest sample, of this cluster, from centroid
         /// </summary>
         [DataMember]
         public double[] InClusterFarthestSample { get; internal set; }
+
         /// <summary>
         /// distance between the centroid and the farthest sample of this cluster
         /// </summary>
         [DataMember]
         public double InClusterMaxDistance { get; internal set; }
+
         /// <summary>
         /// nearest cluster number
         /// </summary>
         [DataMember]
         public int NearestCluster { get; internal set; }
+
         /// <summary>
         /// distance between the centroid of this cluster and that of nearest cluster
         /// </summary>
         [DataMember]
         public double DistanceToNearestClusterCentroid { get; internal set; }
+
         /// <summary>
         /// nearest sample belonging of the nearest cluster to this cluster's centroid
         /// </summary>
         [DataMember]
         public double[] NearestForeignSampleInNearestCluster { get; internal set; }
+
         /// <summary>
         /// distance between the nearest sample of the nearest cluster and this cluster's centroid
         /// </summary>
         [DataMember]
         public double DistanceToNearestForeignSampleInNearestCluster { get; internal set; }
+
         /// <summary>
         /// nearest sample not belonging to this cluster and this cluster's centroid
         /// </summary>
         [DataMember]
         public double[] NearestForeignSample { get; internal set; }
+
         /// <summary>
         /// distance between the nearest foreign sample and this cluster's centroid
         /// </summary>
         [DataMember]
         public double DistanceToNearestForeignSample { get; internal set; }
+
         /// <summary>
         /// the cluster to which the nearest foreign sample belongs
         /// </summary>
         [DataMember]
         public int ClusterOfNearestForeignSample { get; internal set; }
-
 
         /// <summary>
         /// Dummy constructor
@@ -128,22 +142,28 @@ namespace AnomalyDetection.Interfaces
                     Results = null;
                     return Tuple.Create(Results, SICNResponse.Item2);
                 }
+
                 int[] ClusterSamplesCounter = SICNResponse.Item1;
                 Results = new ClusteringResults[NumberOfClusters];
+
                 for (int i = 0; i < NumberOfClusters; i++)
                 {
                     Results[i] = new ClusteringResults();
                     Results[i].Centroid = Centroids[i];
                     Results[i].ClusterData = new double[ClusterSamplesCounter[i]][];
                     Results[i].ClusterDataOriginalIndex = new int[ClusterSamplesCounter[i]];
+                    //
                     //group the samples of the cluster
                     ADResponse = Results[i].AssignSamplesToClusters(RawData, DataToClusterMapping, i);
+
                     if (ADResponse.Code != 0)
                     {
                         Results = null;
                         return Tuple.Create(Results, ADResponse);
                     }
+
                     ADResponse = Results[i].CalculateStatistics();
+
                     if (ADResponse.Code != 0)
                     {
                         Results = null;
@@ -153,11 +173,13 @@ namespace AnomalyDetection.Interfaces
 
                 //use functions to calculate the properties and statistics of each clusters.
                 Tuple<int[], double[], AnomalyDetectionResponse> CNCResponse = CalculateNearestCluster(Centroids, ClusterSamplesCounter);
+
                 if (CNCResponse.Item3.Code != 0)
                 {
                     Results = null;
                     return Tuple.Create(Results, CNCResponse.Item3);
                 }
+
                 for (int i = 0; i < NumberOfClusters; i++)
                 {
                     Results[i].NearestCluster = CNCResponse.Item1[i];
@@ -169,12 +191,15 @@ namespace AnomalyDetection.Interfaces
                 double[][] NearestForeignSampleArray;
                 double[] DistanceToNearestForeignSampleArray;
                 int[] ClusterOfNearestForeignSampleArray;
+
                 ADResponse = CalculateMoreStatistics(RawData, DataToClusterMapping, Centroids, CNCResponse.Item1, out NearestForeignSampleInNearestClusterArray, out DistanceToNearestForeignSampleInNearestClusterArray, out NearestForeignSampleArray, out DistanceToNearestForeignSampleArray, out ClusterOfNearestForeignSampleArray);
+
                 if (ADResponse.Code != 0)
                 {
                     Results = null;
                     return Tuple.Create(Results, ADResponse);
                 }
+
                 for (int i = 0; i < NumberOfClusters; i++)
                 {
                     Results[i].NearestForeignSampleInNearestCluster = NearestForeignSampleInNearestClusterArray[i];
@@ -185,12 +210,14 @@ namespace AnomalyDetection.Interfaces
                 }
 
                 ADResponse = new AnomalyDetectionResponse(0, "OK");
+
                 return Tuple.Create(Results, ADResponse);
             }
             catch (Exception Ex)
             {
                 Results = null;
                 ADResponse = new AnomalyDetectionResponse(400, "Function <CreateClusteringResult>: Unhandled exception:\t" + Ex.ToString());
+
                 return Tuple.Create(Results, ADResponse);
             }
         }
@@ -212,6 +239,7 @@ namespace AnomalyDetection.Interfaces
         {
             AnomalyDetectionResponse ADResponse;
             int[] ClusterSamplesCounter;
+
             try
             {
                 ClusterSamplesCounter = new int[NumberOfClusters];
@@ -220,7 +248,9 @@ namespace AnomalyDetection.Interfaces
                     ClusterSamplesCounter[DataToClusterMapping[i]]++;
 
                 }
+
                 ADResponse = new AnomalyDetectionResponse(0, "OK");
+
                 return Tuple.Create(ClusterSamplesCounter, ADResponse);
             }
             catch (Exception Ex)
@@ -281,12 +311,14 @@ namespace AnomalyDetection.Interfaces
                 this.Mean = new double[NumberOfAttributes];
                 this.StandardDeviation = new double[NumberOfAttributes];
                 this.InClusterMaxDistance = -1;
+
                 //in case of empty cluster
                 if (NumberOfSamples == 0)
                 {
                     this.InClusterFarthestSampleIndex = 0;
                     this.InClusterMaxDistance = 0;
                     this.InClusterFarthestSample = new double[NumberOfAttributes];
+
                     for (int j = 0; j < NumberOfAttributes; j++)
                     {
                         this.Mean[j] = 0;
@@ -294,16 +326,21 @@ namespace AnomalyDetection.Interfaces
                         this.InClusterFarthestSample[j] = 0;
                     }
                     this.NearestCluster = -1;
+
                     return new AnomalyDetectionResponse(0, "OK");
                 }
+
                 Tuple<double, AnomalyDetectionResponse> CDResponse;
+
                 for (int i = 0; i < NumberOfSamples; i++)
                 {
                     CDResponse = CalculateDistance(this.ClusterData[i], this.Centroid);
+
                     if (CDResponse.Item2.Code != 0)
                     {
                         return CDResponse.Item2;
                     }
+
                     //calculate distance for each sample
                     this.ClusterDataDistanceToCentroid[i] = CDResponse.Item1;
                     if (this.ClusterDataDistanceToCentroid[i] > this.InClusterMaxDistance)
@@ -313,12 +350,15 @@ namespace AnomalyDetection.Interfaces
                         this.InClusterFarthestSample = this.ClusterData[i];
                         this.InClusterMaxDistance = this.ClusterDataDistanceToCentroid[i];
                     }
+
                     for (int j = 0; j < NumberOfAttributes; j++)
                     {
                         this.Mean[j] += ClusterData[i][j] / NumberOfSamples;
                     }
                 }
+
                 double[] ClusterVariance = new double[NumberOfAttributes];
+
                 for (int i = 0; i < NumberOfSamples; i++)
                 {
                     for (int j = 0; j < NumberOfAttributes; j++)
@@ -326,6 +366,7 @@ namespace AnomalyDetection.Interfaces
                         ClusterVariance[j] += Math.Pow((ClusterData[i][j] - this.Mean[j]), 2) / NumberOfSamples;
                     }
                 }
+
                 for (int i = 0; i < NumberOfAttributes; i++)
                 {
                     this.StandardDeviation[i] = Math.Sqrt(ClusterVariance[i]);
@@ -357,9 +398,11 @@ namespace AnomalyDetection.Interfaces
             AnomalyDetectionResponse ADResponse;
             int[] NearestClustersArray = new int[Centroids.Length];
             double[] DistanceToNearestClusterArray = new double[Centroids.Length];
+
             try
             {
                 Tuple<double, AnomalyDetectionResponse> CDResponse;
+
                 for (int i = 0; i < Centroids.Length; i++)
                 {
                     //in case of empty cluster
@@ -369,20 +412,25 @@ namespace AnomalyDetection.Interfaces
                         DistanceToNearestClusterArray[i] = -1;
                         continue;
                     }
+
                     DistanceToNearestClusterArray[i] = double.MaxValue;
+
                     for (int j = 0; j < Centroids.Length; j++)
                     {
                         if (i == j || SamplesInClusters[j] == 0)
                         {
                             continue;
                         }
+
                         CDResponse = CalculateDistance(Centroids[i], Centroids[j]);
+
                         if (CDResponse.Item2.Code != 0)
                         {
                             NearestClustersArray = null;
                             DistanceToNearestClusterArray = null;
                             return Tuple.Create(NearestClustersArray, DistanceToNearestClusterArray, CDResponse.Item2);
                         }
+
                         if (CDResponse.Item1 < DistanceToNearestClusterArray[i])
                         {
                             DistanceToNearestClusterArray[i] = CDResponse.Item1;
@@ -390,7 +438,9 @@ namespace AnomalyDetection.Interfaces
                         }
                     }
                 }
+
                 ADResponse = new AnomalyDetectionResponse(0, "OK");
+
                 return Tuple.Create(NearestClustersArray, DistanceToNearestClusterArray, ADResponse);
             }
             catch (Exception Ex)
@@ -449,6 +499,7 @@ namespace AnomalyDetection.Interfaces
                 }
 
                 Tuple<double, AnomalyDetectionResponse> CDResponse;
+
                 for (int i = 0; i < RawData.Length; i++)
                 {
                     for (int j = 0; j < Centroids.Length; j++)

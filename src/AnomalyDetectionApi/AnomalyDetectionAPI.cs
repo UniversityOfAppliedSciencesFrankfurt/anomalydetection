@@ -76,6 +76,7 @@ namespace AnomalyDetectionApi
 
                 //Check functions
                 ADResponse = SelectInterfaceType(Settings.SaveObject, out SaveInterface);
+
                 if (ADResponse.Code == 1)
                 {
                     return new AnomalyDetectionResponse(125, "Function<ImportNewDataForClustering>: Settings to save can't be null");
@@ -87,6 +88,7 @@ namespace AnomalyDetectionApi
                 }
 
                 ADResponse = SelectInterfaceType(Settings.LoadObject, out LoadInterface);
+
                 if (ADResponse.Code != 0 && ADResponse.Code != 1)
                 {
                     return ADResponse;
@@ -96,6 +98,7 @@ namespace AnomalyDetectionApi
 
                 // does some checks on the passed parameters by the user
                 ADResponse = PreproccessingOfParameters(Settings.RawData, Settings.KmeansAlgorithm, Settings.KmeansMaxIterations, Settings.NumberOfClusters, Settings.NumberOfAttributes, Settings.SaveObject, Settings.LoadObject, out CheckedSaveObject, out CheckedLoadObject);
+
                 if (ADResponse.Code != 0)
                 {
                     return ADResponse;
@@ -114,6 +117,7 @@ namespace AnomalyDetectionApi
                     {
                         return LoadJSON.Item2;
                     }
+
                     AnomalyDetectionAPI LoadedInstance = LoadJSON.Item1;
 
                     //some additional checks on the passed parameters by the user
@@ -121,31 +125,38 @@ namespace AnomalyDetectionApi
                     {
                         return new AnomalyDetectionResponse(112, "Function <ImportNewDataForClustering>: Mismatch between old and new cluster numbers");
                     }
+
                     if (Settings.NumberOfAttributes != LoadedInstance.RawData[0].Length)
                     {
                         return new AnomalyDetectionResponse(113, "Function <ImportNewDataForClustering>: Mismatch between old and new number of atributes");
                     }
 
                     Tuple<double[][], AnomalyDetectionResponse> PCSResponse;
+
                     //get rid of outliers in the new RawData
                     PCSResponse = PrivateCheckSamples(Settings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
+
                     if (PCSResponse.Item2.Code != 0)
                     {
                         return PCSResponse.Item2;
                     }
+
                     double[][] AcceptedSamples = PCSResponse.Item1;
 
                     //concatinate the old data with the accepted data of the new clustering request
                     double[][] RawData = new double[LoadedInstance.RawData.Length + AcceptedSamples.Length][];
                     int PreviousSamplesCount = LoadedInstance.RawData.Length;
+
                     for (int i = 0; i < PreviousSamplesCount; i++)
                     {
                         RawData[i] = LoadedInstance.RawData[i];
                     }
+
                     for (int i = 0; i < AcceptedSamples.Length; i++)
                     {
                         RawData[i + PreviousSamplesCount] = AcceptedSamples[i];
                     }
+
                     Instance = new AnomalyDetectionAPI(RawData, Settings.NumberOfClusters);
                 }
                 //in case of a new clustering instance
@@ -157,12 +168,14 @@ namespace AnomalyDetectionApi
                 double[][] Centroids;
                 int IterationReached = -1;
                 Tuple<int[], AnomalyDetectionResponse> KMeansResponse;
+                //
                 //initiate the clustering process
                 KMeansResponse = KMeansClusteringAlg(Instance.RawData, Instance.NumberOfClusters, Settings.NumberOfAttributes, Settings.KmeansMaxIterations, Settings.KmeansAlgorithm, Settings.InitialGuess, out Centroids, out IterationReached);
                 if (KMeansResponse.Item2.Code != 0)
                 {
                     return KMeansResponse.Item2;
                 }
+
                 Instance.DataToClusterMapping = KMeansResponse.Item1;
                 Instance.Centroids = Centroids;
 
@@ -173,6 +186,7 @@ namespace AnomalyDetectionApi
                 {
                     return CCRResponse.Item2;
                 }
+
                 ClusteringResults[] Results = CCRResponse.Item1;
 
                 Instance.InClusterMaxDistance = new double[Instance.NumberOfClusters];
@@ -563,6 +577,7 @@ namespace AnomalyDetectionApi
 
                     RadialCheck = true;
                     StdDevCheck = true;
+
                     if (Method != 1)
                     {
                         //radial method check

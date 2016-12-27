@@ -62,10 +62,12 @@ namespace AnomalyDetection.Interfaces
     /// </summary>
     public class AnomalyDetectionResponse
     {
+
         /// <summary>
         /// integer that is related to the state of the function
         /// </summary>
         public int Code { get; internal set; }
+
         /// <summary>
         /// string that is related to the state of the function
         /// </summary>
