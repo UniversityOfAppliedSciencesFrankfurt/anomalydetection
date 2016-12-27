@@ -8,3 +8,8 @@ src/AnomalyDetectionApi/bin/Debug
 src/AnomalyDetectionApi/obj/Debug
 UnitTest/bin/Debug
 UnitTest/obj/Debug
+/src/AnomalyDetection.Interfaces/bin/Debug/netstandard1.6
+/src/AnomalyDetectionRestApi/bin/Debug/netcoreapp1.0
+/src/AnomalyDetectionRestApi/obj/Debug/netcoreapp1.0
+/WebApplication/bin
+/WebApplication/obj/Debug

@@ -135,7 +135,7 @@ namespace AnomalyDetectionApi
                     Tuple<double[][], AnomalyDetectionResponse> PCSResponse;
 
                     //get rid of outliers in the new RawData
-                    PCSResponse = PrivateCheckSamples(Settings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
+                    PCSResponse = PrivateCheckSamples(clusterSettings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
                     if (PCSResponse.Item2.Code != 0)
                     {
                         return PCSResponse.Item2;
