@@ -119,6 +119,7 @@ namespace AnomalyDetectionApi
                     {
                         return LoadJSON.Item2;
                     }
+
                     AnomalyDetectionAPI LoadedInstance = LoadJSON.Item1;
 
                     //some additional checks on the passed parameters by the user
@@ -132,21 +133,25 @@ namespace AnomalyDetectionApi
                     }
 
                     Tuple<double[][], AnomalyDetectionResponse> PCSResponse;
+
                     //get rid of outliers in the new RawData
-                    PCSResponse = PrivateCheckSamples(clusterSettings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
+                    PCSResponse = PrivateCheckSamples(Settings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
                     if (PCSResponse.Item2.Code != 0)
                     {
                         return PCSResponse.Item2;
                     }
+
                     double[][] AcceptedSamples = PCSResponse.Item1;
 
                     //concatinate the old data with the accepted data of the new clustering request
                     double[][] RawData = new double[LoadedInstance.RawData.Length + AcceptedSamples.Length][];
                     int PreviousSamplesCount = LoadedInstance.RawData.Length;
+
                     for (int i = 0; i < PreviousSamplesCount; i++)
                     {
                         RawData[i] = LoadedInstance.RawData[i];
                     }
+
                     for (int i = 0; i < AcceptedSamples.Length; i++)
                     {
                         RawData[i + PreviousSamplesCount] = AcceptedSamples[i];
@@ -162,12 +167,14 @@ namespace AnomalyDetectionApi
                 double[][] calculatedCentroids;
                 int IterationReached = -1;
                 Tuple<int[], AnomalyDetectionResponse> KMeansResponse;
+                //
                 //initiate the clustering process
                 KMeansResponse = runKMeansClusteringAlg(Instance.RawData, Instance.NumberOfClusters, clusterSettings.NumberOfAttributes, clusterSettings.KmeansMaxIterations, clusterSettings.KmeansAlgorithm, clusterSettings.InitialGuess, this.Centroids, out calculatedCentroids, out IterationReached);
                 if (KMeansResponse.Item2.Code != 0)
                 {
                     return KMeansResponse.Item2;
                 }
+
                 Instance.DataToClusterMapping = KMeansResponse.Item1;
                 Instance.Centroids = calculatedCentroids;
 
@@ -178,6 +185,7 @@ namespace AnomalyDetectionApi
                 {
                     return CCRResponse.Item2;
                 }
+
                 ClusteringResults[] Results = CCRResponse.Item1;
 
                 Instance.InClusterMaxDistance = new double[Instance.NumberOfClusters];
@@ -576,6 +584,7 @@ namespace AnomalyDetectionApi
 
                     RadialCheck = true;
                     StdDevCheck = true;
+
                     if (Method != 1)
                     {
                         //radial method check

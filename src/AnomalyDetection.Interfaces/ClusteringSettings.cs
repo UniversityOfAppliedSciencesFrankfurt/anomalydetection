@@ -16,6 +16,7 @@ namespace AnomalyDetection.Interfaces
         /// data to be clustered
         /// </summary>
         public double[][] RawData { get; internal set; }
+
         /// <summary>
         /// the desired Kmeans clustering algorithm (1 or 2)
         /// <ul style="list-style-type:none">
@@ -24,14 +25,17 @@ namespace AnomalyDetection.Interfaces
         /// </ul>
         /// </summary>
         public int KmeansAlgorithm { get; internal set; }
+
         /// <summary>
         /// maximum allowed number of Kmeans iteration for clustering
         /// </summary>
         public int KmeansMaxIterations { get; internal set; }
+
         /// <summary>
         /// number of clusters
         /// </summary>
         public int NumberOfClusters { get; internal set; }
+
         /// <summary>
         /// a bool, if true Kmeans clustering start with an initial guess for the centroids else it will start with a random assignment
         /// </summary>
@@ -41,17 +45,17 @@ namespace AnomalyDetection.Interfaces
         /// number of attributes for each sample
         /// </summary>
         public int NumberOfAttributes { get; internal set; }
+
         /// <summary>
         /// settings to save the clustering instance
         /// </summary>
         public SaveLoadSettings SaveObject { get; internal set; }
+
         /// <summary>
         /// settings to load a clustering instance (can be "" or null in case of not loading)
         /// </summary>
         public SaveLoadSettings LoadObject { get; internal set; }
-
-
-
+        
         /// <summary>
         /// Constructor to create the desired settings by the user for clustering.
         /// </summary>

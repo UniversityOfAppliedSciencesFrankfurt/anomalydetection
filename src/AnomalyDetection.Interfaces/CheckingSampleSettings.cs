@@ -14,10 +14,12 @@ namespace AnomalyDetection.Interfaces
         /// settings to the clustering intance that contains the clusters data
         /// </summary>
         public SaveLoadSettings LoadProjectSettings { get; internal set; }
+
         /// <summary>
         /// the sample to be checked
         /// </summary>
         public double[] Sample { get; internal set; }
+
         /// <summary>
         /// a value in % representing the tolerance to possible outliers
         /// </summary>
