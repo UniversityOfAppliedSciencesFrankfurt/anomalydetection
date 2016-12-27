@@ -16,17 +16,6 @@ namespace AnomalyDetectionApi
     {
 
         /// <summary>
-        /// Constructor for creating AnomalyDetectionAPI object
-        /// </summary>
-        /// <param name="RawData">data to be clustered</param>
-        /// <param name="NumberOfClusters">desired number of clusters</param>
-        public AnomalyDetectionAPI(double[][] RawData, int NumberOfClusters)
-        {
-            this.RawData = RawData;
-            this.NumberOfClusters = NumberOfClusters;
-        }
-
-        /// <summary>
         /// data to be clustered
         /// </summary>
         [DataMember]
@@ -56,10 +45,26 @@ namespace AnomalyDetectionApi
         [DataMember]
         public int[] DataToClusterMapping { get; internal set; }
 
+       
+        /// <summary>
+        /// Constructor for creating AnomalyDetectionAPI object
+        /// </summary>
+        /// <param name="data">Data to be clustered</param>
+        /// <param name="numOfClusters">Desired number of clusters</param>
+        /// <param name="centroids">Explicitelly set centroids. This value is typically set in a case of pattern recognition.
+        /// For each pattern recognition related clustering, centroids are set on some reference value for each set of data samples.</param>
+        public AnomalyDetectionAPI(double[][] data, int numOfClusters, double[][] centroids = null)
+        {
+            this.RawData = data;
+            this.NumberOfClusters = numOfClusters;
+            this.Centroids = centroids;
+        }
+
+
         /// <summary>
         /// ImportNewDataForClustering is a function that start a new clustering instance or add to an existing one. It saves the results automatically.
         /// </summary>
-        /// <param name="Settings">contains the desired settings for the clustering process</param>
+        /// <param name="clusterSettings">contains the desired settings for the clustering process</param>
         /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "Clustering Complete. K-means stopped at the maximum allowed iteration: " + Maximum_Allowed_Iteration </li>
@@ -67,7 +72,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "Clustering Complete. K-means converged at iteration: " + Iteration_Reached </li>
         /// </ul>
         /// </returns>
-        public AnomalyDetectionResponse ImportNewDataForClustering(ClusteringSettings Settings)
+        public AnomalyDetectionResponse ImportNewDataForClustering(ClusteringSettings clusterSettings)
         {
             try
             {
@@ -75,7 +80,7 @@ namespace AnomalyDetectionApi
                 AnomalyDetectionResponse ADResponse;
 
                 //Check functions
-                ADResponse = SelectInterfaceType(Settings.SaveObject, out SaveInterface);
+                ADResponse = SelectInterfaceType(clusterSettings.SaveObject, out SaveInterface);
                 if (ADResponse.Code == 1)
                 {
                     return new AnomalyDetectionResponse(125, "Function<ImportNewDataForClustering>: Settings to save can't be null");
@@ -86,7 +91,7 @@ namespace AnomalyDetectionApi
                     return ADResponse;
                 }
 
-                ADResponse = SelectInterfaceType(Settings.LoadObject, out LoadInterface);
+                ADResponse = SelectInterfaceType(clusterSettings.LoadObject, out LoadInterface);
                 if (ADResponse.Code != 0 && ADResponse.Code != 1)
                 {
                     return ADResponse;
@@ -95,7 +100,7 @@ namespace AnomalyDetectionApi
                 SaveLoadSettings CheckedSaveObject, CheckedLoadObject;
 
                 // does some checks on the passed parameters by the user
-                ADResponse = PreproccessingOfParameters(Settings.RawData, Settings.KmeansAlgorithm, Settings.KmeansMaxIterations, Settings.NumberOfClusters, Settings.NumberOfAttributes, Settings.SaveObject, Settings.LoadObject, out CheckedSaveObject, out CheckedLoadObject);
+                ADResponse = validateParams(clusterSettings.RawData, clusterSettings.KmeansAlgorithm, clusterSettings.KmeansMaxIterations, clusterSettings.NumberOfClusters, clusterSettings.NumberOfAttributes, clusterSettings.SaveObject, clusterSettings.LoadObject, out CheckedSaveObject, out CheckedLoadObject);
                 if (ADResponse.Code != 0)
                 {
                     return ADResponse;
@@ -117,18 +122,18 @@ namespace AnomalyDetectionApi
                     AnomalyDetectionAPI LoadedInstance = LoadJSON.Item1;
 
                     //some additional checks on the passed parameters by the user
-                    if (Settings.NumberOfClusters != LoadedInstance.NumberOfClusters)
+                    if (clusterSettings.NumberOfClusters != LoadedInstance.NumberOfClusters)
                     {
                         return new AnomalyDetectionResponse(112, "Function <ImportNewDataForClustering>: Mismatch between old and new cluster numbers");
                     }
-                    if (Settings.NumberOfAttributes != LoadedInstance.RawData[0].Length)
+                    if (clusterSettings.NumberOfAttributes != LoadedInstance.RawData[0].Length)
                     {
                         return new AnomalyDetectionResponse(113, "Function <ImportNewDataForClustering>: Mismatch between old and new number of atributes");
                     }
 
                     Tuple<double[][], AnomalyDetectionResponse> PCSResponse;
                     //get rid of outliers in the new RawData
-                    PCSResponse = PrivateCheckSamples(Settings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
+                    PCSResponse = PrivateCheckSamples(clusterSettings.RawData, LoadedInstance.Centroids, LoadedInstance.InClusterMaxDistance);
                     if (PCSResponse.Item2.Code != 0)
                     {
                         return PCSResponse.Item2;
@@ -146,29 +151,29 @@ namespace AnomalyDetectionApi
                     {
                         RawData[i + PreviousSamplesCount] = AcceptedSamples[i];
                     }
-                    Instance = new AnomalyDetectionAPI(RawData, Settings.NumberOfClusters);
+                    Instance = new AnomalyDetectionAPI(RawData, clusterSettings.NumberOfClusters);
                 }
                 //in case of a new clustering instance
                 else
                 {
-                    Instance = new AnomalyDetectionAPI(Settings.RawData, Settings.NumberOfClusters);
+                    Instance = new AnomalyDetectionAPI(clusterSettings.RawData, clusterSettings.NumberOfClusters);
                 }
 
-                double[][] Centroids;
+                double[][] calculatedCentroids;
                 int IterationReached = -1;
                 Tuple<int[], AnomalyDetectionResponse> KMeansResponse;
                 //initiate the clustering process
-                KMeansResponse = KMeansClusteringAlg(Instance.RawData, Instance.NumberOfClusters, Settings.NumberOfAttributes, Settings.KmeansMaxIterations, Settings.KmeansAlgorithm, Settings.InitialGuess, out Centroids, out IterationReached);
+                KMeansResponse = runKMeansClusteringAlg(Instance.RawData, Instance.NumberOfClusters, clusterSettings.NumberOfAttributes, clusterSettings.KmeansMaxIterations, clusterSettings.KmeansAlgorithm, clusterSettings.InitialGuess, this.Centroids, out calculatedCentroids, out IterationReached);
                 if (KMeansResponse.Item2.Code != 0)
                 {
                     return KMeansResponse.Item2;
                 }
                 Instance.DataToClusterMapping = KMeansResponse.Item1;
-                Instance.Centroids = Centroids;
+                Instance.Centroids = calculatedCentroids;
 
                 Tuple<ClusteringResults[], AnomalyDetectionResponse> CCRResponse;
                 //create the clusters' result & statistics
-                CCRResponse = ClusteringResults.CreateClusteringResult(Instance.RawData, Instance.DataToClusterMapping, Centroids, Instance.NumberOfClusters);
+                CCRResponse = ClusteringResults.CreateClusteringResult(Instance.RawData, Instance.DataToClusterMapping, calculatedCentroids, Instance.NumberOfClusters);
                 if (CCRResponse.Item2.Code != 0)
                 {
                     return CCRResponse.Item2;
@@ -199,9 +204,9 @@ namespace AnomalyDetectionApi
                 this.DataToClusterMapping = Instance.DataToClusterMapping;
                 this.InClusterMaxDistance = Instance.InClusterMaxDistance;
 
-                if (Settings.KmeansMaxIterations <= IterationReached)
+                if (clusterSettings.KmeansMaxIterations <= IterationReached)
                 {
-                    return new AnomalyDetectionResponse(0, "Clustering Complete. K-means stopped at the maximum allowed iteration: " + Settings.KmeansMaxIterations);
+                    return new AnomalyDetectionResponse(0, "Clustering Complete. K-means stopped at the maximum allowed iteration: " + clusterSettings.KmeansMaxIterations);
                 }
                 else
                 {
@@ -231,6 +236,8 @@ namespace AnomalyDetectionApi
         {
             try
             {
+                AnomalyDetectionAPI apiInstance = null;
+
                 //some checks on the passed parameters by the user
                 if (Settings.tolerance < 0)
                 {
@@ -238,75 +245,81 @@ namespace AnomalyDetectionApi
                     return new AnomalyDetectionResponse(110, "Function <CheckSample>: Unacceptable tolerance value");
                 }
 
-
-                ISaveLoad LoadInterface;
-                AnomalyDetectionResponse ADResponse;
-                ADResponse = SelectInterfaceType(Settings.LoadProjectSettings, out LoadInterface);
-                if (ADResponse.Code == 1)
+                if (Settings.LoadProjectSettings != null)
                 {
-                    ClusterIndex = -1;
-                    return new AnomalyDetectionResponse(126, "Function<CheckSample>: Settings to load can't be null");
-                }
+                    ISaveLoad LoadInterface;
+                    AnomalyDetectionResponse ADResponse;
+                    ADResponse = SelectInterfaceType(Settings.LoadProjectSettings, out LoadInterface);
+                    if (ADResponse.Code == 1)
+                    {
+                        ClusterIndex = -1;
+                        return new AnomalyDetectionResponse(126, "Function<CheckSample>: Settings to load can't be null");
+                    }
 
-                if (ADResponse.Code != 0)
+                    if (ADResponse.Code != 0)
+                    {
+                        ClusterIndex = -1;
+                        return ADResponse;
+                    }
+
+                    SaveLoadSettings CheckedLoadObject;
+                    ADResponse = LoadInterface.LoadChecks(Settings.LoadProjectSettings, out CheckedLoadObject);
+
+                    if (ADResponse.Code != 0)
+                    {
+                        ClusterIndex = -1;
+                        return ADResponse;
+                    }
+
+                    Tuple<AnomalyDetectionAPI, AnomalyDetectionResponse> LoadProj;
+                    //
+                    //load the clustering project containing the clusters to one of which, if any, the sample will be assigned to
+                    LoadProj = LoadInterface.Load_AnomalyDetectionAPI(CheckedLoadObject);
+                    if (LoadProj.Item2.Code != 0)
+                    {
+                        ClusterIndex = -1;
+                        return LoadProj.Item2;
+                    }
+
+                    apiInstance = LoadProj.Item1;
+                }
+                else
                 {
-                    ClusterIndex = -1;
-                    return ADResponse;
+                    apiInstance = this;
                 }
-
-                SaveLoadSettings CheckedLoadObject;
-                ADResponse = LoadInterface.LoadChecks(Settings.LoadProjectSettings, out CheckedLoadObject);
-
-                if (ADResponse.Code != 0)
-                {
-                    ClusterIndex = -1;
-                    return ADResponse;
-                }
-
-                Tuple<AnomalyDetectionAPI, AnomalyDetectionResponse> LoadProj;
-                //
-                //load the clustering project containing the clusters to one of which, if any, the sample will be assigned to
-                LoadProj = LoadInterface.Load_AnomalyDetectionAPI(CheckedLoadObject);
-                if (LoadProj.Item2.Code != 0)
-                {
-                    ClusterIndex = -1;
-                    return LoadProj.Item2;
-                }
-
-                AnomalyDetectionAPI Project = LoadProj.Item1;
-
+                               
                 //returns error if the new sample has different number of attributes compared to the samples in the desired project
-                if (Project.Centroids[0].Length != Settings.Sample.Length)
+                if (apiInstance.Centroids[0].Length != Settings.Sample.Length)
                 {
                     ClusterIndex = -1;
                     return new AnomalyDetectionResponse(114, "Function <CheckSample>: Mismatch in number of attributes");
                 }
 
-                double CalculatedDistance;
+                double calculatedDistance;
                 double MinDistance = double.MaxValue;
                 int ClosestCentroid = -1;
 
                 Tuple<double, AnomalyDetectionResponse> CDResponse;
 
                 //determines to which centroid the sample is closest and the distance
-                for (int j = 0; j < Project.NumberOfClusters; j++)
+                for (int j = 0; j < apiInstance.NumberOfClusters; j++)
                 {
-                    CDResponse = CalculateDistance(Settings.Sample, Project.Centroids[j]);
+                    CDResponse = calculateDistance(Settings.Sample, apiInstance.Centroids[j]);
                     if (CDResponse.Item2.Code != 0)
                     {
                         ClusterIndex = -1;
                         return CDResponse.Item2;
                     }
-                    CalculatedDistance = CDResponse.Item1;
-                    if (CalculatedDistance < MinDistance)
+                    calculatedDistance = CDResponse.Item1;
+                    if (calculatedDistance < MinDistance)
                     {
-                        MinDistance = CalculatedDistance;
+                        MinDistance = calculatedDistance;
                         ClosestCentroid = j;
                     }
                 }
 
                 //decides based on the maximum distance in the cluster & the tolerance whether the sample really belongs to the cluster or not 
-                if (MinDistance < Project.InClusterMaxDistance[ClosestCentroid] * (1.0 + Settings.tolerance / 100.0))
+                if (MinDistance < apiInstance.InClusterMaxDistance[ClosestCentroid] * (1.0 + Settings.tolerance / 100.0))
                 {
                     ClusterIndex = ClosestCentroid;
                     return new AnomalyDetectionResponse(0, "This sample belongs to cluster: " + ClosestCentroid.ToString());
@@ -543,7 +556,7 @@ namespace AnomalyDetectionApi
                 for (int i = MinNumberOfClusters; i <= MaxClusters; i++)
                 {
                     //cluster the data with number of clusters equals to i
-                    KMeansResponse = KMeansClusteringAlg(RawData, i, NumberOfAttributes, KmeansMaxIterations, KmeansAlgorithm, true, out Centroids, out IterationReached);
+                    KMeansResponse = runKMeansClusteringAlg(RawData, i, NumberOfAttributes, KmeansMaxIterations, KmeansAlgorithm, true, this.Centroids, out Centroids, out IterationReached);
 
                     if (KMeansResponse.Item2.Code != 0)
                     {
@@ -610,12 +623,12 @@ namespace AnomalyDetectionApi
         /// <param name="numClusters">desired number of clusters</param>
         /// <param name="numAttributes">number of attributes for each sample</param>
         /// <param name="maxCount">maximum allowed number of Kmeans iteration for clustering</param>
-        /// <param name="KmeansAlgortihm">the desired Kmeans clustering algorithm (1 or 2)
+        /// <param name="kMeanAlgorithm">the desired Kmeans clustering algorithm (1 or 2)
         /// <ul style="list-style-type:none">
         /// <li> - 1: Centoids are the nearest samples to the means</li>
         /// <li> - 2: Centoids are the means</li>
         /// </ul></param>
-        /// <param name="InitialGuess">a bool, if true Kmeans clustering start with an initial guess for the centroids else it will start with a random assignment</param>
+        /// <param name="initialGuess">a bool, if true Kmeans clustering start with an initial guess for the centroids else it will start with a random assignment</param>
         /// <param name="centroids">the variable through which the resulting centroids are returned</param>
         /// <param name="IterationReached">the variable through which the iteration reached is returned</param>
         /// <returns>Tuple of two Items: <br />
@@ -625,7 +638,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        private static Tuple<int[], AnomalyDetectionResponse> KMeansClusteringAlg(double[][] rawData, int numClusters, int numAttributes, int maxCount, int KmeansAlgortihm, bool InitialGuess, out double[][] centroids, out int IterationReached)
+        private static Tuple<int[], AnomalyDetectionResponse> runKMeansClusteringAlg(double[][] rawData, int numClusters, int numAttributes, int maxCount, int kMeanAlgorithm, bool initialGuess, double[][] initialCentroids, out double[][] centroids, out int IterationReached)
         {
             int[] clustering;
             try
@@ -633,39 +646,40 @@ namespace AnomalyDetectionApi
                 bool changed = true;
                 int cnt = 0;
                 Tuple<int[], AnomalyDetectionResponse> ICResponse;
-                Tuple<double[][], AnomalyDetectionResponse> AllocateResponse;
+                Tuple<double[][], AnomalyDetectionResponse> allocatedTupple;
                 Tuple<bool, AnomalyDetectionResponse> AssignResponse;
                 AnomalyDetectionResponse ADResponse;
                 int numTuples = rawData.Length;
 
                 clustering = new int[rawData.Length];
                 // just makes things a bit cleaner
-                AllocateResponse = Allocate(numClusters, numAttributes);
+                allocatedTupple = allocateCentroidTupple(numClusters, numAttributes, initialCentroids);
 
-                if (AllocateResponse.Item2.Code != 0)
+                if (allocatedTupple.Item2.Code != 0)
                 {
                     centroids = null;
                     IterationReached = -1;
                     clustering = null;
-                    return Tuple.Create(clustering, AllocateResponse.Item2);
+                    return Tuple.Create(clustering, allocatedTupple.Item2);
                 }
 
-                double[][] means = AllocateResponse.Item1;
-                AllocateResponse = Allocate(numClusters, numAttributes);
+                double[][] means = allocatedTupple.Item1;
 
-                if (AllocateResponse.Item2.Code != 0)
+                //allocatedTupple = allocateCentroidTupple(numClusters, numAttributes, initialCentroids);
+
+                //if (allocatedTupple.Item2.Code != 0)
+                //{
+                //    centroids = null;
+                //    IterationReached = -1;
+                //    clustering = null;
+                //    return Tuple.Create(clustering, allocatedTupple.Item2);
+                //}
+
+                centroids = allocatedTupple.Item1;
+
+                if (initialGuess)
                 {
-                    centroids = null;
-                    IterationReached = -1;
-                    clustering = null;
-                    return Tuple.Create(clustering, AllocateResponse.Item2);
-                }
-
-                centroids = AllocateResponse.Item1;
-
-                if (InitialGuess)
-                {
-                    ADResponse = GetInitialGuess(rawData, numClusters, out means);
+                    ADResponse = calculateInitialMeans(rawData, numClusters, out means);
                     if (ADResponse.Code != 0)
                     {
                         centroids = null;
@@ -674,7 +688,7 @@ namespace AnomalyDetectionApi
                         return Tuple.Create(clustering, ADResponse);
                     }
 
-                    if (KmeansAlgortihm == 1)
+                    if (kMeanAlgorithm == 1)
                     {
                         double[] currDist = new double[numClusters];
                         double[] minDist = new double[numClusters];
@@ -690,7 +704,7 @@ namespace AnomalyDetectionApi
                         {
                             for (int j = 0; j < numClusters; j++)
                             {
-                                CDResponse = CalculateDistance(rawData[i], means[j]);
+                                CDResponse = calculateDistance(rawData[i], means[j]);
                                 if (CDResponse.Item2.Code != 0)
                                 {
                                     centroids = null;
@@ -708,7 +722,6 @@ namespace AnomalyDetectionApi
                                 }
                             }
                         }
-
                     }
                     else
                     {
@@ -752,7 +765,7 @@ namespace AnomalyDetectionApi
                         return Tuple.Create(clustering, ADResponse);
                     }
 
-                    if (KmeansAlgortihm == 1)
+                    if (kMeanAlgorithm == 1)
                     {
                         ADResponse = UpdateCentroids(rawData, clustering, means, centroids);
                         if (ADResponse.Code != 0)
@@ -810,7 +823,7 @@ namespace AnomalyDetectionApi
                     }
 
                     // use new means to update centroids
-                    if (KmeansAlgortihm == 1)
+                    if (kMeanAlgorithm == 1)
                     {
                         ADResponse = UpdateCentroids(rawData, clustering, means, centroids);
                         if (ADResponse.Code != 0)
@@ -918,39 +931,44 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        private static Tuple<double[][], AnomalyDetectionResponse> Allocate(int numClusters, int numAttributes)
+        private static Tuple<double[][], AnomalyDetectionResponse> allocateCentroidTupple(int numClusters, int numAttributes, double[][] initialCentroids)
         {
-            double[][] result;
-            AnomalyDetectionResponse ADResponse;
+            double[][] centroids;
+            AnomalyDetectionResponse res;
 
             try
             {
                 // helper allocater for means[][] and centroids[][]
                 if (numClusters < 2)
                 {
-                    result = null;
-                    ADResponse = new AnomalyDetectionResponse(106, "Function <Allocate>: Unacceptable number of clusters. Must be at least 2");
-                    return Tuple.Create(result, ADResponse);
+                    centroids = null;
+                    res = new AnomalyDetectionResponse(106, "Function <Allocate>: Unacceptable number of clusters. Must be at least 2");
+                    return Tuple.Create(centroids, res);
                 }
                 if (numAttributes < 1)
                 {
-                    result = null;
-                    ADResponse = new AnomalyDetectionResponse(107, "Function <Allocate>: Unacceptable number of attributes. Must be at least 1");
-                    return Tuple.Create(result, ADResponse);
+                    centroids = null;
+                    res = new AnomalyDetectionResponse(107, "Function <Allocate>: Unacceptable number of attributes. Must be at least 1");
+                    return Tuple.Create(centroids, res);
                 }
 
-                result = new double[numClusters][];
-                for (int k = 0; k < numClusters; ++k)
-                    result[k] = new double[numAttributes];
+                if (initialCentroids == null)
+                {
+                    centroids = new double[numClusters][];
+                    for (int k = 0; k < numClusters; ++k)
+                        centroids[k] = new double[numAttributes];
+                }
+                else
+                    centroids = initialCentroids;
 
-                ADResponse = new AnomalyDetectionResponse(0, "OK");
-                return Tuple.Create(result, ADResponse);
+                res = new AnomalyDetectionResponse(0, "OK");
+                return Tuple.Create(centroids, res);
             }
             catch (Exception Ex)
             {
-                result = null;
-                ADResponse = new AnomalyDetectionResponse(400, "Function <Allocate>: Unhandled excepttion:\t" + Ex.ToString());
-                return Tuple.Create(result, ADResponse);
+                centroids = null;
+                res = new AnomalyDetectionResponse(400, "Function <Allocate>: Unhandled excepttion:\t" + Ex.ToString());
+                return Tuple.Create(centroids, res);
             }
         }
 
@@ -1089,7 +1107,7 @@ namespace AnomalyDetectionApi
                     int c = clustering[i];  // if current tuple isn't in the cluster we're computing for, continue on
                     if (c != cluster) continue;
 
-                    CDResponse = CalculateDistance(rawData[i], means[cluster]);  // call helper
+                    CDResponse = calculateDistance(rawData[i], means[cluster]);  // call helper
                     if (CDResponse.Item2.Code != 0)
                     {
                         centroid = null;
@@ -1144,7 +1162,7 @@ namespace AnomalyDetectionApi
                 {
                     for (int k = 0; k < numClusters; ++k)       // compute distances to all centroids
                     {
-                        CDResponse = CalculateDistance(rawData[i], centroids[k]);
+                        CDResponse = calculateDistance(rawData[i], centroids[k]);
                         if (CDResponse.Item2.Code != 0)
                         {
                             return Tuple.Create(false, CDResponse.Item2);
@@ -1215,24 +1233,24 @@ namespace AnomalyDetectionApi
         /// </summary>
         /// <param name="RawData">the samples to be clustered</param>
         /// <param name="NumberOfClusters">number of clusters</param>
-        /// <param name="Means">the initial guess for the means</param>
+        /// <param name="initialMeans">the initial guess for the means</param>
         /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "OK" </li>
         /// </ul></returns>
-        private static AnomalyDetectionResponse GetInitialGuess(double[][] RawData, int NumberOfClusters, out double[][] Means)
+        private static AnomalyDetectionResponse calculateInitialMeans(double[][] RawData, int NumberOfClusters, out double[][] initialMeans)
         {
             try
             {
                 double[] MinValues = new double[RawData[0].Length];
                 double[] MaxValues = new double[RawData[0].Length];
 
-                Means = new double[NumberOfClusters][];
+                initialMeans = new double[NumberOfClusters][];
                 int NumberOfAttributes = RawData[0].Length;
 
                 for (int i = 0; i < NumberOfClusters; i++)
                 {
-                    Means[i] = new double[NumberOfAttributes];
+                    initialMeans[i] = new double[NumberOfAttributes];
                 }
 
                 for (int j = 0; j < NumberOfAttributes; j++)
@@ -1260,7 +1278,7 @@ namespace AnomalyDetectionApi
                 {
                     for (int j = 0; j < NumberOfAttributes; j++)
                     {
-                        Means[i][j] = MinValues[j] + ((MaxValues[j] - MinValues[j]) * (i * 2 + 1)) / (NumberOfClusters * 2);
+                        initialMeans[i][j] = MinValues[j] + ((MaxValues[j] - MinValues[j]) * (i * 2 + 1)) / (NumberOfClusters * 2);
                     }
                 }
 
@@ -1268,10 +1286,11 @@ namespace AnomalyDetectionApi
             }
             catch (Exception Ex)
             {
-                Means = null;
+                initialMeans = null;
                 return new AnomalyDetectionResponse(400, "Function<CentroidsInitialGuess>: Unhandled exception:\t" + Ex.ToString());
             }
         }
+
 
         /// <summary>
         /// PreproccessingOfParameters is a function that does some checks on the passed parameters by the user. Some errors in the paths can be corrected.
@@ -1294,7 +1313,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        private static AnomalyDetectionResponse PreproccessingOfParameters(double[][] RawData, int KmeansAlgorithm, int KmeansMaxIterations, int NumberOfClusters, int NumberOfAttributes, SaveLoadSettings SaveObj, SaveLoadSettings LoadObj, out SaveLoadSettings CheckedSaveObj, out SaveLoadSettings CheckedLoadObj)
+        private static AnomalyDetectionResponse validateParams(double[][] RawData, int KmeansAlgorithm, int KmeansMaxIterations, int NumberOfClusters, int NumberOfAttributes, SaveLoadSettings SaveObj, SaveLoadSettings LoadObj, out SaveLoadSettings CheckedSaveObj, out SaveLoadSettings CheckedLoadObj)
         {
             try
             {
@@ -1356,7 +1375,7 @@ namespace AnomalyDetectionApi
 
                 if (ADResponse.Code == 0)
                 {
-                    SaveInterface.SaveChecks(SaveObj, out OutObj);
+                    SaveInterface.validateSaveConditions(SaveObj, out OutObj);
                     CheckedSaveObj = OutObj;
                 }
                 else
@@ -1478,7 +1497,7 @@ namespace AnomalyDetectionApi
                     //check which centroid is closer to the sample
                     for (int j = 0; j < NumberOfClusters; j++)
                     {
-                        CDResponse = CalculateDistance(RawData[i], Centroids[j]);
+                        CDResponse = calculateDistance(RawData[i], Centroids[j]);
                         if (CDResponse.Item2.Code != 0)
                         {
                             AcceptedSamples = null;
@@ -1531,7 +1550,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        internal static Tuple<double, AnomalyDetectionResponse> CalculateDistance(double[] FirstElement, double[] SecondElement)
+        internal static Tuple<double, AnomalyDetectionResponse> calculateDistance(double[] FirstElement, double[] SecondElement)
         {
             AnomalyDetectionResponse ADResponse;
             try
@@ -1640,6 +1659,11 @@ namespace AnomalyDetectionApi
         {
             try
             {
+              //  SaveInterface = null;
+              //  return new AnomalyDetectionResponse(0, "Ok.");
+
+                //TODO... 
+
                 if (SaveLoadObject == null || SaveLoadObject.Method == null)
                 {
                     SaveInterface = null;
@@ -1650,8 +1674,11 @@ namespace AnomalyDetectionApi
                     SaveInterface = new JSON_SaveLoad();
                     return new AnomalyDetectionResponse(0, "OK");
                 }
-                SaveInterface = null;
-                return new AnomalyDetectionResponse(127, "Function<SelectInterfaceType>: Undefined Method to save or load");
+                else
+                {
+                    SaveInterface = null;
+                    return new AnomalyDetectionResponse(127, "Function<SelectInterfaceType>: Undefined Method to save or load");
+                }
             }
             catch (Exception Ex)
             {

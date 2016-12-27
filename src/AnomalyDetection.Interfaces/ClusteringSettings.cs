@@ -36,6 +36,7 @@ namespace AnomalyDetection.Interfaces
         /// a bool, if true Kmeans clustering start with an initial guess for the centroids else it will start with a random assignment
         /// </summary>
         public bool InitialGuess { get; internal set; }
+
         /// <summary>
         /// number of attributes for each sample
         /// </summary>
@@ -67,7 +68,15 @@ namespace AnomalyDetection.Interfaces
         /// <param name="InitialGuess">a bool, if true Kmeans clustering start with an initial guess for the centroids else it will start with a random assignment.</param>
         /// <param name="LoadObject">settings to load a clustering instance. can be "" or null in case of not loading</param>
         /// <param name="Replace"></param>
-        public ClusteringSettings(double[][] RawData, int KmeansMaxIterations, int NumberOfClusters, int NumberOfAttributes, SaveLoadSettings SaveObject, int KmeansAlgorithm = 1, bool InitialGuess = false, SaveLoadSettings LoadObject = null, bool Replace = false)
+        public ClusteringSettings(double[][] RawData, 
+            int KmeansMaxIterations, 
+            int NumberOfClusters, 
+            int NumberOfAttributes, 
+            SaveLoadSettings SaveObject, 
+            int KmeansAlgorithm = 1, 
+            bool InitialGuess = false, 
+            SaveLoadSettings LoadObject = null, 
+            bool Replace = false)
         {
             this.RawData = RawData;
             if (KmeansAlgorithm != 2)

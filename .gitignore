@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+k-means/src/AnomalyDetection.Interfaces/bin/Debug
+src/AnomalyDetection.Interfaces/obj/Debug
+src/AnomalyDetectionApi/bin/Debug
+src/AnomalyDetectionApi/obj/Debug
+UnitTest/bin/Debug
+UnitTest/obj/Debug

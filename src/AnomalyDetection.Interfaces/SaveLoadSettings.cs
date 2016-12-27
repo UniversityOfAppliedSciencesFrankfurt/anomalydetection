@@ -22,7 +22,7 @@ namespace AnomalyDetection.Interfaces
         /// <summary>
         /// a needed path for saving to or loading from a destination
         /// </summary>
-        public string Path1 { get; set; }
+        public string ModelPath { get; set; }
 
         /// <summary>
         /// bool if true, overwriting an existing clustering instance is allowed
@@ -32,7 +32,7 @@ namespace AnomalyDetection.Interfaces
         /// <summary>
         /// JSON_Settings is a function that creates saving or loading settings for JSON files.
         /// </summary>
-        /// <param name="Path1">path for saving to or loading from a destination</param>
+        /// <param name="filePath">path for saving to or loading from a destination</param>
         /// <param name="Replace">bool if true, overwriting an existing clustering instance is allowed</param>
         /// <param name="SaveLoadObject">the returned saved ot load JSON settings</param>
         /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
@@ -40,21 +40,14 @@ namespace AnomalyDetection.Interfaces
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        public static AnomalyDetectionResponse JSON_Settings(string Path1, out SaveLoadSettings SaveLoadObject, bool Replace = false)
+        public static AnomalyDetectionResponse JSON_Settings(string filePath, out SaveLoadSettings SaveLoadObject, bool Replace = false)
         {
-            try
-            {
-                SaveLoadObject = new SaveLoadSettings();
-                SaveLoadObject.Method = "JSON";
-                SaveLoadObject.Path1 = Path1;
-                SaveLoadObject.Replace = Replace;
-                return new AnomalyDetectionResponse(0, "OK");
-            }
-            catch (Exception Ex)
-            {
-                SaveLoadObject = null;
-                return new AnomalyDetectionResponse(400, "Function <JSON_Settings>: Unhandled exception:\t" + Ex.ToString());
-            }
+
+            SaveLoadObject = new SaveLoadSettings();
+            SaveLoadObject.Method = "JSON";
+            SaveLoadObject.ModelPath = filePath;
+            SaveLoadObject.Replace = Replace;
+            return new AnomalyDetectionResponse(0, "OK");
         }
     }
 }

@@ -46,7 +46,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        AnomalyDetectionResponse SaveChecks(SaveLoadSettings SaveObject, out SaveLoadSettings CheckedSaveObject);
+        AnomalyDetectionResponse validateSaveConditions(SaveLoadSettings SaveObject, out SaveLoadSettings CheckedSaveObject);
 
         /// <summary>
         /// LoadJSON_AnomalyDetectionAPI is a function that deserializes and loads an AnomalyDetectionAPI object from a JSON file.
