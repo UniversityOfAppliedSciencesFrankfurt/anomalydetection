@@ -334,13 +334,13 @@
                 for (i = 0; i < data.length; i++) {
                     clusters.push({ ClusterId: i });
                     cluster_detail.push({
-                        ClusterId: i, centroid: data[i].Centroid, ClusterDataDistanceToCentroid: data[i].ClusterDataDistanceToCentroid,
-                        ClusterDataOriginalIndex: data[i].ClusterDataOriginalIndex, ClusterOfNearestForeignSample: data[i].ClusterOfNearestForeignSample,
-                        DistanceToNearestClusterCentroid: data[i].DistanceToNearestClusterCentroid, DistanceToNearestForeignSample: data[i].DistanceToNearestForeignSample,
-                        DistanceToNearestForeignSampleInNearestCluster: data[i].DistanceToNearestForeignSampleInNearestCluster, InClusterFarthestSample: data[i].InClusterFarthestSample,
-                        InClusterFarthestSampleIndex: data[i].InClusterFarthestSampleIndex, InClusterMaxDistance: data[i].InClusterMaxDistance, Mean: data[i].Mean,
-                        NearestCluster: data[i].NearestCluster, NearestForeignSample: data[i].NearestForeignSample, NearestForeignSampleInNearestCluster: data[i].NearestForeignSampleInNearestCluster,
-                        StandardDeviation: data[i].StandardDeviation
+                        ClusterId: i, centroid: data[i].centroid, ClusterDataDistanceToCentroid: data[i].clusterDataDistanceToCentroid,
+                        ClusterDataOriginalIndex: data[i].clusterDataOriginalIndex, ClusterOfNearestForeignSample: data[i].clusterOfNearestForeignSample,
+                        DistanceToNearestClusterCentroid: data[i].distanceToNearestClusterCentroid, DistanceToNearestForeignSample: data[i].distanceToNearestForeignSample,
+                        DistanceToNearestForeignSampleInNearestCluster: data[i].distanceToNearestForeignSampleInNearestCluster, InClusterFarthestSample: data[i].inClusterFarthestSample,
+                        InClusterFarthestSampleIndex: data[i].inClusterFarthestSampleIndex, InClusterMaxDistance: data[i].inClusterMaxDistance, Mean: data[i].mean,
+                        NearestCluster: data[i].nearestCluster, NearestForeignSample: data[i].nearestForeignSample, NearestForeignSampleInNearestCluster: data[i].nearestForeignSampleInNearestCluster,
+                        StandardDeviation: data[i].standardDeviation
                     });
 
                 }
