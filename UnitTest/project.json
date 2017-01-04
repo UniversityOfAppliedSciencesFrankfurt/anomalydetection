@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "buildOptions": {
     "emitEntryPoint": true
@@ -12,7 +12,9 @@
       "version": "1.0.0"
     },
     "AnomalyDetectionApi": "1.0.0-*",
-    "AnomalyDetection.Interfaces": "1.0.0-*"
+    "AnomalyDetection.Interfaces": "1.0.0-*",
+    "LearningApi": "1.0.0",
+    "CsvDataProvider": "1.0.0"
   },
 
   "frameworks": {

@@ -222,7 +222,7 @@ namespace AnomalyDetectionApi
                 return new AnomalyDetectionResponse(200, "Function <LoadChecks -JSON- >: File not found");
             }
 
-            var ADResponse = SaveLoadSettings.JSON_Settings(AppContext.BaseDirectory, out CheckedLoadObject, LoadObject.Replace);
+            var ADResponse = SaveLoadSettings.JSON_Settings(LoadObject.ModelPath, out CheckedLoadObject, LoadObject.Replace);
             if (ADResponse.Code != 0)
             {
                 CheckedLoadObject = null;

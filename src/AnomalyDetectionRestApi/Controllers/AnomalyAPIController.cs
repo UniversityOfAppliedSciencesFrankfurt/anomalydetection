@@ -56,7 +56,7 @@ namespace AnomalyDetectionRestApi.Controllers
             AnomalyDetectionResponse ImportData;
             string FilePath = @"C:\Data\" + FileName.TrimEnd() + ".csv";
             double[][] RawData = CSVtoDoubleJaggedArray(FilePath);
-            SavePath = @"C:\Data\" + SavePath + "json";
+            SavePath = @"C:\Data\" + SavePath + ".json";
             ImportData = SaveLoadSettings.JSON_Settings(SavePath, out SaveObject, true);
             LoadimpPath = @"C:\Data\Result\" + LoadimpPath.TrimEnd() + ".json";
             ImportData = SaveLoadSettings.JSON_Settings(LoadimpPath, out LoadObject, true);
@@ -80,7 +80,7 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <param name="LoadPath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ADClusteredData/{DataId}/{LoadPath}")]
+        [Route("ADClusteredData/{LoadPath}")]
         public ClusteringResults[] ClusteredDatadirect(int DataId, string LoadPath)
         {
             ClusteringResults[] Result;

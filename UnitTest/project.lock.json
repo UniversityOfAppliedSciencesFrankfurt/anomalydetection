@@ -3,6 +3,20 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "CsvDataProvider/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "LearningApi": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "System.IO.FileSystem": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.2/CsvDataProvider.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.2/CsvDataProvider.dll": {}
+        }
+      },
       "dotnet-test-xunit/2.2.0-preview2-build1029": {
         "type": "package",
         "dependencies": {
@@ -15,6 +29,19 @@
         },
         "runtime": {
           "lib/netcoreapp1.0/dotnet-test-xunit.dll": {}
+        }
+      },
+      "LearningApi/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.2/LearningApi.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.2/LearningApi.dll": {}
         }
       },
       "Libuv/1.9.0": {
@@ -2623,6 +2650,17 @@
     }
   },
   "libraries": {
+    "CsvDataProvider/1.0.0": {
+      "sha512": "DCxOWcPQ5GY8j3sM5/0oV+3cHgve/kORKK/if4HlkIFqT6iwnB6uKGROJjAgTPSuUc6ennsLq9vBmbi+Z46maQ==",
+      "type": "package",
+      "path": "CsvDataProvider/1.0.0",
+      "files": [
+        "CsvDataProvider.1.0.0.nupkg.sha512",
+        "CsvDataProvider.nuspec",
+        "lib/netstandard1.2/CsvDataProvider.dll",
+        "lib/netstandard1.2/CsvDataProvider.xml"
+      ]
+    },
     "dotnet-test-xunit/2.2.0-preview2-build1029": {
       "sha512": "mPl4HHGcXsE4ljw3sHCOUvlyhXHDpfFO6qz0HbTQrhrFT8Tgm/HFLfz6TpMXUfch7rRL23kR8i0yjQPYdsl6EQ==",
       "type": "package",
@@ -2636,6 +2674,17 @@
         "runtimes/unix-x64/lib/net451/dotnet-test-xunit.exe",
         "runtimes/win7-x64/lib/net451/dotnet-test-xunit.exe",
         "runtimes/win7-x86/lib/net451/dotnet-test-xunit.exe"
+      ]
+    },
+    "LearningApi/1.0.0": {
+      "sha512": "MWMK4YM0pmTSGvv0lIpu0uGF0J5t9pUOyrKVSvP+F55BfR7gWCSxt3iBQBYCAQRtrSOOu5nc3ze36LAN9zMfPA==",
+      "type": "package",
+      "path": "LearningApi/1.0.0",
+      "files": [
+        "LearningApi.1.0.0.nupkg.sha512",
+        "LearningApi.nuspec",
+        "lib/net451/LearningApi.dll",
+        "lib/netstandard1.2/LearningApi.dll"
       ]
     },
     "Libuv/1.9.0": {
@@ -7809,6 +7858,8 @@
     "": [
       "AnomalyDetection.Interfaces >= 1.0.0-*",
       "AnomalyDetectionApi >= 1.0.0-*",
+      "CsvDataProvider >= 1.0.0",
+      "LearningApi >= 1.0.0",
       "Microsoft.NETCore.App >= 1.0.0",
       "dotnet-test-xunit >= 2.2.0-preview2-build1029",
       "xunit >= 2.2.0-beta4-build3444"
