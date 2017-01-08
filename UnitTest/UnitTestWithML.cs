@@ -1,9 +1,12 @@
 ﻿using AnomalyDetection.Interfaces;
 using AnomalyDetectionApi;
 using LearningFoundation;
+using LearningFoundation.DataMappers;
 using LearningFoundation.DataProviders;
+using LearningFoundation.Normalizers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -88,6 +91,49 @@ namespace UnitTest
             Assert.True(detectedCluster == 2);
         }
 
+        [Fact]
+        public void TestWirhNormalize()
+        {
+            // Creates learning api object
+            LearningApi api = new LearningApi(loadMetaData1());
 
+            //Real dataset must be defined as object type, because data can be numeric, binary and classification
+            api.UseActionModule<object[][], object[][]>((input, ctx) =>
+            {
+                return getRealDataSample();
+            });
+
+            //this call must be first in the pipeline
+            api.UseDefaultDataMapper();
+
+            //
+            api.UseGaussNormalizer();
+
+            //
+            var result = api.Run() as double[][];
+        }
+
+        private DataDescriptor loadMetaData1()
+        {
+            var des = new DataDescriptor();
+
+            des.Features = new Column[2];
+            des.Features[0] = new Column { Id = 1, Name = "col1", Index = 0, Type = ColumnType.NUMERIC, Values = null, DefaultMissingValue = 5.5 };
+            des.Features[1] = new Column { Id = 2, Name = "col2", Index = 1, Type = ColumnType.NUMERIC, Values = null, DefaultMissingValue = 4.2 };
+
+            return des;
+        }
+
+        private object[][] getRealDataSample()
+        {
+            //
+            //iris data file
+            var isris_path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"C:\Data\First.csv");
+
+            LearningApi api = new LearningApi(loadMetaData1());
+            api.UseCsvDataProvider(isris_path, ',', 0);
+
+            return  api.Run() as object[][];
+        }
     }
 }
