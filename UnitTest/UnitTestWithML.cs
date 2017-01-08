@@ -92,7 +92,7 @@ namespace UnitTest
         }
 
         [Fact]
-        public void TestWirhNormalize()
+        public void TestWithNormalize()
         {
             // Creates learning api object
             LearningApi api = new LearningApi(loadMetaData1());
