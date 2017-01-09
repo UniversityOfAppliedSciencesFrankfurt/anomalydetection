@@ -140,7 +140,7 @@ namespace UnitTest
 
         public static void WriteToCSVFile(double[][] rawData)
         {
-            double[,] data = new double[500,500];
+            double[,] data = new double[rawData.Length,rawData.Length];
             using (StreamWriter outfile = new StreamWriter(File.Create(@"TestData.csv")))
             {
                 for (int x = 0; x < rawData.Length; x++)

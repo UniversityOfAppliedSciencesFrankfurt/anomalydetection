@@ -30,7 +30,7 @@ namespace UnitTest
             var rawData = Helpers.cSVtoDoubleJaggedArray("Accelerometer-2011-04-11-13-29-54-brush_teeth-f1.csv");
 
             int numAttributes = attributes.Length;  // 2 in this demo (height,weight)
-            int numClusters = 4;  // vary this to experiment (must be between 2 and number data tuples)
+            int numClusters = 3;  // vary this to experiment (must be between 2 and number data tuples)
             int maxCount = 300;  // trial and error
 
             SaveLoadSettings sett;
@@ -92,7 +92,7 @@ namespace UnitTest
         }
 
         [Fact]
-        public void TestWithNormalize()
+        public void TestWithNormalize_Gauss()
         {
             // Creates learning api object
             LearningApi api = new LearningApi(loadMetaData1());
@@ -100,7 +100,7 @@ namespace UnitTest
             //Real dataset must be defined as object type, because data can be numeric, binary and classification
             api.UseActionModule<object[][], object[][]>((input, ctx) =>
             {
-                return getRealDataSample();
+                return getRealDataSample(@"C:\Data\First.csv");
             });
 
             //this call must be first in the pipeline
@@ -111,8 +111,37 @@ namespace UnitTest
 
             //
             var result = api.Run() as double[][];
+
+            Helpers.WriteToCSVFile(result);
         }
 
+
+        [Fact]
+        public void TestWithNormalize_MinMax()
+        {
+            // Creates learning api object
+            LearningApi api = new LearningApi(loadMetaData1());
+
+            //Real dataset must be defined as object type, because data can be numeric, binary and classification
+            api.UseActionModule<object[][], object[][]>((input, ctx) =>
+            {
+                return getRealDataSample(@"C:\Data\First.csv");
+            });
+
+            //this call must be first in the pipeline
+            api.UseDefaultDataMapper();
+
+            //
+            api.UseMinMaxNormalizer();
+
+            ////use denormalizer on normalized data
+            //api.UseMinMaxDeNormalizer();
+
+            //
+            var result = api.Run() as double[][];
+            Helpers.WriteToCSVFile(result);
+
+        }
         private DataDescriptor loadMetaData1()
         {
             var des = new DataDescriptor();
@@ -124,11 +153,11 @@ namespace UnitTest
             return des;
         }
 
-        private object[][] getRealDataSample()
+        private object[][] getRealDataSample(string filePath)
         {
             //
             //iris data file
-            var isris_path = System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"C:\Data\First.csv");
+            var isris_path = System.IO.Path.Combine(Directory.GetCurrentDirectory(),filePath);
 
             LearningApi api = new LearningApi(loadMetaData1());
             api.UseCsvDataProvider(isris_path, ',', 0);

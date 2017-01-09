@@ -14,9 +14,9 @@
     "AnomalyDetectionApi": "1.0.0-*",
     "AnomalyDetection.Interfaces": "1.0.0-*",
     "CsvDataProvider": "1.0.0",
-    "LearningApi": "1.0.0",
     "GaussNormalizer": "1.0.0",
-    "MinMaxNormalizer": "1.0.0"
+    "MinMaxNormalizer": "1.0.0",
+    "LearningApi": "1.0.0"
   },
 
   "frameworks": {
