@@ -20,25 +20,43 @@ namespace UnitTest
         {
 
             double[][] initialCentroids = new double[4][];
-            initialCentroids[0] = new double[] { 0.1875, 22.0 };
-            initialCentroids[1] = new double[] { 0.28125, 20.0 };
-            initialCentroids[2] = new double[] { 1.375, 24.0 };
-            initialCentroids[3] = new double[] { 1.40625, 22.0 };
+            initialCentroids[0] = new double[] { 0.2, -4.0 };
+            initialCentroids[1] = new double[] { 0.2, -6.0 };
+            initialCentroids[2] = new double[] { 0.4, -4.0 };
+            initialCentroids[3] = new double[] { 0.4, -6.0 };
 
             string[] attributes = new string[] { "x", "y" };
+            
+            var data = getRealDataSample(@"C:\Data\First.csv");
 
-            var rawData = Helpers.cSVtoDoubleJaggedArray("Accelerometer-2011-04-11-13-29-54-brush_teeth-f1.csv");
+            List<double[]> list = new List<double[]>();
 
+            foreach(var n in data)
+            {
+                double[] d = new double[n.Length];
+
+                for (int i = 0; i < n.Length; i++)
+                {
+                    d[i] = double.Parse(n[i].ToString());
+                }
+                   
+
+                list.Add(d);
+            }
+
+            var rawData = list.ToArray();
             int numAttributes = attributes.Length;  // 2 in this demo (height,weight)
             int numClusters = 3;  // vary this to experiment (must be between 2 and number data tuples)
             int maxCount = 300;  // trial and error
 
             SaveLoadSettings sett;
 
-            var resp = SaveLoadSettings.JSON_Settings("model.json", out sett, false);
+            var resp = SaveLoadSettings.JSON_Settings(@"C:\Data\First_Centroid_Nor.json", out sett, true);
 
-            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(rawData, numClusters, initialCentroids);
+            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(rawData, numClusters);
+            
             ClusteringSettings Settings = new ClusteringSettings(rawData, maxCount, numClusters, numAttributes, sett, KmeansAlgorithm: 1, InitialGuess: true, Replace: true);
+
             AnomalyDetectionResponse response = kmeanApi.ImportNewDataForClustering(Settings);
 
             //int detectedCluster;
@@ -162,7 +180,7 @@ namespace UnitTest
             LearningApi api = new LearningApi(loadMetaData1());
             api.UseCsvDataProvider(isris_path, ',', 0);
 
-            return  api.Run() as object[][];
+            return api.Run() as object[][];
         }
     }
 }

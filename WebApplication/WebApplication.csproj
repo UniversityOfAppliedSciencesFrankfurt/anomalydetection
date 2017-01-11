@@ -69,6 +69,7 @@
     <Content Include="Scripts\angular-csv-import.js" />
     <Content Include="Scripts\angular-csv-import.min.js" />
     <Content Include="Scripts\Ano.js" />
+    <Content Include="Scripts\Ano2.js" />
     <Content Include="Scripts\Ano1.js" />
     <Content Include="Scripts\FileAPI.flash.swf" />
     <Content Include="Scripts\FileAPI.js" />
