@@ -15,10 +15,10 @@ namespace UnitTest
 {
     public class UnitTestWithML
     {
+        #region Test with Centroid
         [Fact]
-        public void TestObjest()
+        public void TestObjestWithCentroid()
         {
-
             double[][] initialCentroids = new double[4][];
             initialCentroids[0] = new double[] { 0.2, -4.0 };
             initialCentroids[1] = new double[] { 0.2, -6.0 };
@@ -27,7 +27,7 @@ namespace UnitTest
 
             string[] attributes = new string[] { "x", "y" };
             
-            var data = getRealDataSample(@"C:\Data\First.csv");
+            var data = getRealDataSample(@"C:\Data\Third.csv");
 
             List<double[]> list = new List<double[]>();
 
@@ -46,12 +46,12 @@ namespace UnitTest
 
             var rawData = list.ToArray();
             int numAttributes = attributes.Length;  // 2 in this demo (height,weight)
-            int numClusters = 3;  // vary this to experiment (must be between 2 and number data tuples)
+            int numClusters = 4;  // vary this to experiment (must be between 2 and number data tuples)
             int maxCount = 300;  // trial and error
 
             SaveLoadSettings sett;
 
-            var resp = SaveLoadSettings.JSON_Settings(@"C:\Data\First_Centroid_Nor.json", out sett, true);
+            var resp = SaveLoadSettings.JSON_Settings(@"C:\Data\Third_Centroid_Without_Nor.json", out sett, true);
 
             AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(rawData, numClusters);
             
@@ -59,55 +59,98 @@ namespace UnitTest
 
             AnomalyDetectionResponse response = kmeanApi.ImportNewDataForClustering(Settings);
 
-            //int detectedCluster;
-            //double[] Sample = new double[] {57};
-            //CheckingSampleSettings SampleSettings = new CheckingSampleSettings(null, Sample, 3);
-            //response = kmeanApi.CheckSample(SampleSettings, out detectedCluster);
-            //Assert.True(response.Code == 0);
-            //Assert.True(detectedCluster == 2);
+           
         }
 
         [Fact]
-        public void TestFixedCentroids()
+        public void TestWithNormalize_GaussAndCentroid()
         {
-            //
-            // In thes we know where are positions of centroids.
-            // We will now create data around known centroids and let alorithm
-            // find centroids.
-            double[][] clusterCentars = new double[3][];
-            clusterCentars[0] = new double[] { 5.0, 5.0 };
-            clusterCentars[1] = new double[] { 15.0, 15.0 };
-            clusterCentars[2] = new double[] { 30.0, 30.0 };
+            double[][] initialCentroids = new double[4][];
+            initialCentroids[0] = new double[] { 0.21875, 44.0 };
+            initialCentroids[1] = new double[] { 0.25, 45.0 };
+            initialCentroids[2] = new double[] { 0.46875, 44.0 };
+            initialCentroids[3] = new double[] { 0.5, 43.0 };
 
-            double[][] initialCentroids = new double[3][];
-            clusterCentars[0] = new double[] { 5.0, 5.0 };
-            clusterCentars[1] = new double[] { 15.0, 15.0 };
-            clusterCentars[2] = new double[] { 30.0, 30.0 };
+            string[] attributes = new string[] { "x", "y" };
+            // Creates learning api object
+            LearningApi api = new LearningApi(loadMetaData1());
 
-            string[] attributes = new string[] { "Height", "Weight" };
+            //Real dataset must be defined as object type, because data can be numeric, binary and classification
+            api.UseActionModule<object[][], object[][]>((input, ctx) =>
+            {
+                return getRealDataSample(@"C:\Data\TestData01.csv");
+            });
 
-            var rawData = Helpers.CreateSampleData(clusterCentars, 2, 10, 0.5);
-            Helpers.WriteToCSVFile(rawData);
+            //this call must be first in the pipeline
+            api.UseDefaultDataMapper();
+
+            api.UseGaussNormalizer();
+
+            var rawData = api.Run() as double[][];
 
             int numAttributes = attributes.Length;  // 2 in this demo (height,weight)
-            int numClusters = 3;  // vary this to experiment (must be between 2 and number data tuples)
+            int numClusters = 4;  // vary this to experiment (must be between 2 and number data tuples)
             int maxCount = 300;  // trial and error
 
             SaveLoadSettings sett;
 
-            var resp = SaveLoadSettings.JSON_Settings("model.json", out sett, false);
+            var resp = SaveLoadSettings.JSON_Settings(@"C:\Data\TestData02_Centroid_Gauss.json", out sett, true);
 
-            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(rawData, numClusters, initialCentroids);
+            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(rawData, numClusters);
+
             ClusteringSettings Settings = new ClusteringSettings(rawData, maxCount, numClusters, numAttributes, sett, KmeansAlgorithm: 1, InitialGuess: true, Replace: true);
+
             AnomalyDetectionResponse response = kmeanApi.ImportNewDataForClustering(Settings);
 
-            int detectedCluster;
-            double[] Sample = new double[] { 26, 28 };
-            CheckingSampleSettings SampleSettings = new CheckingSampleSettings(null, Sample, 3);
-            response = kmeanApi.CheckSample(SampleSettings, out detectedCluster);
-            Assert.True(response.Code == 0);
-            Assert.True(detectedCluster == 2);
+
         }
+
+        [Fact]
+        public void TestWithNormalize_MinMaxAndCentroid()
+        {
+            double[][] initialCentroids = new double[4][];
+            initialCentroids[0] = new double[] { 0.21875, 44.0 };
+            initialCentroids[1] = new double[] { 0.25, 45.0 };
+            initialCentroids[2] = new double[] { 0.46875, 44.0 };
+            initialCentroids[3] = new double[] { 0.5, 43.0 };
+
+            string[] attributes = new string[] { "x", "y" };
+            // Creates learning api object
+            LearningApi api = new LearningApi(loadMetaData1());
+
+            //Real dataset must be defined as object type, because data can be numeric, binary and classification
+            api.UseActionModule<object[][], object[][]>((input, ctx) =>
+            {
+                return getRealDataSample(@"C:\Data\TestData02.csv");
+            });
+
+            //this call must be first in the pipeline
+            api.UseDefaultDataMapper();
+
+            api.UseMinMaxNormalizer();
+
+            var rawData = api.Run() as double[][];
+
+            int numAttributes = attributes.Length;  // 2 in this demo (height,weight)
+            int numClusters = 4;  // vary this to experiment (must be between 2 and number data tuples)
+            int maxCount = 300;  // trial and error
+
+            SaveLoadSettings sett;
+
+            var resp = SaveLoadSettings.JSON_Settings(@"C:\Data\TestData02_Centroid_MinMax.json", out sett, false);
+
+            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(rawData, numClusters);
+
+            ClusteringSettings Settings = new ClusteringSettings(rawData, maxCount, numClusters, numAttributes, sett, KmeansAlgorithm: 1, InitialGuess: true, Replace: true);
+
+            AnomalyDetectionResponse response = kmeanApi.ImportNewDataForClustering(Settings);
+
+
+        }
+
+        #endregion
+
+        #region Test without Centroid
 
         [Fact]
         public void TestWithNormalize_Gauss()
@@ -132,7 +175,6 @@ namespace UnitTest
 
             Helpers.WriteToCSVFile(result);
         }
-
 
         [Fact]
         public void TestWithNormalize_MinMax()
@@ -160,6 +202,9 @@ namespace UnitTest
             Helpers.WriteToCSVFile(result);
 
         }
+        #endregion
+
+        #region Help
         private DataDescriptor loadMetaData1()
         {
             var des = new DataDescriptor();
@@ -182,5 +227,6 @@ namespace UnitTest
 
             return api.Run() as object[][];
         }
+        #endregion
     }
 }
