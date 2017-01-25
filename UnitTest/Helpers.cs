@@ -141,7 +141,7 @@ namespace UnitTest
         public static void WriteToCSVFile(double[][] rawData)
         {
             double[,] data = new double[rawData.Length,rawData.Length];
-            using (StreamWriter outfile = new StreamWriter(File.Create(@"TestData.csv")))
+            using (StreamWriter outfile = new StreamWriter(File.Create($"{Directory.GetCurrentDirectory()}\\DataSet\\TestData.csv")))
             {
                 for (int x = 0; x < rawData.Length; x++)
                 {
