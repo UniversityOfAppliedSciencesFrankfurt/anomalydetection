@@ -76,7 +76,7 @@ namespace AnomalyDetectionApi
         {
             try
             {
-                ISaveLoad SaveInterface, LoadInterface;
+               /* ISaveLoad SaveInterface, LoadInterface;
                 AnomalyDetectionResponse ADResponse;
 
                 //Check functions
@@ -105,8 +105,8 @@ namespace AnomalyDetectionApi
                 {
                     return ADResponse;
                 }
-
-                AnomalyDetectionAPI Instance;
+                
+                //AnomalyDetectionAPI Instance;
 
                 //in case of adding to an existing clustering instance
                 if (CheckedLoadObject != null)
@@ -163,24 +163,24 @@ namespace AnomalyDetectionApi
                 {
                     Instance = new AnomalyDetectionAPI(clusterSettings.RawData, clusterSettings.NumberOfClusters);
                 }
-
+                */
                 double[][] calculatedCentroids;
                 int IterationReached = -1;
                 Tuple<int[], AnomalyDetectionResponse> KMeansResponse;
                 //
                 //initiate the clustering process
-                KMeansResponse = runKMeansClusteringAlg(Instance.RawData, Instance.NumberOfClusters, clusterSettings.NumberOfAttributes, clusterSettings.KmeansMaxIterations, clusterSettings.KmeansAlgorithm, clusterSettings.InitialGuess, this.Centroids, out calculatedCentroids, out IterationReached);
+                KMeansResponse = runKMeansClusteringAlg(this.RawData, this.NumberOfClusters, clusterSettings.NumberOfAttributes, clusterSettings.KmeansMaxIterations, clusterSettings.KmeansAlgorithm, clusterSettings.InitialGuess, this.Centroids, out calculatedCentroids, out IterationReached);
                 if (KMeansResponse.Item2.Code != 0)
                 {
                     return KMeansResponse.Item2;
                 }
 
-                Instance.DataToClusterMapping = KMeansResponse.Item1;
-                Instance.Centroids = calculatedCentroids;
+                this.DataToClusterMapping = KMeansResponse.Item1;
+                this.Centroids = calculatedCentroids;
 
                 Tuple<ClusteringResults[], AnomalyDetectionResponse> CCRResponse;
                 //create the clusters' result & statistics
-                CCRResponse = ClusteringResults.CreateClusteringResult(Instance.RawData, Instance.DataToClusterMapping, calculatedCentroids, Instance.NumberOfClusters);
+                CCRResponse = ClusteringResults.CreateClusteringResult(this.RawData, this.DataToClusterMapping, calculatedCentroids, this.NumberOfClusters);
                 if (CCRResponse.Item2.Code != 0)
                 {
                     return CCRResponse.Item2;
@@ -188,29 +188,29 @@ namespace AnomalyDetectionApi
 
                 ClusteringResults[] Results = CCRResponse.Item1;
 
-                Instance.InClusterMaxDistance = new double[Instance.NumberOfClusters];
-                for (int i = 0; i < Instance.NumberOfClusters; i++)
+                this.InClusterMaxDistance = new double[this.NumberOfClusters];
+                for (int i = 0; i < this.NumberOfClusters; i++)
                 {
-                    Instance.InClusterMaxDistance[i] = Results[i].InClusterMaxDistance;
+                    this.InClusterMaxDistance[i] = Results[i].InClusterMaxDistance;
                 }
 
-                //save the clustering instance
-                ADResponse = SaveInterface.Save(CheckedSaveObject, Instance);
-                if (ADResponse.Code != 0)
-                {
-                    return ADResponse;
-                }
+                ////save the clustering instance
+                //ADResponse = SaveInterface.Save(CheckedSaveObject, Instance);
+                //if (ADResponse.Code != 0)
+                //{
+                //    return ADResponse;
+                //}
 
-                //save the clustering results
-                ADResponse = SaveInterface.Save(CheckedSaveObject, Results);
-                if (ADResponse.Code != 0)
-                {
-                    return ADResponse;
-                }
+                ////save the clustering results
+                //ADResponse = SaveInterface.Save(CheckedSaveObject, Results);
+                //if (ADResponse.Code != 0)
+                //{
+                //    return ADResponse;
+                //}
 
-                this.Centroids = Instance.Centroids;
-                this.DataToClusterMapping = Instance.DataToClusterMapping;
-                this.InClusterMaxDistance = Instance.InClusterMaxDistance;
+                this.Centroids = this.Centroids;
+                this.DataToClusterMapping = this.DataToClusterMapping;
+                this.InClusterMaxDistance = this.InClusterMaxDistance;
 
                 if (clusterSettings.KmeansMaxIterations <= IterationReached)
                 {
