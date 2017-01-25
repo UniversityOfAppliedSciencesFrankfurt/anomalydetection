@@ -37,7 +37,9 @@ namespace Test
                 Assert.True(response.Code == 0);
             }
 
+            //Save Cluster and Instance in json 
             response = kmeanApi.Save("interface.json");
+
             Assert.True(response.Code == 0);
         }
     }
