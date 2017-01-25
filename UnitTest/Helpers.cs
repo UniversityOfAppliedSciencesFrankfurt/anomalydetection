@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -73,6 +74,85 @@ namespace UnitTest
             }
 
             return distances;
+        }
+
+        /// <summary>
+        /// This is for converting csv file to double array
+        /// </summary>
+        /// <param name="FilePath"></param>
+        /// <returns></returns>
+        public static double[][] cSVtoDoubleJaggedArray(string FilePath)
+        {
+            if (FilePath.EndsWith(".csv"))
+            {
+                if (System.IO.File.Exists(FilePath))
+                {
+                    string CsvFile = "";
+                    double[][] CsvData;
+                    CsvFile = System.IO.File.ReadAllText(FilePath);
+                    if (CsvFile.EndsWith("\r\n"))
+                    {
+                        CsvFile = CsvFile.Remove(CsvFile.Length - 2, 2);
+                    }
+                    string[] RowDelimiter = { "\r\n" };
+                    string[] CellDelimiter = { "," };
+
+                    int CsvFileRowsNumber, CsvFileCellsNumber;
+                    string[] Rows, Cells;
+
+                    Rows = CsvFile.Split(RowDelimiter, StringSplitOptions.None);
+                    CsvFileRowsNumber = Rows.Length;
+
+                    CsvFileCellsNumber = Rows[0].Split(CellDelimiter, StringSplitOptions.None).Length;
+                    CsvData = new double[CsvFileRowsNumber][];
+                    for (int i = 0; i < CsvFileRowsNumber; i++)
+                    {
+                        CsvData[i] = new double[CsvFileCellsNumber];
+                    }
+
+                    for (int i = 0; i < CsvFileRowsNumber; i++)
+                    {
+                        Cells = Rows[i].Split(CellDelimiter, StringSplitOptions.None);
+
+                        for (int j = 0; j < CsvFileCellsNumber; j++)
+                        {
+                            try
+                            {
+                                CsvData[i][j] = Convert.ToDouble(Cells[j]);
+                            }
+                            catch (FormatException)
+                            {
+                                return null;
+                            }
+                            catch (OverflowException)
+                            {
+                                return null;
+                            }
+
+                        }
+                    }
+
+                    return CsvData;
+                }
+            }
+            return null;
+        }
+
+        public static void WriteToCSVFile(double[][] rawData)
+        {
+            double[,] data = new double[rawData.Length,rawData.Length];
+            using (StreamWriter outfile = new StreamWriter(File.Create($"{Directory.GetCurrentDirectory()}\\DataSet\\TestData.csv")))
+            {
+                for (int x = 0; x < rawData.Length; x++)
+                {
+                    string content = "";
+                    for (int y = 0; y < rawData[x].Length; y++)
+                    {
+                        content += rawData[x][y]+"," ;
+                    }
+                    outfile.WriteLine(content);
+                }
+            }
         }
     }
 }

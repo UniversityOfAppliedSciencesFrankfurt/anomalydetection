@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using AnomalyDetection.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using System.IO;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -55,8 +56,8 @@ namespace AnomalyDetectionRestApi.Controllers
             SaveLoadSettings LoadObject;
             AnomalyDetectionResponse ImportData;
             string FilePath = @"C:\Data\" + FileName.TrimEnd() + ".csv";
-            double[][] RawData = CSVtoDoubleJaggedArray(FilePath);
-            SavePath = @"C:\Data\" + SavePath + "json";
+            double[][] RawData = dataProvider(FilePath);//CSVtoDoubleJaggedArray(FilePath);
+            SavePath = @"C:\Data\" + SavePath + ".json";
             ImportData = SaveLoadSettings.JSON_Settings(SavePath, out SaveObject, true);
             LoadimpPath = @"C:\Data\Result\" + LoadimpPath.TrimEnd() + ".json";
             ImportData = SaveLoadSettings.JSON_Settings(LoadimpPath, out LoadObject, true);
@@ -80,7 +81,7 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <param name="LoadPath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ADClusteredData/{DataId}/{LoadPath}")]
+        [Route("ADClusteredData/{LoadPath}")]
         public ClusteringResults[] ClusteredDatadirect(int DataId, string LoadPath)
         {
             ClusteringResults[] Result;
@@ -263,62 +264,58 @@ namespace AnomalyDetectionRestApi.Controllers
         /// This is for converting csv file to double array
         /// </summary>
         /// <param name="FilePath"></param>
-        /// <returns></returns>
-        public static double[][] CSVtoDoubleJaggedArray(string FilePath)
+        /// <returns></returns>       
+        private static double[][] dataProvider(string fileName, int skipRows = 0)
         {
-            if (FilePath.EndsWith(".csv"))
+            List<double[]> rawData = new List<double[]>();
+
+            using (StreamReader reader = System.IO.File.OpenText(fileName))
             {
-                if (System.IO.File.Exists(FilePath))
+                int linenum = 0;
+                foreach (string line in readLineFromFile(reader))
                 {
-                    string CsvFile = "";
-                    double[][] CsvData;
-                    CsvFile = System.IO.File.ReadAllText(FilePath);
-                    if (CsvFile.EndsWith("\r\n"))
+                    //split line in to column
+                    var strCols = line.Split(',');
+
+                    //skip first ... rows
+                    if (linenum < skipRows)
                     {
-                        CsvFile = CsvFile.Remove(CsvFile.Length - 2, 2);
-                    }
-                    string[] RowDelimiter = { "\r\n" };
-                    string[] CellDelimiter = { "," };
-
-                    int CsvFileRowsNumber, CsvFileCellsNumber;
-                    string[] Rows, Cells;
-
-                    Rows = CsvFile.Split(RowDelimiter, StringSplitOptions.None);
-                    CsvFileRowsNumber = Rows.Length;
-
-                    CsvFileCellsNumber = Rows[0].Split(CellDelimiter, StringSplitOptions.None).Length;
-                    CsvData = new double[CsvFileRowsNumber][];
-                    for (int i = 0; i < CsvFileRowsNumber; i++)
-                    {
-                        CsvData[i] = new double[CsvFileCellsNumber];
+                        linenum++;
+                        continue;
                     }
 
-                    for (int i = 0; i < CsvFileRowsNumber; i++)
+                    //Transform data from row->col in to col->row
+                    //var singleRow = new double[strCols.Length];
+                    var singleRow = new List<double>();
+
+                    //define columns
+                    for (int i = 0; i < strCols.Length; i++)
                     {
-                        Cells = Rows[i].Split(CellDelimiter, StringSplitOptions.None);
+                        double data;
 
-                        for (int j = 0; j < CsvFileCellsNumber; j++)
-                        {
-                            try
-                            {
-                                CsvData[i][j] = Convert.ToDouble(Cells[j]);
-                            }
-                            catch (FormatException)
-                            {
-                                return null;
-                            }
-                            catch (OverflowException)
-                            {
-                                return null;
-                            }
-
-                        }
+                        if (double.TryParse(strCols[i], out data))
+                            singleRow.Add(data);
                     }
 
-                    return CsvData;
+                    rawData.Add(singleRow.ToArray());
                 }
+
+                return rawData.ToArray();
             }
-            return null;
+        }
+
+        /// <summary>
+        /// Reading stream reader line by line with IEnumerable collection.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        private static IEnumerable<string> readLineFromFile(StreamReader reader)
+        {
+            string currentLine;
+            while ((currentLine = reader.ReadLine()) != null)
+            {
+                yield return currentLine;
+            }
         }
         #endregion
 

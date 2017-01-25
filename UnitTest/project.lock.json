@@ -3,6 +3,20 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "CsvDataProvider/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "LearningApi": "1.0.0",
+          "NETStandard.Library": "1.6.0",
+          "System.IO.FileSystem": "4.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.2/CsvDataProvider.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.2/CsvDataProvider.dll": {}
+        }
+      },
       "dotnet-test-xunit/2.2.0-preview2-build1029": {
         "type": "package",
         "dependencies": {
@@ -15,6 +29,32 @@
         },
         "runtime": {
           "lib/netcoreapp1.0/dotnet-test-xunit.dll": {}
+        }
+      },
+      "GaussNormalizer/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "LearningApi": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.2/GaussNormalizer.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.2/GaussNormalizer.dll": {}
+        }
+      },
+      "LearningApi/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.2/LearningApi.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.2/LearningApi.dll": {}
         }
       },
       "Libuv/1.9.0": {
@@ -439,6 +479,19 @@
             "assetType": "runtime",
             "rid": "win"
           }
+        }
+      },
+      "MinMaxNormalizer/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "LearningApi": "1.0.0",
+          "NETStandard.Library": "1.6.0"
+        },
+        "compile": {
+          "lib/netstandard1.2/MinMaxNormalizer.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.2/MinMaxNormalizer.dll": {}
         }
       },
       "NETStandard.Library/1.6.0": {
@@ -2623,6 +2676,17 @@
     }
   },
   "libraries": {
+    "CsvDataProvider/1.0.0": {
+      "sha512": "DCxOWcPQ5GY8j3sM5/0oV+3cHgve/kORKK/if4HlkIFqT6iwnB6uKGROJjAgTPSuUc6ennsLq9vBmbi+Z46maQ==",
+      "type": "package",
+      "path": "CsvDataProvider/1.0.0",
+      "files": [
+        "CsvDataProvider.1.0.0.nupkg.sha512",
+        "CsvDataProvider.nuspec",
+        "lib/netstandard1.2/CsvDataProvider.dll",
+        "lib/netstandard1.2/CsvDataProvider.xml"
+      ]
+    },
     "dotnet-test-xunit/2.2.0-preview2-build1029": {
       "sha512": "mPl4HHGcXsE4ljw3sHCOUvlyhXHDpfFO6qz0HbTQrhrFT8Tgm/HFLfz6TpMXUfch7rRL23kR8i0yjQPYdsl6EQ==",
       "type": "package",
@@ -2636,6 +2700,27 @@
         "runtimes/unix-x64/lib/net451/dotnet-test-xunit.exe",
         "runtimes/win7-x64/lib/net451/dotnet-test-xunit.exe",
         "runtimes/win7-x86/lib/net451/dotnet-test-xunit.exe"
+      ]
+    },
+    "GaussNormalizer/1.0.0": {
+      "sha512": "Sm81sTjQOKMLMjFlEU2XllIF+4dHOuFrUpnh21G//HkHItdnAvU5V2gftRoMDKe7kD37nh502+rpMPGMsbQXrw==",
+      "type": "package",
+      "path": "GaussNormalizer/1.0.0",
+      "files": [
+        "GaussNormalizer.1.0.0.nupkg.sha512",
+        "GaussNormalizer.nuspec",
+        "lib/netstandard1.2/GaussNormalizer.dll"
+      ]
+    },
+    "LearningApi/1.0.0": {
+      "sha512": "BTWUtX9u42na58dH8msPE7ydzy6Di4AuCT6amGZncdZqKS90wytx+1RIPYoJiZKB9dbnh0tRQN1nw1kUxFGCRw==",
+      "type": "package",
+      "path": "LearningApi/1.0.0",
+      "files": [
+        "LearningApi.1.0.0.nupkg.sha512",
+        "LearningApi.nuspec",
+        "lib/net451/LearningApi.dll",
+        "lib/netstandard1.2/LearningApi.dll"
       ]
     },
     "Libuv/1.9.0": {
@@ -3067,6 +3152,16 @@
         "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/netcore50/_._",
         "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll"
+      ]
+    },
+    "MinMaxNormalizer/1.0.0": {
+      "sha512": "V8eAVKLJJg+b24tTmbwi/dKvCViy9IeODIKt8A7ROlIcBvQ4tnO9uTNzHopTlD3L2Qm23NDFuwC4yB8fhAGOaw==",
+      "type": "package",
+      "path": "MinMaxNormalizer/1.0.0",
+      "files": [
+        "MinMaxNormalizer.1.0.0.nupkg.sha512",
+        "MinMaxNormalizer.nuspec",
+        "lib/netstandard1.2/MinMaxNormalizer.dll"
       ]
     },
     "NETStandard.Library/1.6.0": {
@@ -7809,7 +7904,11 @@
     "": [
       "AnomalyDetection.Interfaces >= 1.0.0-*",
       "AnomalyDetectionApi >= 1.0.0-*",
+      "CsvDataProvider >= 1.0.0",
+      "GaussNormalizer >= 1.0.0",
+      "LearningApi >= 1.0.0",
       "Microsoft.NETCore.App >= 1.0.0",
+      "MinMaxNormalizer >= 1.0.0",
       "dotnet-test-xunit >= 2.2.0-preview2-build1029",
       "xunit >= 2.2.0-beta4-build3444"
     ],

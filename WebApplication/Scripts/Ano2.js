@@ -22,9 +22,12 @@
         /// <summary>The below code is for displaying the clusters on a 2D High chart graph</summary>
         $scope.ShowOnGraph = function () {
             //DataTypeid = $scope.ADC.viewModel.Seloption2D;
-
-            var serieses = new Array();
-
+            var processed_json_0 = new Array();
+            var processed_json_1 = new Array();
+            var processed_json_2 = new Array();
+            var processed_json_3 = new Array();
+            var processed_json_4 = new Array();
+            var processed_json_5 = new Array();
             var fil = document.getElementById("myFile").files[0];;
 
             fileName = fil.name.replace(".json", "");
@@ -36,44 +39,23 @@
 
             $.getJSON(uri, function (data) {
                 if (data != null) {
-
                     // Populate series
-                    var centroid = new Array();
-                    
-                    for (m = 0; m < data.length; m++)
-                    {
-                        
-                        var series = new Array();
-                        
-                        for (n = 0; n < data[m].clusterData.length; n++)
-                        {
-                            series.push([data[m].clusterData[n][0], data[m].clusterData[n][1]]);
-                            
+                    for (i = 0; i < data[0].clusterData.length; i++)
+                        processed_json_0.push([data[0].clusterData[i][0], data[0].clusterData[i][1]]);
+                    processed_json_3.push([data[0].centroid[0], data[0].centroid[1]]);
+                    for (j = 0; j < data[1].clusterData.length; j++)
+                        processed_json_1.push([data[1].clusterData[j][0], data[1].clusterData[j][1]]);
+                    processed_json_3.push([data[1].centroid[0], data[1].centroid[1]]);
+                    if (data.length > 2) {
+                        for (k = 0; k < data[2].clusterData.length; k++)
+                            processed_json_2.push([data[2].clusterData[k][0], data[2].clusterData[k][1]]);
+                        processed_json_3.push([data[2].centroid[0], data[2].centroid[1]]);
+                        if (data.length > 3) {
+                            for (s = 0; s < data[3].clusterData.length; s++)
+                                processed_json_5.push([data[3].clusterData[s][0], data[3].clusterData[s][1]]);
+                            processed_json_3.push([data[3].centroid[0], data[3].centroid[1]]);
                         }
-                        serieses.push(series);
-
-                        centroid.push([data[m].centroid[0], data[m].centroid[1]]);
                     }
-
-                    serieses.push(centroid);
-
-                    //
-                    //Creating series data 
-                    var nSeries = (function () {
-                        var collectionSerieses = Array();
-                        for (i = 0; i < serieses.length; i++) {
-                            //
-                            //Random color for every series
-                            var color = ('#' + Math.floor(Math.random() * 16777215).toString(16));
-                            if (i != serieses.length - 1) {
-                                collectionSerieses.push({ 'name': i + ' Cluster', 'color': color, 'data': serieses[i] })
-                            } else {
-                                collectionSerieses.push({ 'name': i + ' Centroid', 'color': '#f00', 'data': serieses[i] })
-                            }
-                        }
-                        return collectionSerieses;
-                    }());
-
                     // draw chart
                     $('#container').highcharts({
                         chart: {
@@ -132,7 +114,29 @@
                                 }
                             }
                         },
-                        series: nSeries
+                        series: [{
+                            name: '1stCluster',
+                            color: '#81d8d0',
+                            data: processed_json_0
+                        }, {
+                            name: '2ndCluster',
+                            color: '#ff5bc7',
+                            data: processed_json_1
+                        }, {
+                            name: '3rdCluster',
+                            color: '#b06d40',
+                            data: processed_json_2
+                        }, {
+                            name: '4thCluster',
+                            color: '#76EE00',
+                            data: processed_json_5
+                        },
+                        {
+                            name: 'Centeroid',
+                            color: '#6f00ff',
+                            data: processed_json_3
+                        }
+                        ]
                     });
                 }
                 else {
@@ -160,7 +164,6 @@
             var processed_json_2 = new Array();
             var processed_json_3 = new Array();
             var processed_json_4 = new Array();
-            var serieses = new Array();
             var fil = document.getElementById("myFile3D").files[0];
             fileName = fil.name.replace(".json", "");
             var uri = m_SvcUri + "/ADClusteredData/"+ fileName;
@@ -168,36 +171,18 @@
             $scope.ADC.viewModel.noData = false;
             $.getJSON(uri, function (data) {
                 if (data != null) {
-                     //Populate series
-                    
-                     var centroid = new Array();
-                    for (m = 0; m < data.length; m++) {
-                        var series = new Array();
-
-                        for (n = 0; n < data[m].clusterData.length; n++) {
-                            series.push([data[m].clusterData[n][0], data[m].clusterData[n][1], data[m].clusterData[n][2]]);
-
-                        }
-                        serieses.push(series);
-
-                        centroid.push([data[m].centroid[0], data[m].centroid[1], data[m].centroid[2]]);
+                    // Populate series
+                    for (i = 0; i < data[0].clusterData.length; i++)
+                        processed_json_0.push([data[0].clusterData[i][0], data[0].clusterData[i][1], data[0].clusterData[i][2]]);
+                    processed_json_3.push([data[0].centroid[0], data[0].centroid[1], data[0].centroid[2]]);
+                    for (j = 0; j < data[1].clusterData.length; j++)
+                        processed_json_1.push([data[1].clusterData[j][0], data[1].clusterData[j][1], data[1].clusterData[j][2]]);
+                    processed_json_3.push([data[1].centroid[0], data[1].centroid[1], data[1].centroid[2]]);
+                    if (data.length > 2) {
+                        for (k = 0; k < data[2].clusterData.length; k++)
+                            processed_json_2.push([data[2].clusterData[k][0], data[2].clusterData[k][1], data[2].clusterData[k][2]]);
+                        processed_json_3.push([data[2].centroid[0], data[2].centroid[1], data[2].centroid[2]]);
                     }
-
-                    serieses.push(centroid);
-
-                    var nSeries = (function () {
-                        var collectionSerieses = Array();
-                        for (i = 0; i < serieses.length; i++) {
-
-                            var color = ('#' + Math.floor(Math.random() * 16777215).toString(16));
-                            if (i != serieses.length - 1) {
-                                collectionSerieses.push({ 'name': i + ' Cluster', 'color': color, 'data': serieses[i] })
-                            } else {
-                                collectionSerieses.push({ 'name': i + ' Centroid', 'color': '#f00', 'data': serieses[i] })
-                            }
-                        }
-                        return collectionSerieses;
-                    }());
 
                     Highcharts.getOptions().colors = $.map(Highcharts.getOptions().colors, function (color) {
                         return {
@@ -272,8 +257,23 @@
                             headerFormat: '<b>{series.name}</b><br>',
                             pointFormat: '{point.x} cm, {point.y} kg'
                         },
-                        series: nSeries
-                             
+                        series: [{
+                            name: '1stcluster',
+                            color: '#81d8d0',
+                            data: processed_json_0
+                        }, {
+                            name: '2ndCluster',
+                            color: '#ff5bc7',
+                            data: processed_json_1
+                        }, {
+                            name: '3rdCluster',
+                            color: '#b06d40',
+                            data: processed_json_2
+                        }, {
+                            name: 'Centeroid',
+                            color: '#6f00ff',
+                            data: processed_json_3
+                        }]
                     });
 
 
