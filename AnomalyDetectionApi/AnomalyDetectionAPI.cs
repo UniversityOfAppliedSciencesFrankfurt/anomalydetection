@@ -13,6 +13,8 @@ namespace AnomalyDetectionApi
     /// </summary>
     public class AnomalyDetectionAPI : IAnomalyDetectionApi
     {
+        #region Properties
+
         /// <summary>
         /// 
         /// </summary>
@@ -20,16 +22,25 @@ namespace AnomalyDetectionApi
         private Cluster[] m_cluster;
         public ClusteringSettings clusterSettings { get; internal set; }
 
-        public AnomalyDetectionAPI(ClusteringSettings settings)
+        #endregion
+
+        #region Public Function
+
+        /// <summary>
+        /// Ctreate Instance of AnomalyDetectionAPI
+        /// </summary>
+        /// <param name="settings">It should not be null when you call Training function</param>
+        public AnomalyDetectionAPI(ClusteringSettings settings = null)
         {
             this.clusterSettings = settings;
         }
-        
+
         /// <summary>
         /// ImportNewDataForClustering is a function that start a new clustering instance or add to an existing one. It saves the results automatically.
         /// </summary>
-        /// <param name="clusterSettings">contains the desired settings for the clustering process</param>
-        /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
+        /// <param name="rawData">Data for training</param>
+        /// <param name="centroids">Centroid</param>
+        /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "Clustering Complete. K-means stopped at the maximum allowed iteration: " + Maximum_Allowed_Iteration </li>
         /// <li> or </li>
@@ -107,9 +118,9 @@ namespace AnomalyDetectionApi
         }
 
         /// <summary>
-        /// 
+        /// To save Instance and Cluster results in json file. Instance will be saved in Instance Result folder and Cluster will be saved in Cluster Result folder.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">Where it should be saved</param>
         /// <returns></returns>
         public AnomalyDetectionResponse Save(string path)
         {
@@ -129,10 +140,11 @@ namespace AnomalyDetectionApi
             return adResponse;
 
         }
+
         /// <summary>
-        /// CheckSample is a function that detects to which cluster the given sample belongs to.
+        /// Detects to which cluster the given sample belongs to. You have to give Instance file path, which is saved in Instance Reulst folder
         /// </summary>
-        /// <param name="settings">contains the desired settings for detecting to which, if any, cluster the sample belongs</param>
+        /// <param name="settings">Contains the desired settings for detecting to which, if any, cluster the sample belongs. Path can be null if you run Training()</param>
         /// <param name="clusterIndex">the cluster number to which the sample belongs (-1 if the sample doesn't belong to any cluster or if an error was encountered).</param>
         /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
@@ -145,7 +157,8 @@ namespace AnomalyDetectionApi
         {
             try
             {
-                Instance apiInstance = null;
+                Instance instance = null;
+                JsonSerializer json = new JsonSerializer();
 
                 //some checks on the passed parameters by the user
                 if (settings.Tolerance < 0)
@@ -154,61 +167,31 @@ namespace AnomalyDetectionApi
 
                     return new AnomalyDetectionResponse(110, "Function <CheckSample>: Unacceptable tolerance value");
                 }
-
-                if (settings.LoadProjectSettings != null)
+                if (settings.Path != null)
                 {
-                    IJsonSerializer loadInterface;
-                    AnomalyDetectionResponse adResponse;
 
-                    adResponse = selectInterfaceType(settings.LoadProjectSettings, out loadInterface);
-
-                    if (adResponse.Code == 1)
-                    {
-                        clusterIndex = -1;
-
-                        return new AnomalyDetectionResponse(126, "Function<CheckSample>: Settings to load can't be null");
-                    }
-
-                    if (adResponse.Code != 0)
-                    {
-                        clusterIndex = -1;
-
-                        return adResponse;
-                    }
-
-                    SaveLoadSettings CheckedLoadObject;
-
-                    adResponse = loadInterface.SetJsonSettings(settings.LoadProjectSettings, out CheckedLoadObject);
-
-                    if (adResponse.Code != 0)
-                    {
-                        clusterIndex = -1;
-
-                        return adResponse;
-                    }
-
-                    Tuple<Instance, AnomalyDetectionResponse> loadProj;
+                    Tuple<Instance, AnomalyDetectionResponse> jsonResult;
 
                     //
                     //load the clustering project containing the clusters to one of which, if any, the sample will be assigned to
-                    loadProj = loadInterface.ReadJsonObject(CheckedLoadObject);
+                    jsonResult = json.ReadJsonObject(settings.Path);
 
-                    if (loadProj.Item2.Code != 0)
+                    if (jsonResult.Item2.Code != 0)
                     {
                         clusterIndex = -1;
 
-                        return loadProj.Item2;
+                        return jsonResult.Item2;
                     }
 
-                    apiInstance = loadProj.Item1;
+                    instance = jsonResult.Item1;
                 }
-                //else
-                //{
-                //    apiInstance = this;
-                //}
-                               
+                else
+                {
+                    instance = this.m_instance;
+                }
+                              
                 //returns error if the new sample has different number of attributes compared to the samples in the desired project
-                if (apiInstance.Centroids[0].Length != settings.Sample.Length)
+                if (instance.Centroids[0].Length != settings.Sample.Length)
                 {
                     clusterIndex = -1;
 
@@ -222,9 +205,9 @@ namespace AnomalyDetectionApi
                 Tuple<double, AnomalyDetectionResponse> cdResponse;
 
                 //determines to which centroid the sample is closest and the distance
-                for (int j = 0; j < apiInstance.NumberOfClusters; j++)
+                for (int j = 0; j < instance.NumberOfClusters; j++)
                 {
-                    cdResponse = calculateDistance(settings.Sample, apiInstance.Centroids[j]);
+                    cdResponse = calculateDistance(settings.Sample, instance.Centroids[j]);
 
                     if (cdResponse.Item2.Code != 0)
                     {
@@ -244,7 +227,7 @@ namespace AnomalyDetectionApi
                 }
 
                 //decides based on the maximum distance in the cluster & the tolerance whether the sample really belongs to the cluster or not 
-                if (minDistance < apiInstance.InClusterMaxDistance[closestCentroid] * (1.0 + settings.Tolerance / 100.0))
+                if (minDistance < instance.InClusterMaxDistance[closestCentroid] * (1.0 + settings.Tolerance / 100.0))
                 {
                     clusterIndex = closestCentroid;
 
@@ -266,63 +249,41 @@ namespace AnomalyDetectionApi
         }
 
         /// <summary>
-        /// GetResults is a function that returns the results of an existing clustering instance 
+        /// Returns the results of an existing Cluster Instance 
         /// </summary>
-        /// <param name="loadSettings">settings to load the clustering instance</param>
-        /// <param name="clusters">the variable through which the clustering result are returned</param>
-        /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
+        /// <param name="path">Cluster Instance path</param>
+        /// <param name="clusters">The variable through which the clustering result are returned</param>
+        /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        public AnomalyDetectionResponse GetClusters(SaveLoadSettings loadSettings, out Cluster[] clusters)
+        public AnomalyDetectionResponse GetClusters(string path, out Cluster[] clusters)
         {
             try
             {
-                IJsonSerializer loadInterface;
-                AnomalyDetectionResponse adResponse;
-
-                adResponse = selectInterfaceType(loadSettings, out loadInterface);
-
-                if (adResponse.Code == 1)
-                {
-                    clusters = null;
-
-                    return new AnomalyDetectionResponse(126, "Function<GetResults>: Settings to load can't be null");
-                }
-
-                if (adResponse.Code != 0)
-                {
-                    clusters = null;
-
-                    return adResponse;
-                }
-
-                SaveLoadSettings CheckedLoadObject;
-
-                adResponse = loadInterface.SetJsonSettings(loadSettings, out CheckedLoadObject);
-
-                if (adResponse.Code != 0)
-                {
-                    clusters = null;
-
-                    return adResponse;
-                }
+                JsonSerializer json = new JsonSerializer();
 
                 //gets the path of the results instead of the instance
-                Tuple<Cluster[], AnomalyDetectionResponse> LJResponse;
+                Tuple<Cluster[], AnomalyDetectionResponse> clusterResponse;
 
-                //load the results
-                LJResponse = loadInterface.GetClusters(CheckedLoadObject);
-
-                if (LJResponse.Item2.Code != 0)
+                if (path != null)
                 {
-                    clusters = null;
+                    //load the results
+                    clusterResponse = json.GetClusters(path);
 
-                    return LJResponse.Item2;
+                    if (clusterResponse.Item2.Code != 0)
+                    {
+                        clusters = null;
+
+                        return clusterResponse.Item2;
+                    }
+
+                    clusters = clusterResponse.Item1;
+                }else
+                {
+                    clusters = this.m_cluster;
                 }
-
-                clusters = LJResponse.Item1;
 
                 return new AnomalyDetectionResponse(0, "OK");
             }
@@ -330,59 +291,29 @@ namespace AnomalyDetectionApi
             {
                 clusters = null;
 
-                return new AnomalyDetectionResponse(400, "Function <GetResults>: Unhandled exception:\t" + Ex.ToString());
+                return new AnomalyDetectionResponse(400, "Function <GetCluster>: Unhandled exception:\t" + Ex.ToString());
             }
         }
 
         /// <summary>
         /// GetPreviousSamples is a function that loads samples from a previous clustering instance
         /// </summary>
-        /// <param name="saveLoadSettings">settings to load the clustering instance</param>
+        /// <param name="path">Instance path</param>
         /// <param name="oldSample">the variable through which the samples are returned</param>
         /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        public AnomalyDetectionResponse GetPreviousSamples(SaveLoadSettings saveLoadSettings, out double[][] oldSample)
+        public AnomalyDetectionResponse GetPreviousSamples(string path, out double[][] oldSample)
         {
             try
             {
-                IJsonSerializer @interface;
-
-                AnomalyDetectionResponse adResponse;
-
-                adResponse = selectInterfaceType(saveLoadSettings, out @interface);
-
-                if (adResponse.Code == 1)
-                {
-                    oldSample = null;
-
-                    return new AnomalyDetectionResponse(126, "Function<GetPreviousSamples>: Settings to load can't be null");
-                }
-
-                if (adResponse.Code != 0)
-                {
-                    oldSample = null;
-
-                    return adResponse;
-                }
-
-                SaveLoadSettings CheckedLoadObject;
-
-                adResponse = @interface.SetJsonSettings(saveLoadSettings, out CheckedLoadObject);
-
-                if (adResponse.Code != 0)
-                {
-                    oldSample = null;
-                    return adResponse;
-                }
-
-
+                JsonSerializer json = new JsonSerializer();
                 Tuple<Instance, AnomalyDetectionResponse> oldSampleResponse;
 
                 //load the clustering instance
-                oldSampleResponse = @interface.ReadJsonObject(CheckedLoadObject);
+                oldSampleResponse = json.ReadJsonObject(path);
 
                 if (oldSampleResponse.Item2.Code != 0)
                 {
@@ -403,36 +334,36 @@ namespace AnomalyDetectionApi
             }
         }
 
-        /// <summary>
-        /// RecommendedNumberOfClusters is a function that returns a recommended number of clusters for the given samples.
-        /// </summary>
-        /// <param name="rawData">The samples to be clustered</param>
-        /// <param name="kmeansMaxIterations">Maximum allowed number of Kmeans iteration for clustering</param>
-        /// <param name="kmeansAlgorithm">The desired Kmeans clustering algorithm (1 or 2)
-        /// <ul style="list-style-type:none">
-        /// <li> - 1: Centoids are the nearest samples to the means</li>
-        /// <li> - 2: Centoids are the means</li>
-        /// </ul></param>
-        /// <param name="numberOfAttributes">Number of attributes for each sample</param>
-        /// <param name="maxNumberOfClusters">Maximum desired number of clusters</param>
-        /// <param name="minNumberOfClusters">Minimum desired number of clusters</param>
-        /// <param name="method">Integer 0,1 or 2 representing the method to be used. 
-        /// <ul style = "list-style-type:none" >
-        /// <li> - Method 0: Radial method in which the farthest sample of each cluster must be closer to the cluster centoid than the nearest foreign sample of the other clusters </li>
-        /// <li> - Method 1: Standard Deviation method in which the standard deviation in each cluster must be less than the desired standard deviation </li>
-        /// <li> - Method 2: Both. uses radial and standard deviation methods at the same time </li>
-        /// </ul>
-        /// </param>
-        /// <param name="standardDeviation">The desired standard deviation upper limit in each cluster</param>
-        /// <param name="recommendedNumbersOfCluster">The variable through which the recommended number of clusters is returned</param>
-        /// <param name="centroids">Centroid</param>
-        /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
-        /// <ul style = "list-style-type:none" >
-        /// <li> - Code: 0, "OK" </li>
-        /// <li> or </li>
-        /// <li> - Code: 1, "Could not find a recommended number of clusters based on the desired constraints" </li>
-        /// </ul>
-        /// </returns>
+            /// <summary>
+            /// RecommendedNumberOfClusters is a function that returns a recommended number of clusters for the given samples.
+            /// </summary>
+            /// <param name="rawData">The samples to be clustered</param>
+            /// <param name="kmeansMaxIterations">Maximum allowed number of Kmeans iteration for clustering</param>
+            /// <param name="kmeansAlgorithm">The desired Kmeans clustering algorithm (1 or 2)
+            /// <ul style="list-style-type:none">
+            /// <li> - 1: Centoids are the nearest samples to the means</li>
+            /// <li> - 2: Centoids are the means</li>
+            /// </ul></param>
+            /// <param name="numberOfAttributes">Number of attributes for each sample</param>
+            /// <param name="maxNumberOfClusters">Maximum desired number of clusters</param>
+            /// <param name="minNumberOfClusters">Minimum desired number of clusters</param>
+            /// <param name="method">Integer 0,1 or 2 representing the method to be used. 
+            /// <ul style = "list-style-type:none" >
+            /// <li> - Method 0: Radial method in which the farthest sample of each cluster must be closer to the cluster centoid than the nearest foreign sample of the other clusters </li>
+            /// <li> - Method 1: Standard Deviation method in which the standard deviation in each cluster must be less than the desired standard deviation </li>
+            /// <li> - Method 2: Both. uses radial and standard deviation methods at the same time </li>
+            /// </ul>
+            /// </param>
+            /// <param name="standardDeviation">The desired standard deviation upper limit in each cluster</param>
+            /// <param name="recommendedNumbersOfCluster">The variable through which the recommended number of clusters is returned</param>
+            /// <param name="centroids">Centroid</param>
+            /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
+            /// <ul style = "list-style-type:none" >
+            /// <li> - Code: 0, "OK" </li>
+            /// <li> or </li>
+            /// <li> - Code: 1, "Could not find a recommended number of clusters based on the desired constraints" </li>
+            /// </ul>
+            /// </returns>
         public AnomalyDetectionResponse RecommendedNumberOfClusters(double[][] rawData, int kmeansMaxIterations, int numberOfAttributes, int maxNumberOfClusters, int minNumberOfClusters, int method, double[] standardDeviation, out int recommendedNumbersOfCluster, int kmeansAlgorithm = 1, double[][] centroids = null)
         {
             try
@@ -586,6 +517,10 @@ namespace AnomalyDetectionApi
                 return new AnomalyDetectionResponse(400, "Function <RecommendedNumberOfClusters>: Unhandled exception:\t" + Ex.ToString());
             }
         }
+
+        #endregion
+
+        #region Private Function
 
         /// <summary>
         /// KMeansClusteringAlg is a function that clusters the given samples based on the K-means concept.
@@ -1338,7 +1273,6 @@ namespace AnomalyDetectionApi
             }
         }
 
-
         /// <summary>
         /// PreproccessingOfParameters is a function that does some checks on the passed parameters by the user. Some errors in the paths can be corrected.
         /// </summary>
@@ -1700,5 +1634,7 @@ namespace AnomalyDetectionApi
                 return new AnomalyDetectionResponse(400, "Function<SelectInterfaceType>: Unhandled exception:\t" + Ex.ToString());
             }
         }
+
+        #endregion
     }
 }
