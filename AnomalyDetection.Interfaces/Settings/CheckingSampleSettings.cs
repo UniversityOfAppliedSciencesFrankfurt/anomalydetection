@@ -13,7 +13,7 @@ namespace AnomalyDetection.Interfaces
         /// <summary>
         /// Settings to the clustering intance that contains the clusters data
         /// </summary>
-        public string Path { get; internal set; }
+        public SaveLoadSettings LoadProjectSettings { get; internal set; }
 
         /// <summary>
         /// The sample to be checked
@@ -31,9 +31,9 @@ namespace AnomalyDetection.Interfaces
         /// <param name="LoadProjectSettings">Settings to the clustering intance that contains the clusters data</param>
         /// <param name="Sample">The sample to be checked</param>
         /// <param name="tolerance">A value in % representing the tolerance to possible outliers</param>
-        public CheckingSampleSettings(string path, double[] Sample, double tolerance = 0)
+        public CheckingSampleSettings(SaveLoadSettings LoadProjectSettings, double[] Sample, double tolerance = 0)
         {
-            this.Path = path;
+            this.LoadProjectSettings = LoadProjectSettings;
             this.Sample = Sample;
             this.Tolerance = tolerance;
         }

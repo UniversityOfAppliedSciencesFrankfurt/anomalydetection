@@ -22,7 +22,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        AnomalyDetectionResponse Save(string path, Instance instance);
+        AnomalyDetectionResponse Save(string path, Instance adApi);
 
         /// <summary>
         /// Save is a function that saves the clustering results.
@@ -59,7 +59,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        Tuple<Instance, AnomalyDetectionResponse> ReadJsonObject(string path);
+        Tuple<Instance, AnomalyDetectionResponse> ReadJsonObject(SaveLoadSettings LoadObject);
 
         /// <summary>
         /// LoadJSON_ClusteringResults is a function that deserializes and loads a ClusteringResults[] object from a JSON file.
@@ -72,7 +72,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        Tuple<Cluster[], AnomalyDetectionResponse> GetClusters(string path);
+        Tuple<Cluster[], AnomalyDetectionResponse> GetClusters(SaveLoadSettings LoadObject);
 
         /// <summary>
         /// LoadChecks is a function that checks the load settings for errors. Some errors can be corrected.
@@ -84,6 +84,6 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        AnomalyDetectionResponse Validate(SaveLoadSettings LoadObject, out SaveLoadSettings CheckedLoadObject);
+        AnomalyDetectionResponse SetJsonSettings(SaveLoadSettings LoadObject, out SaveLoadSettings CheckedLoadObject);
     }
 }

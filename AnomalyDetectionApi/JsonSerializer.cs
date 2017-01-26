@@ -18,13 +18,13 @@ namespace AnomalyDetectionApi
         /// Save is a function that saves an Instance of AnomalyDetectionAPI.
         /// </summary>
         /// <param name="settings">settings to save the AnomalyDetectionAPI instance</param>
-        /// <param name="instance">AnomalyDetectionAPI object to be saved</param>
+        /// <param name="adApi">AnomalyDetectionAPI object to be saved</param>
         /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        public AnomalyDetectionResponse Save(string path, Instance instance)
+        public AnomalyDetectionResponse Save(string path, Instance adApi)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace AnomalyDetectionApi
 
                 DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Instance));
 
-                jsonSerializer.WriteObject(fs, instance);
+                jsonSerializer.WriteObject(fs, adApi);
 
                 fs.Dispose();
 
@@ -125,54 +125,53 @@ namespace AnomalyDetectionApi
         /// </ul>
         /// </returns>
         //Check for another way to keep centroid private
-        public Tuple<Instance, AnomalyDetectionResponse> ReadJsonObject(string path)
+        public Tuple<Instance, AnomalyDetectionResponse> ReadJsonObject(SaveLoadSettings settings)
         {
-            Instance instance;
-
+            Instance adApi;
             try
             {
-                FileStream fs = new FileStream(path, FileMode.Open);
+                FileStream fs = new FileStream(settings.ModelPath, FileMode.Open);
 
                 DataContractJsonSerializer jsonSerializer = new DataContractJsonSerializer(typeof(Instance));
 
-                instance = (Instance)jsonSerializer.ReadObject(fs);
+                adApi = (Instance)jsonSerializer.ReadObject(fs);
 
                 fs.Dispose();
 
-                if (instance.Centroids == null)
+                if (adApi.Centroids == null)
                 {
-                    instance = null;
+                    adApi = null;
 
-                    return Tuple.Create(instance, new AnomalyDetectionResponse(206, "Function <Load_AnomalyDetectionAPI -JSON- >: Can't deserialize file"));
+                    return Tuple.Create(adApi, new AnomalyDetectionResponse(206, "Function <Load_AnomalyDetectionAPI -JSON- >: Can't deserialize file"));
                 }
 
-                return Tuple.Create(instance, new AnomalyDetectionResponse(0, "OK"));
+                return Tuple.Create(adApi, new AnomalyDetectionResponse(0, "OK"));
             }
             catch (Exception Ex)
             {
-                instance = null;
+                adApi = null;
 
                 if (Ex is System.IO.FileNotFoundException)
                 {
-                    return Tuple.Create(instance, new AnomalyDetectionResponse(200, "Function<Load_AnomalyDetectionAPI -JSON- >: File not found"));
+                    return Tuple.Create(adApi, new AnomalyDetectionResponse(200, "Function<Load_AnomalyDetectionAPI -JSON- >: File not found"));
                 }
 
                 if (Ex is System.IO.DirectoryNotFoundException)
                 {
-                    return Tuple.Create(instance, new AnomalyDetectionResponse(204, "Function<Load_AnomalyDetectionAPI -JSON- >: Directory not found"));
+                    return Tuple.Create(adApi, new AnomalyDetectionResponse(204, "Function<Load_AnomalyDetectionAPI -JSON- >: Directory not found"));
                 }
 
                 if (Ex is FileLoadException)
                 {
-                    return Tuple.Create(instance, new AnomalyDetectionResponse(202, "Function<Load_AnomalyDetectionAPI -JSON- >: File cannot be loaded"));
+                    return Tuple.Create(adApi, new AnomalyDetectionResponse(202, "Function<Load_AnomalyDetectionAPI -JSON- >: File cannot be loaded"));
                 }
 
                 if (Ex is SerializationException)
                 {
-                    return Tuple.Create(instance, new AnomalyDetectionResponse(203, "Function<Load_AnomalyDetectionAPI -JSON- >: File content is corrupted"));
+                    return Tuple.Create(adApi, new AnomalyDetectionResponse(203, "Function<Load_AnomalyDetectionAPI -JSON- >: File content is corrupted"));
                 }
 
-                return Tuple.Create(instance, new AnomalyDetectionResponse(400, "Function<Load_AnomalyDetectionAPI -JSON- >: Unhandled exception:\t" + Ex.ToString()));
+                return Tuple.Create(adApi, new AnomalyDetectionResponse(400, "Function<Load_AnomalyDetectionAPI -JSON- >: Unhandled exception:\t" + Ex.ToString()));
             }
         }
 
@@ -187,12 +186,12 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        public Tuple<Cluster[], AnomalyDetectionResponse> GetClusters(string path)
+        public Tuple<Cluster[], AnomalyDetectionResponse> GetClusters(SaveLoadSettings settings)
         {
             Cluster[] cluster;
             try
             {
-                string ResultPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), path);
+                string ResultPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(),settings.ModelPath);
 
                 FileStream fs = new FileStream(ResultPath, FileMode.Open);
 
@@ -249,7 +248,7 @@ namespace AnomalyDetectionApi
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        public AnomalyDetectionResponse Validate(SaveLoadSettings settings, out SaveLoadSettings saveSettings)
+        public AnomalyDetectionResponse SetJsonSettings(SaveLoadSettings settings, out SaveLoadSettings saveSettings)
         {
             if (!File.Exists(settings.ModelPath))
             {

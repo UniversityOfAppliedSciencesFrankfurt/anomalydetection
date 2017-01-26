@@ -13,9 +13,9 @@ UnitTest/obj/Debug
 /src/AnomalyDetectionRestApi/obj/Debug/netcoreapp1.0
 /WebApplication/bin
 /WebApplication/obj/Debug
-/Test/bin/Debug/netcoreapp1.0
 /Test/obj/Debug/netcoreapp1.0
-/AnomalyDetectionApi/bin/Debug/netstandard1.6
+/Test/bin/Debug/netcoreapp1.0
 /AnomalyDetectionApi/obj/Debug/netstandard1.6
-/AnomalyDetection.Interfaces/bin/Debug/netstandard1.6
+/AnomalyDetectionApi/bin/Debug/netstandard1.6
 /AnomalyDetection.Interfaces/obj/Debug/netstandard1.6
+/AnomalyDetection.Interfaces/bin/Debug/netstandard1.6

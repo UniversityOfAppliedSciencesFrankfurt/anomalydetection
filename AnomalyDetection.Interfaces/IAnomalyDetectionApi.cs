@@ -49,19 +49,19 @@ namespace AnomalyDetection.Interfaces
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        AnomalyDetectionResponse GetClusters(string path, out Cluster[] Result);
+        AnomalyDetectionResponse GetClusters(SaveLoadSettings LoadSettings, out Cluster[] Result);
 
         /// <summary>
         /// GetPreviousSamples is a function that loads samples from a previous clustering instance
         /// </summary>
-        /// <param name="path">Instance path</param>
+        /// <param name="LoadSettings">Settings to load the clustering instance</param>
         /// <param name="OldSamples">The variable through which the samples are returned</param>
         /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "OK" </li>
         /// </ul>
         /// </returns>
-        AnomalyDetectionResponse GetPreviousSamples(string path, out double[][] OldSamples);
+        AnomalyDetectionResponse GetPreviousSamples(SaveLoadSettings LoadSettings, out double[][] OldSamples);
 
         /// <summary>
         /// RecommendedNumberOfClusters is a function that returns a recommended number of clusters for the given samples.
