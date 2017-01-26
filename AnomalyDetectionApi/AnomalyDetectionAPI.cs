@@ -249,9 +249,9 @@ namespace AnomalyDetectionApi
         }
 
         /// <summary>
-        /// Returns the results of an existing Cluster Instance 
+        /// Returns the results of an existing Cluster instance 
         /// </summary>
-        /// <param name="path">Cluster Instance path</param>
+        /// <param name="path">Json formated Cluster instance path, if it is null Training() should be run</param>
         /// <param name="clusters">The variable through which the clustering result are returned</param>
         /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
@@ -297,11 +297,11 @@ namespace AnomalyDetectionApi
         }
 
         /// <summary>
-        /// GetPreviousSamples is a function that loads samples from a previous clustering instance
+        /// Loads samples from a previous clustering instance
         /// </summary>
-        /// <param name="path">Instance path</param>
-        /// <param name="oldSample">the variable through which the samples are returned</param>
-        /// <returns>a code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
+        /// <param name="path">Json formated Instance path, which is generally saved in Instance Result folder</param>
+        /// <param name="oldSample">The variable through which the samples are returned</param>
+        /// <returns>A code and a message that state whether the function succeeded or encountered an error. When the function succeeds, it will return:
         /// <ul style="list-style-type:none">
         /// <li> - Code: 0, "OK" </li>
         /// </ul>

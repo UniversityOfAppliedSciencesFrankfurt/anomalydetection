@@ -32,21 +32,20 @@ namespace AnomalyDetectionRestApi.Controllers
 
         private static double[][] RawData { get; set; }
         private static int NumberOfClusters { get; set; }
-        IAnomalyDetectionApi AnoDet_Api;// = new AnomalyDetectionApi.AnomalyDetectionAPI(RawData, NumberOfClusters);
 
         #endregion
 
         #region Public Methods 
 
         /// <summary>
-        /// 
+        /// Training dataset
         /// </summary>
-        /// <param name="csvFilePath"></param>
-        /// <param name="savePath"></param>
+        /// <param name="csvFilePath">CSV fomated dataset</param>
+        /// <param name="savePath">Where to save Instance and Cluster results</param>
         /// <param name="loadimpPath"></param>
-        /// <param name="numClusters"></param>
-        /// <param name="numOfAttributes"></param>
-        /// <param name="kmeansMaxIterations"></param>
+        /// <param name="numClusters">Number of Clusters</param>
+        /// <param name="numOfAttributes">Number of attributes</param>
+        /// <param name="kmeansMaxIterations">Number of iterations</param>
         /// <returns></returns>
 
         [HttpGet]
@@ -88,9 +87,9 @@ namespace AnomalyDetectionRestApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Getting cluster result for drawing 
         /// </summary>
-        /// <param name="clusterFilePath"></param>
+        /// <param name="clusterFilePath">Json formated cluster file path</param>
         /// <returns></returns>
         [HttpGet]
         [Route("ADClusteredData/{clusterFilePath}")]
@@ -105,7 +104,15 @@ namespace AnomalyDetectionRestApi.Controllers
             return cluster;
         }
 
-
+        /// <summary>
+        /// Check sample in cluster
+        /// </summary>
+        /// <param name="filePath">Json formated Instance result path</param>
+        /// <param name="xAxis"></param>
+        /// <param name="yAxis"></param>
+        /// <param name="zAxis"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetClusId/{filePath}/{xAxis}/{yAxis}/{zAxis}/{tolerance}")]
         public AnomalyDetectionResponse CheckSampleInCluster(string filePath, double xAxis, double? yAxis, double? zAxis, double tolerance)
@@ -137,10 +144,10 @@ namespace AnomalyDetectionRestApi.Controllers
         }
 
         /// <summary>
-        /// This is for getting the previously saved clustered data
+        /// 
         /// </summary>
         /// <param name="dataId"></param>
-        /// <param name="LoadPath"></param>
+        /// <param name="path"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("GetPreviousSamplesRest/{dataId}/{path}")]
@@ -156,11 +163,11 @@ namespace AnomalyDetectionRestApi.Controllers
             return oldData;
         }
 
-        ///// <summary>
-        ///// Gets Anomaly Type data for the drop down from azure data base
-        ///// </summary>
-        ///// <param name="type"></param>
-        ///// <returns></returns>
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Anodropdown/{type}")]
         public IEnumerable<AnomalyDet01_DataSet_Type> GetAllAnoDD(string type)
@@ -206,6 +213,11 @@ namespace AnomalyDetectionRestApi.Controllers
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private AnomalyDet01_DataSet_Type mapToAnomalyDet01_DataSet_Type(SqlDataReader reader)
         {
             var dataset_type =  new AnomalyDet01_DataSet_Type();
@@ -222,6 +234,12 @@ namespace AnomalyDetectionRestApi.Controllers
             return dataset_type;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static T ConvertFromDBVal<T>(object obj)
         {
             if (obj == null || obj == DBNull.Value)
@@ -234,6 +252,10 @@ namespace AnomalyDetectionRestApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private static IConfigurationRoot buildCfg()
         {
             IConfigurationRoot Configuration;
@@ -248,6 +270,9 @@ namespace AnomalyDetectionRestApi.Controllers
             return Configuration;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         static AnomalyAPIController()
         {
 
@@ -271,11 +296,12 @@ namespace AnomalyDetectionRestApi.Controllers
         }
 
         /// <summary>
-        /// This is for converting csv file to double array
+        /// 
         /// </summary>
-        /// <param name="FilePath"></param>
-        /// <returns></returns>       
-        private static double[][] dataProvider(string fileName, int skipRows = 0)
+        /// <param name="fileName"></param>
+        /// <param name="skipRows"></param>
+        /// <returns></returns>
+        private double[][] dataProvider(string fileName, int skipRows = 0)
         {
             List<double[]> rawData = new List<double[]>();
 
@@ -327,7 +353,8 @@ namespace AnomalyDetectionRestApi.Controllers
                 yield return currentLine;
             }
         }
+
         #endregion
 
-    } // Program
-} // ns
+    }
+}
