@@ -1,4 +1,9 @@
-#:C:\GitHub\anomalydetection\UnitTest\UnitTest.xproj
-C:\GitHub\anomalydetection\UnitTest\UnitTest.xproj|C:\GitHub\anomalydetection\src\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
-C:\GitHub\anomalydetection\UnitTest\UnitTest.xproj|C:\GitHub\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionApi.xproj
-C:\GitHub\anomalydetection\src\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\GitHub\anomalydetection\src\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\GitHub\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\GitHub\anomalydetection\Test\Test.xproj
+C:\GitHub\anomalydetection\Test\Test.xproj|C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\GitHub\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj
+C:\GitHub\anomalydetection\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj|C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\GitHub\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\GitHub\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj

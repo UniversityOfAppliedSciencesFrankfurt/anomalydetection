@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace AnomalyDetection.Interfaces
         /// <param name="tolerance">A value in % representing the tolerance to possible outliers</param>
         public CheckingSampleSettings(string path, double[] Sample, double tolerance = 0)
         {
-            this.Path = path;
+            this.Path =  path;
             this.Sample = Sample;
             this.Tolerance = tolerance;
         }

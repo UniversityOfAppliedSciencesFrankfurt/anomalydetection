@@ -10239,18 +10239,17 @@
     },
     "AnomalyDetection.Interfaces/1.0.0": {
       "type": "project",
-      "path": "../AnomalyDetection.Interfaces/project.json",
-      "msbuildProject": "../AnomalyDetection.Interfaces/AnomalyDetection.Interfaces.xproj"
+      "path": "../../AnomalyDetection.Interfaces/project.json",
+      "msbuildProject": "../../AnomalyDetection.Interfaces/AnomalyDetection.Interfaces.xproj"
     },
     "AnomalyDetectionApi/1.0.0": {
       "type": "project",
-      "path": "../AnomalyDetectionApi/project.json",
-      "msbuildProject": "../AnomalyDetectionApi/AnomalyDetectionApi.xproj"
+      "path": "../../AnomalyDetectionApi/project.json",
+      "msbuildProject": "../../AnomalyDetectionApi/AnomalyDetectionApi.xproj"
     }
   },
   "projectFileDependencyGroups": {
     "": [
-      "AnomalyDetection.Interfaces >= 1.0.0-*",
       "AnomalyDetectionApi >= 1.0.0-*",
       "Microsoft.ApplicationInsights.AspNetCore >= 1.0.0",
       "Microsoft.AspNetCore.Mvc >= 1.0.0",

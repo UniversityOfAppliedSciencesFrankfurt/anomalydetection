@@ -7,6 +7,8 @@ using AnomalyDetection.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using System.IO;
+using AnomalyDetectionApi;
+using System.Runtime.Serialization;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,120 +32,128 @@ namespace AnomalyDetectionRestApi.Controllers
 
         private static double[][] RawData { get; set; }
         private static int NumberOfClusters { get; set; }
-        IAnomalyDetectionApi AnoDet_Api = new AnomalyDetectionApi.AnomalyDetectionAPI(RawData, NumberOfClusters);
+        IAnomalyDetectionApi AnoDet_Api;// = new AnomalyDetectionApi.AnomalyDetectionAPI(RawData, NumberOfClusters);
 
         #endregion
 
         #region Public Methods 
 
         /// <summary>
-        /// This is for importing csv file and running Clustering
+        /// 
         /// </summary>
-        /// <param name="FileName"></param>
-        /// <param name="SavePath"></param>
-        /// <param name="LoadimpPath"></param>
+        /// <param name="csvFilePath"></param>
+        /// <param name="savePath"></param>
+        /// <param name="loadimpPath"></param>
         /// <param name="numClusters"></param>
         /// <param name="numOfAttributes"></param>
         /// <param name="kmeansMaxIterations"></param>
         /// <returns></returns>
 
         [HttpGet]
-        [Route("ImportNewDataForClustering/{FileName}/{SavePath}/{LoadimpPath}/{numClusters}/{numOfAttributes}/{kmeansMaxIterations}")]
-        public AnomalyDetectionResponse ImportNewDataForClustering(string FileName, string SavePath, string LoadimpPath, int numClusters, int numOfAttributes, int kmeansMaxIterations)
+        [Route("ImportNewDataForClustering/{csvFilePath}/{savePath}/{LoadimpPath}/{numClusters}/{numOfAttributes}/{kmeansMaxIterations}")]
+        public AnomalyDetectionResponse Training(string csvFilePath, string savePath, string loadimpPath, int numClusters, int numOfAttributes, int kmeansMaxIterations)
         {
-            ClusteringSettings Settings;
-            SaveLoadSettings SaveObject;
-            SaveLoadSettings LoadObject;
-            AnomalyDetectionResponse ImportData;
-            string FilePath = @"C:\Data\" + FileName.TrimEnd() + ".csv";
-            double[][] RawData = dataProvider(FilePath);//CSVtoDoubleJaggedArray(FilePath);
-            SavePath = @"C:\Data\" + SavePath + ".json";
-            ImportData = SaveLoadSettings.JSON_Settings(SavePath, out SaveObject, true);
-            LoadimpPath = @"C:\Data\Result\" + LoadimpPath.TrimEnd() + ".json";
-            ImportData = SaveLoadSettings.JSON_Settings(LoadimpPath, out LoadObject, true);
-            if (LoadimpPath.Equals("NewData"))
-            {
-                Settings = new ClusteringSettings(RawData, kmeansMaxIterations, numClusters, numOfAttributes, SaveObject, Replace: true);
-            }
-            else
-            {
-                Settings = new ClusteringSettings(RawData, kmeansMaxIterations, numClusters, numOfAttributes, SaveObject, 1, false, LoadObject, Replace: true);
-            }
+            ClusteringSettings clusterSettings = new ClusteringSettings(kmeansMaxIterations, numClusters, numOfAttributes, KmeansAlgorithm: 1, Replace: true);
 
-            ImportData = AnoDet_Api.ImportNewDataForClustering(Settings);
-            return ImportData;
+            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(clusterSettings);
+            AnomalyDetectionResponse response;
+
+            try
+            {
+                var rawData = dataProvider(csvFilePath);
+
+                response = kmeanApi.Training(rawData);
+
+                response = kmeanApi.Save(savePath);
+
+                return response;
+            }
+            catch (Exception Ex)
+            {
+
+                if (Ex is System.IO.FileNotFoundException)
+                {
+                     response = new AnomalyDetectionResponse(200, "File not found");
+                }
+                else if (Ex is System.IO.DirectoryNotFoundException)
+                {
+                     response = new AnomalyDetectionResponse(204, "Directory not found");
+                }
+                else
+                {
+                     response = new AnomalyDetectionResponse(202, "File cannot be loaded");
+                }
+                return response;
+            }
         }
 
         /// <summary>
-        /// Returns clustered data from the API
+        /// 
         /// </summary>
-        /// <param name="DataId"></param>
-        /// <param name="LoadPath"></param>
+        /// <param name="clusterFilePath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("ADClusteredData/{LoadPath}")]
-        public ClusteringResults[] ClusteredDatadirect(int DataId, string LoadPath)
+        [Route("ADClusteredData/{clusterFilePath}")]
+        public Cluster[] GetClusteredData(string clusterFilePath)
         {
-            ClusteringResults[] Result;
+            Cluster[] cluster;
             AnomalyDetectionResponse AnoResponse;
-            SaveLoadSettings LoadObject;
-            LoadPath = @"C:\Data\" + LoadPath.TrimEnd() + ".json";
-            AnoResponse = SaveLoadSettings.JSON_Settings(LoadPath, out LoadObject, true);
-            AnoResponse = AnoDet_Api.GetResults(LoadObject, out Result);
-            return Result;
+            AnomalyDetectionAPI api = new AnomalyDetectionAPI();
+
+            AnoResponse = api.GetClusters(clusterFilePath, out cluster);
+
+            return cluster;
         }
 
-        /// <summary>
-        /// Checks for the Sample Clusters
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="xaxis"></param>
-        /// <param name="yaxis"></param>
-        /// <param name="zaxis"></param>
-        /// <param name="Tol"></param>
-        /// <returns></returns>
+
         [HttpGet]
-        [Route("GetClusId/{fileName}/{xaxis}/{yaxis}/{zaxis}/{Tol}")]
-        public AnomalyDetectionResponse GetSingleSampleClusterId(string fileName, double xaxis, double? yaxis, double? zaxis, double Tol)
+        [Route("GetClusId/{filePath}/{xAxis}/{yAxis}/{zAxis}/{tolerance}")]
+        public AnomalyDetectionResponse CheckSampleInCluster(string filePath, double xAxis, double? yAxis, double? zAxis, double tolerance)
         {
-            int ClusterIndex;
-            AnomalyDetectionResponse AnoResponse;
-            SaveLoadSettings LoadObject;
-            double[] SampletoCheck;
-            string LoadPath = @"C:\data\" + fileName.TrimEnd() + ".json";
-
-            AnoResponse = SaveLoadSettings.JSON_Settings(LoadPath, out LoadObject, true);
-            if (yaxis.HasValue && !zaxis.HasValue)
-                SampletoCheck = new double[] { xaxis, (double)yaxis };
-            else if (yaxis.HasValue && zaxis.HasValue)
-                SampletoCheck = new double[] { xaxis, (double)yaxis, (double)zaxis };
+            int detectedCluster;
+            double[] sample;
+            
+            if (yAxis.HasValue && !zAxis.HasValue)
+                sample = new double[] { xAxis, (double)yAxis };
+            else if (yAxis.HasValue && zAxis.HasValue)
+                sample = new double[] { xAxis, (double)yAxis, (double)zAxis };
             else
-                SampletoCheck = new double[] { xaxis };
-            CheckingSampleSettings SampleSettings = new CheckingSampleSettings(LoadObject, SampletoCheck, Tol);
+                sample = new double[] { xAxis };
 
+            try
+            {
+                AnomalyDetectionAPI kApi = new AnomalyDetectionAPI();
 
-            AnoResponse = AnoDet_Api.CheckSample(SampleSettings, out ClusterIndex);
-            return AnoResponse;
+                CheckingSampleSettings SampleSettings2 = new CheckingSampleSettings(filePath, sample, tolerance);
+
+                var response = kApi.CheckSample(SampleSettings2, out detectedCluster);
+
+                return response;
+
+            }catch(Exception ex)
+            {
+                return new AnomalyDetectionResponse(200, ex.Message);
+            }
         }
 
         /// <summary>
         /// This is for getting the previously saved clustered data
         /// </summary>
-        /// <param name="DataId"></param>
+        /// <param name="dataId"></param>
         /// <param name="LoadPath"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetPreviousSamplesRest/{DataId}/{LoadPath}")]
-        public double[][] GetPreviousSamplesRest(int DataId, string LoadPath)
+        [Route("GetPreviousSamplesRest/{dataId}/{path}")]
+        public double[][] GetPreviousData(int dataId, string path)
         {
-            AnomalyDetectionResponse AnoResponse;
-            SaveLoadSettings LoadObject;
-            LoadPath = @"C:\Data\" + LoadPath.TrimEnd() + ".json";
-            AnoResponse = SaveLoadSettings.JSON_Settings(LoadPath, out LoadObject, true);
 
-            double[][] PreviousSamples;
-            AnoResponse = AnoDet_Api.GetPreviousSamples(LoadObject, out PreviousSamples);
-            return PreviousSamples;
+            AnomalyDetectionAPI kApi = new AnomalyDetectionAPI();
+            string filePath = $"{Directory.GetCurrentDirectory()}\\Instance Result\\CheckSample.json";
+            double[][] oldData;
+
+            var response = kApi.GetPreviousSamples(filePath, out oldData);
+
+            return oldData;
         }
 
         ///// <summary>
