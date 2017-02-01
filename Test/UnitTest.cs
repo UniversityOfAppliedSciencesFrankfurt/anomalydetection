@@ -35,6 +35,7 @@ namespace Test
             for (int i = 0; i < 5; i++)
             {
                 response = kmeanApi.Training(rawData, clusterCentars);
+
                 Assert.True(response.Code == 0);
             }
 

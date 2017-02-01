@@ -38,6 +38,55 @@ namespace AnomalyDetectionRestApi.Controllers
         #region Public Methods 
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="trainingContent"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("ImportNewDataForClustering")]
+        public AnomalyDetectionResponse Training([FromBody] TrainingContent trainingContent)
+        {
+            ClusteringSettings clusterSettings = new ClusteringSettings(trainingContent.KmeansMaxIterations, trainingContent.NumOfClusters, trainingContent.NumOfAttributes, KmeansAlgorithm: 1, Replace: true);
+
+            AnomalyDetectionAPI kmeanApi = new AnomalyDetectionAPI(clusterSettings);
+            AnomalyDetectionResponse response = null;
+
+            try
+            {
+                double[][] rawData = null;
+
+                foreach (var file in trainingContent.CsvFilePaths)
+                {
+                    rawData = dataProvider(file);
+
+                    response = kmeanApi.Training(rawData);
+                }
+
+                if(response.Code == 0)
+                response = kmeanApi.Save(trainingContent.SavePath);
+
+                return response;
+            }
+            catch (Exception Ex)
+            {
+
+                if (Ex is System.IO.FileNotFoundException)
+                {
+                    response = new AnomalyDetectionResponse(200, "File not found");
+                }
+                else if (Ex is System.IO.DirectoryNotFoundException)
+                {
+                    response = new AnomalyDetectionResponse(204, "Directory not found");
+                }
+                else
+                {
+                    response = new AnomalyDetectionResponse(202, "File cannot be loaded");
+                }
+                return response;
+            }
+
+        }
+        /// <summary>
         /// Training dataset
         /// </summary>
         /// <param name="csvFilePath">CSV fomated dataset</param>
@@ -50,7 +99,7 @@ namespace AnomalyDetectionRestApi.Controllers
 
         [HttpGet]
         [Route("ImportNewDataForClustering/{csvFilePath}/{savePath}/{LoadimpPath}/{numClusters}/{numOfAttributes}/{kmeansMaxIterations}")]
-        public AnomalyDetectionResponse Training(string csvFilePath, string savePath, string loadimpPath, int numClusters, int numOfAttributes, int kmeansMaxIterations)
+        public AnomalyDetectionResponse Training(string[] csvFilePath, string savePath, string loadimpPath, int numClusters, int numOfAttributes, int kmeansMaxIterations)
         {
             ClusteringSettings clusterSettings = new ClusteringSettings(kmeansMaxIterations, numClusters, numOfAttributes, KmeansAlgorithm: 1, Replace: true);
 
@@ -59,7 +108,12 @@ namespace AnomalyDetectionRestApi.Controllers
 
             try
             {
-                var rawData = dataProvider(csvFilePath);
+                double[][] rawData = null;
+
+                foreach (var file in csvFilePath)
+                {
+                     rawData = dataProvider(file);
+                }
 
                 response = kmeanApi.Training(rawData);
 

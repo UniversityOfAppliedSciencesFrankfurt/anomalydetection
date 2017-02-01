@@ -299,7 +299,7 @@
                                     <label for="ImportNewDataForClustering">Select Your File for clustering:</label>
                                 </td>
                                 <td class="planeTable">
-                                    <input type="file" id="ImportNewDataForClustering" name="ImportNewDataForClustering" accept=".csv" />
+                                    <input type="file" id="ImportNewDataForClustering" name="ImportNewDataForClustering" accept=".csv" multiple/>
                                 </td>
 
                             </tr>
@@ -346,6 +346,9 @@
                                 </td>
                                 <td class="planeTable">
                                     <input ng-model="ADC.viewModel.SaveName" required name="SaveName" />
+
+                                    <!--<input type="file" id="saveDirectory" webkitdirectory/>
+                                    <input id="input-folder-1" type="file" class="file-loading" webkitdirectory>-->
                                 </td>
                                 <td class="planeTable">
                                     <i>*required</i>
@@ -354,30 +357,18 @@
                          
                         </table>
                         <button ng-click="ImportNewData()" class="submit">Import</button>
+                        <p>{{resultXY}}</p>
                     </div>  
                 </form>
                 <tt><h4>{{ADC.viewModel.ImportMsg}}</h4></tt>
-                
-
-                   
-               
             </div>
         </div>
-
-
     </div>
     <footer></footer>
     <script>
   $(function() {
     $("#tabs").tabs();
   });
-
-
-
     </script>
-
-
 </body>
-
-
 </html>

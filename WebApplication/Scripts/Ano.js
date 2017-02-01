@@ -25,30 +25,29 @@
 
             var serieses = new Array();
 
-            var fil = document.getElementById("myFile").files[0];;
+            var fil = document.getElementById("myFile").value;
 
-            fileName = fil.name.replace(".json", "");
-            var uri = m_SvcUri + "/ADClusteredData/" + fileName;
+            // fileName = fil.name.replace(".json", "");
+            var uri = m_SvcUri + "/ADClusteredData/" + fil;
 
             var pointColour = '#6f00ff';
 
             $scope.ADC.viewModel.noData = false;
+
 
             $.getJSON(uri, function (data) {
                 if (data != null) {
 
                     // Populate series
                     var centroid = new Array();
-                    
-                    for (m = 0; m < data.length; m++)
-                    {
-                        
+
+                    for (m = 0; m < data.length; m++) {
+
                         var series = new Array();
-                        
-                        for (n = 0; n < data[m].clusterData.length; n++)
-                        {
+
+                        for (n = 0; n < data[m].clusterData.length; n++) {
                             series.push([data[m].clusterData[n][0], data[m].clusterData[n][1]]);
-                            
+
                         }
                         serieses.push(series);
 
@@ -163,14 +162,14 @@
             var serieses = new Array();
             var fil = document.getElementById("myFile3D").files[0];
             fileName = fil.name.replace(".json", "");
-            var uri = m_SvcUri + "/ADClusteredData/"+ fileName;
+            var uri = m_SvcUri + "/ADClusteredData/" + fileName;
             var pointColour = '#6f00ff';
             $scope.ADC.viewModel.noData = false;
             $.getJSON(uri, function (data) {
                 if (data != null) {
-                     //Populate series
-                    
-                     var centroid = new Array();
+                    //Populate series
+
+                    var centroid = new Array();
                     for (m = 0; m < data.length; m++) {
                         var series = new Array();
 
@@ -273,7 +272,7 @@
                             pointFormat: '{point.x} cm, {point.y} kg'
                         },
                         series: nSeries
-                             
+
                     });
 
 
@@ -325,7 +324,7 @@
         $scope.queryClusterDetail = function () {
             var cluster_detail = new Array();
             var clusters = new Array();
-           // DataTypeid = $scope.ADC.viewModel.Seloption;
+            // DataTypeid = $scope.ADC.viewModel.Seloption;
             var fil = document.getElementById("FileClusterDet").files[0];
             fileName = fil.name.replace(".json", "");
             uri = m_SvcUri + "/ADClusteredData/" + fileName;
@@ -397,33 +396,39 @@
         };
         /// <summary> This for importing new data for clustering</summary>
         $scope.ImportNewData = function () {
-            var fil1 = document.getElementById("ImportNewDataForClustering").files[0];
-            fileName = fil1.name.replace(".csv", "");
+            var file = document.getElementById("ImportNewDataForClustering").value;
+            //var file = document.getElementById("saveDirectory").value;
+
+            var files = file.split(',');
+
             var kmeansMaxIterations = $scope.ADC.viewModel.KmeansMaxIterations;
             var numberOfClusters = $scope.ADC.viewModel.NumberOfClusters;
             var numberOfAttributes = $scope.ADC.viewModel.NumberOfAttributes;
             var saveName = $scope.ADC.viewModel.SaveName;
             var replace = true;
-            //if (document.getElementById("ImportexistLoadPath").files.length > 0) {
-            //    var fil3 = document.getElementById("ImportexistLoadPath").files[0];
-            //    ImploadPath = fil3.name.replace(".json", "");
-            //    var uri = m_SvcUri + "/importNewDataForClustering/" + fileName + "/" + saveName + "/" + loadPath + "/" + numberOfClusters + "/" + numberOfAttributes + "/" + kmeansMaxIterations;
 
-            //}
-            //else
-            {
-                var uri = m_SvcUri + "/ImportNewDataForClustering/" + fileName + "/" + saveName + "/NewData/" + numberOfClusters + "/" + numberOfAttributes + "/" + kmeansMaxIterations;
+            var data = {
+                "CsvFilePaths": files,
+                "SavePath": saveName,
+                "numOfClusters": numberOfClusters,
+                "numOfAttributes": numberOfAttributes,
+                "kmeansMaxIterations": kmeansMaxIterations
             }
 
-            $http.get(uri)
-           .success(function (data) {
-               $scope.ADC.viewModel.ImportMsg = data.Message;
 
-           })
-           .error(function (data, status, headers, config) {
-               alert(data.Message);
-           });
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;'
+                }
+            }
 
+            $http.post(m_SvcUri + "/ImportNewDataForClustering/", data, config)
+                .success(function (data, status, headers, config) {
+                    $scope.resultXY ="Code: "+data.code+", Message: "+data.message;
+             })
+             .error(function (data, status, header, config) {
+                 //Error Code
+             });
         };
     });
 }());

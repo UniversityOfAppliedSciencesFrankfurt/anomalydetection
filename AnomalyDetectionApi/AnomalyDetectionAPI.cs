@@ -1335,6 +1335,13 @@ namespace AnomalyDetectionApi
                 {
                     return new AnomalyDetectionResponse(124, "Function <PreproccessingOfParameters>: Unacceptable input for K-means Algorithm");
                 }
+
+                var adResponse = verifyRawDataConsistency(rawData, numberOfAttributes);
+
+                if (adResponse.Code != 0)
+                {
+                    return adResponse;
+                }
                 return new AnomalyDetectionResponse(0, "OK");
             }
             catch (Exception Ex)
