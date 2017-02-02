@@ -56,13 +56,13 @@
                 <table class="planeTable">
                     <tr class="planeTable">
                         <td class="planeTable">
-                            <label for="AnomalySelector">Select your data type:</label>
+                            <!--<label for="AnomalySelector">Select your data type:</label>-->
                         </td>
                         <td class="planeTable">
-                            <select id="AnomalySelector" ng-model="ADC.viewModel.Seloption2D">
+                            <!--<select id="AnomalySelector" ng-model="ADC.viewModel.Seloption2D">
                                 <option value="">---Please select---</option>
                                 <option ng-repeat="ano in ADC.viewModel.options2D" value="{{ano.Data_Id}}">{{ano.DataSet_Name}}</option>
-                            </select>
+                            </select>-->
                         </td>
                     </tr>
                     <tr class="planeTable">
@@ -96,13 +96,13 @@
                 <table class="planeTable">
                     <tr class="planeTable">
                         <td class="planeTable">
-                            <label for="AnomalySelector3">Select your data type:</label>
+                            <!--<label for="AnomalySelector3">Select your data type:</label>-->
                         </td>
                         <td class="planeTable">
-                            <select id="AnomalySelector3" ng-model="ADC.viewModel.Seloption3D">
+                            <!--<select id="AnomalySelector3" ng-model="ADC.viewModel.Seloption3D">
                                 <option value="">---Please select---</option>
                                 <option ng-repeat="ano in ADC.viewModel.options3D" value="{{ano.Data_Id}}">{{ano.DataSet_Name}}</option>
-                            </select>
+                            </select>-->
                         </td>
                     </tr>
                     <tr class="planeTable">
@@ -133,17 +133,6 @@
         </div>
         <div id=tabs-4>
             <table class="planeTable">
-                <tr class="planeTable">
-                    <td class="planeTable">
-                        <label for="AnomalySelector2">Select your data type:</label>
-                    </td>
-                    <td class="planeTable">
-                        <select id="AnomalySelector2" ng-model="ADC.viewModel.Seloption">
-                            <option value="">---Please select---</option>
-                            <option ng-repeat="ano in ADC.viewModel.options" value="{{ano.Data_Id}}">{{ano.DataSet_Name}}</option>
-                        </select>
-                    </td>
-                </tr>
                 <tr class="planeTable">
                     <td class="planeTable">
                         <label for="myFile">Select your data file to view detail(json):</label>
@@ -283,7 +272,7 @@
                         </div>
                     <button ng-click="CheckSample()" class="submit">Check</button> 
                     </form> 
-                <tt><h4>{{ADC.viewModel.SampleCluster}}</h4></tt>
+                <tt><p>{{ADC.SampleClusterId}}</p></tt>
               
             </div>
 
@@ -345,16 +334,13 @@
                                     <label for="SaveName">Save Name</label>
                                 </td>
                                 <td class="planeTable">
-                                    <input ng-model="ADC.viewModel.SaveName" required name="SaveName" />
-
-                                    <!--<input type="file" id="saveDirectory" webkitdirectory/>
-                                    <input id="input-folder-1" type="file" class="file-loading" webkitdirectory>-->
+                                    <input ng-model="ADC.viewModel.SaveName" required name="SaveName" value="Training.json"/>
+                                    Valid: {{FormImportNewDataForClustering.SaveName.$valid}}
                                 </td>
                                 <td class="planeTable">
                                     <i>*required</i>
                                 </td>
                             </tr>
-                         
                         </table>
                         <button ng-click="ImportNewData()" class="submit">Import</button>
                         <p>{{resultXY}}</p>

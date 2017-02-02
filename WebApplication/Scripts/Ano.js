@@ -21,132 +21,133 @@
 
         /// <summary>The below code is for displaying the clusters on a 2D High chart graph</summary>
         $scope.ShowOnGraph = function () {
-            //DataTypeid = $scope.ADC.viewModel.Seloption2D;
 
             var serieses = new Array();
 
-            var fil = document.getElementById("myFile").value;
-
-            // fileName = fil.name.replace(".json", "");
-            var uri = m_SvcUri + "/ADClusteredData/" + fil;
+            var path = {
+                Path: document.getElementById("myFile").value
+            }
 
             var pointColour = '#6f00ff';
 
             $scope.ADC.viewModel.noData = false;
 
+            $http.post(m_SvcUri + "/ADClusteredData/", path)
+               .success(function (data, status, headers, config) {
+                       if (data != null) {
 
-            $.getJSON(uri, function (data) {
-                if (data != null) {
+                           // Populate series
+                           var centroid = new Array();
 
-                    // Populate series
-                    var centroid = new Array();
+                           for (m = 0; m < data.length; m++) {
 
-                    for (m = 0; m < data.length; m++) {
+                               var series = new Array();
 
-                        var series = new Array();
+                               for (n = 0; n < data[m].clusterData.length; n++) {
+                                   series.push([data[m].clusterData[n][0], data[m].clusterData[n][1]]);
 
-                        for (n = 0; n < data[m].clusterData.length; n++) {
-                            series.push([data[m].clusterData[n][0], data[m].clusterData[n][1]]);
+                               }
+                               serieses.push(series);
 
-                        }
-                        serieses.push(series);
+                               centroid.push([data[m].centroid[0], data[m].centroid[1]]);
+                           }
 
-                        centroid.push([data[m].centroid[0], data[m].centroid[1]]);
-                    }
+                           serieses.push(centroid);
 
-                    serieses.push(centroid);
+                           //
+                           //Creating series data 
+                           var nSeries = (function () {
+                               var collectionSerieses = Array();
+                               for (i = 0; i < serieses.length; i++) {
+                                   //
+                                   //Random color for every series
+                                   var color = ('#' + Math.floor(Math.random() * 16777215).toString(16));
+                                   if (i != serieses.length - 1) {
+                                       collectionSerieses.push({ 'name': i + ' Cluster', 'color': color, 'data': serieses[i] })
+                                   } else {
+                                       collectionSerieses.push({ 'name': i + ' Centroid', 'color': '#f00', 'data': serieses[i] })
+                                   }
+                               }
+                               return collectionSerieses;
+                           }());
 
-                    //
-                    //Creating series data 
-                    var nSeries = (function () {
-                        var collectionSerieses = Array();
-                        for (i = 0; i < serieses.length; i++) {
-                            //
-                            //Random color for every series
-                            var color = ('#' + Math.floor(Math.random() * 16777215).toString(16));
-                            if (i != serieses.length - 1) {
-                                collectionSerieses.push({ 'name': i + ' Cluster', 'color': color, 'data': serieses[i] })
-                            } else {
-                                collectionSerieses.push({ 'name': i + ' Centroid', 'color': '#f00', 'data': serieses[i] })
-                            }
-                        }
-                        return collectionSerieses;
-                    }());
+                           // draw chart
+                           $('#container').highcharts({
+                               chart: {
+                                   type: 'scatter',
+                                   zoomType: 'xy'
+                               },
+                               title: {
+                                   text: 'Height Versus Weight by Frame'
+                               },
+                               subtitle: {
+                                   text: 'Source:Random'
+                               },
+                               xAxis: {
+                                   title: {
+                                       enabled: true,
+                                       text: 'Height (cm)'
+                                   },
+                                   startOnTick: true,
+                                   endOnTick: true,
+                                   showLastLabel: true
+                               },
+                               yAxis: {
+                                   title: {
+                                       text: 'Weight (kg)'
+                                   }
+                               },
+                               legend: {
+                                   layout: 'vertical',
+                                   align: 'right',
+                                   verticalAlign: 'top',
+                                   floating: true,
+                                   backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
+                                   borderWidth: 1
+                               },
+                               plotOptions: {
+                                   scatter: {
+                                       marker: {
+                                           radius: 5,
+                                           states: {
+                                               hover: {
+                                                   enabled: true,
+                                                   lineColor: 'rgb(100,100,100)'
+                                               }
+                                           }
+                                       },
+                                       states: {
+                                           hover: {
+                                               marker: {
+                                                   enabled: false
+                                               }
+                                           }
+                                       },
+                                       tooltip: {
+                                           headerFormat: '<b>{series.name}</b><br>',
+                                           pointFormat: '{point.x} cm, {point.y} kg'
+                                       }
+                                   }
+                               },
+                               series: nSeries
+                           });
+                       }
+                       else {
+                           $('#container').highcharts({
+                               chart: {
+                                   type: 'scatter',
+                                   zoomType: 'xy'
+                               },
+                               title: {
+                                   text: 'No Data To Display'
+                               }
 
-                    // draw chart
-                    $('#container').highcharts({
-                        chart: {
-                            type: 'scatter',
-                            zoomType: 'xy'
-                        },
-                        title: {
-                            text: 'Height Versus Weight by Frame'
-                        },
-                        subtitle: {
-                            text: 'Source:Random'
-                        },
-                        xAxis: {
-                            title: {
-                                enabled: true,
-                                text: 'Height (cm)'
-                            },
-                            startOnTick: true,
-                            endOnTick: true,
-                            showLastLabel: true
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'Weight (kg)'
-                            }
-                        },
-                        legend: {
-                            layout: 'vertical',
-                            align: 'right',
-                            verticalAlign: 'top',
-                            floating: true,
-                            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-                            borderWidth: 1
-                        },
-                        plotOptions: {
-                            scatter: {
-                                marker: {
-                                    radius: 5,
-                                    states: {
-                                        hover: {
-                                            enabled: true,
-                                            lineColor: 'rgb(100,100,100)'
-                                        }
-                                    }
-                                },
-                                states: {
-                                    hover: {
-                                        marker: {
-                                            enabled: false
-                                        }
-                                    }
-                                },
-                                tooltip: {
-                                    headerFormat: '<b>{series.name}</b><br>',
-                                    pointFormat: '{point.x} cm, {point.y} kg'
-                                }
-                            }
-                        },
-                        series: nSeries
-                    });
-                }
-                else {
-                    $('#container').highcharts({
-                        chart: {
-                            type: 'scatter',
-                            zoomType: 'xy'
-                        },
-                        title: {
-                            text: 'No Data To Display'
-                        }
+                           });
 
-                    });
-
-                }
+                       }
+               })
+            .error(function (data, status, header, config) {
+                $scope.resultXY = "Status: " + status;
             });
         };
 
@@ -160,12 +161,16 @@
             var processed_json_3 = new Array();
             var processed_json_4 = new Array();
             var serieses = new Array();
-            var fil = document.getElementById("myFile3D").files[0];
-            fileName = fil.name.replace(".json", "");
-            var uri = m_SvcUri + "/ADClusteredData/" + fileName;
+
+            var path = {
+                Path: document.getElementById("myFile3D").value
+            }
+
             var pointColour = '#6f00ff';
             $scope.ADC.viewModel.noData = false;
-            $.getJSON(uri, function (data) {
+
+            $http.post(m_SvcUri + "/ADClusteredData/", path)
+               .success(function (data, status, headers, config) {
                 if (data != null) {
                     //Populate series
 
@@ -317,6 +322,9 @@
 
                     });
                 }
+               })
+            .error(function (data, status, header, config) {
+                $scope.resultXY = "Status: " + status;
             });
         };
 
@@ -324,14 +332,18 @@
         $scope.queryClusterDetail = function () {
             var cluster_detail = new Array();
             var clusters = new Array();
-            // DataTypeid = $scope.ADC.viewModel.Seloption;
-            var fil = document.getElementById("FileClusterDet").files[0];
-            fileName = fil.name.replace(".json", "");
-            uri = m_SvcUri + "/ADClusteredData/" + fileName;
-            $http.get(uri)
-            .success(function (data) {
+
+            var path = {
+                Path: document.getElementById("FileClusterDet").value
+            }
+
+            $http.post(m_SvcUri + "/ADClusteredData/", path)
+              .success(function (data, status, headers, config) {
+
                 for (i = 0; i < data.length; i++) {
+
                     clusters.push({ ClusterId: i });
+
                     cluster_detail.push({
                         ClusterId: i, centroid: data[i].centroid, ClusterDataDistanceToCentroid: data[i].clusterDataDistanceToCentroid,
                         ClusterDataOriginalIndex: data[i].clusterDataOriginalIndex, ClusterOfNearestForeignSample: data[i].clusterOfNearestForeignSample,
@@ -343,8 +355,6 @@
                     });
 
                 }
-
-
 
                 $scope.ADC.viewModel.SelectedCluster = cluster_detail[0];
                 $scope.ADC.viewModel.ClusterDetailtable = cluster_detail;
@@ -373,19 +383,47 @@
                 ClusterTol = 10;
             var sample_detail;
 
-            var fil = document.getElementById("SampleClusterCheck").files[0];
-            fileName = fil.name.replace(".json", "");
-            var uri;
-            if ((Clustery == undefined || Clustery == "") && (Clusterz == undefined || Clusterz == ""))
-                uri = m_SvcUri + "/GetClusId/" + fileName + "/" + Clusterx + "/" + null + "/" + null + "/" + ClusterTol + "/";
+            //var path = {
+            //    Path: document.getElementById("SampleClusterCheck").value
+            //}
+
+            var sanple;
+            if ((Clustery == undefined || Clustery == "") && (Clusterz == undefined || Clusterz == "")) {
+                sanple = {
+                    FilePath: document.getElementById("SampleClusterCheck").value,
+                    XAxis: Clusterx,
+                    YAxis: null,
+                    ZAxis: null,
+                    Tolerance: ClusterTol
+                }
+            }
             else if ((Clusterz == undefined || Clusterz == "") && Clustery != null && Clusterx != null)
-                uri = m_SvcUri + "/GetClusId/" + fileName + "/" + Clusterx + "/" + Clustery + "/" + null + "/" + ClusterTol + "/";
+            {
+                sanple = {
+                    FilePath: document.getElementById("SampleClusterCheck").value,
+                    XAxis: Clusterx,
+                    YAxis: Clustery,
+                    ZAxis: null,
+                    Tolerance: ClusterTol
+                }
+            }
             else
-                uri = m_SvcUri + "/GetClusId/" + fileName + "/" + Clusterx + "/" + Clustery + "/" + Clusterz + "/" + ClusterTol + "/";
+            {
+                sanple = {
+                    FilePath: document.getElementById("SampleClusterCheck").value,
+                    XAxis: Clusterx,
+                    YAxis: Clustery,
+                    ZAxis: Clusterz,
+                    Tolerance: ClusterTol
+                }
+            }
+               
             $scope.ADC.viewModel.SampleCluster = "Get the the cluster for the Sample";
-            $http.get(uri)
-            .success(function (data) {
-                $scope.ADC.SampleClusterId = data;
+
+
+            $http.post(m_SvcUri+"/GetClusId/", sanple)
+              .success(function (data, status, headers, config) {
+                  $scope.ADC.SampleClusterId = "Code: " + data.code + ", Message: " + data.message;;
 
                 $scope.ADC.viewModel.SampleCluster = data.Message;
 
@@ -397,7 +435,6 @@
         /// <summary> This for importing new data for clustering</summary>
         $scope.ImportNewData = function () {
             var file = document.getElementById("ImportNewDataForClustering").value;
-            //var file = document.getElementById("saveDirectory").value;
 
             var files = file.split(',');
 
@@ -405,29 +442,26 @@
             var numberOfClusters = $scope.ADC.viewModel.NumberOfClusters;
             var numberOfAttributes = $scope.ADC.viewModel.NumberOfAttributes;
             var saveName = $scope.ADC.viewModel.SaveName;
+
+            if (saveName.indexOf(".json") == -1)
+                saveName = saveName + ".json";
+
             var replace = true;
 
             var data = {
-                "CsvFilePaths": files,
-                "SavePath": saveName,
-                "numOfClusters": numberOfClusters,
-                "numOfAttributes": numberOfAttributes,
-                "kmeansMaxIterations": kmeansMaxIterations
+                CsvFilePaths: files,
+                SavePath: saveName,
+                NumOfClusters: numberOfClusters,
+                NumOfAttributes: numberOfAttributes,
+                KmeansMaxIterations: kmeansMaxIterations
             }
 
-
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json;'
-                }
-            }
-
-            $http.post(m_SvcUri + "/ImportNewDataForClustering/", data, config)
+            $http.post(m_SvcUri + "/ImportNewDataForClustering/", data)
                 .success(function (data, status, headers, config) {
                     $scope.resultXY ="Code: "+data.code+", Message: "+data.message;
              })
              .error(function (data, status, header, config) {
-                 //Error Code
+                 $scope.resultXY = "Status: " + status;
              });
         };
     });

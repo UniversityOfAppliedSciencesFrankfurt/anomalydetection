@@ -9,11 +9,13 @@ using System.Data.SqlClient;
 using System.IO;
 using AnomalyDetectionApi;
 using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Cors;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AnomalyDetectionRestApi.Controllers
 {
+    [EnableCors("SiteCorsPolicy")]
     [Route("api/anomalydetection")]
     public class AnomalyAPIController : Controller
     {
@@ -159,6 +161,26 @@ namespace AnomalyDetectionRestApi.Controllers
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clusterFilePath"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("ADClusteredData")]
+        public Cluster[] GetClusteredData([FromBody]Dictionary<string,string> clusterFilePath)
+        {
+            var file = clusterFilePath["Path"];
+
+            Cluster[] cluster;
+            AnomalyDetectionResponse AnoResponse;
+            AnomalyDetectionAPI api = new AnomalyDetectionAPI();
+
+            AnoResponse = api.GetClusters(file, out cluster);
+
+            return cluster;
+        }
+
+        /// <summary>
         /// Check sample in cluster
         /// </summary>
         /// <param name="filePath">Json formated Instance result path</param>
@@ -167,25 +189,25 @@ namespace AnomalyDetectionRestApi.Controllers
         /// <param name="zAxis"></param>
         /// <param name="tolerance"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("GetClusId/{filePath}/{xAxis}/{yAxis}/{zAxis}/{tolerance}")]
-        public AnomalyDetectionResponse CheckSampleInCluster(string filePath, double xAxis, double? yAxis, double? zAxis, double tolerance)
+        [HttpPost]
+        [Route("GetClusId")]
+        public AnomalyDetectionResponse CheckSampleInCluster([FromBody]Sample sample)
         {
             int detectedCluster;
-            double[] sample;
+            double[] sampleResult;
             
-            if (yAxis.HasValue && !zAxis.HasValue)
-                sample = new double[] { xAxis, (double)yAxis };
-            else if (yAxis.HasValue && zAxis.HasValue)
-                sample = new double[] { xAxis, (double)yAxis, (double)zAxis };
+            if (sample.YAxis.HasValue && !sample.ZAxis.HasValue)
+                sampleResult = new double[] { sample.XAxis, (double)sample.YAxis };
+            else if (sample.YAxis.HasValue && sample.ZAxis.HasValue)
+                sampleResult = new double[] { sample.XAxis, (double)sample.YAxis, (double)sample.ZAxis };
             else
-                sample = new double[] { xAxis };
+                sampleResult = new double[] { sample.XAxis };
 
             try
             {
                 AnomalyDetectionAPI kApi = new AnomalyDetectionAPI();
 
-                CheckingSampleSettings SampleSettings2 = new CheckingSampleSettings(filePath, sample, tolerance);
+                CheckingSampleSettings SampleSettings2 = new CheckingSampleSettings(sample.FilePath, sampleResult, sample.Tolerance);
 
                 var response = kApi.CheckSample(SampleSettings2, out detectedCluster);
 
