@@ -138,10 +138,10 @@ namespace Test
             return null;
         }
 
-        public static void WriteToCSVFile(double[][] rawData)
+        public static void WriteToCSVFile(double[][] rawData, string path)
         {
             double[,] data = new double[rawData.Length,rawData.Length];
-            using (StreamWriter outfile = new StreamWriter(File.Create($"{Directory.GetCurrentDirectory()}\\DataSet\\TestData.csv")))
+            using (StreamWriter outfile = new StreamWriter(File.Create($"{Directory.GetCurrentDirectory()}\\{path}")))
             {
                 for (int x = 0; x < rawData.Length; x++)
                 {

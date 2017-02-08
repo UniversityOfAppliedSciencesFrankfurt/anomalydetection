@@ -27,6 +27,15 @@ namespace AnomalyDetectionApi
         #region Public Function
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public double[][] GetCentroid()
+        {
+            return m_instance.Centroids;
+        }
+
+        /// <summary>
         /// Ctreate Instance of AnomalyDetectionAPI
         /// </summary>
         /// <param name="settings">It should not be null when you call Training function</param>
