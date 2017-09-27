@@ -4,7 +4,6 @@
   "dependencies": {
     "AnomalyDetection.Interfaces": "1.0.0-*",
     "NETStandard.Library": "1.6.0",
-    "runtime.any.System.Private.DataContractSerialization": "4.1.0",
     "System.Private.DataContractSerialization": "4.3.0",
     "System.Runtime.Serialization.Json": "4.3.0"
   },

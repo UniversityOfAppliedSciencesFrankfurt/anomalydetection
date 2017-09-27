@@ -1576,12 +1576,6 @@
           "lib/netstandard1.0/Newtonsoft.Json.dll": {}
         }
       },
-      "runtime.any.System.Private.DataContractSerialization/4.1.0": {
-        "type": "package",
-        "compile": {
-          "ref/dotnet/_._": {}
-        }
-      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {
         "type": "package",
         "runtimeTargets": {
@@ -3884,8 +3878,7 @@
           "AnomalyDetection.Interfaces": "1.0.0",
           "NETStandard.Library": "1.6.0",
           "System.Private.DataContractSerialization": "4.3.0",
-          "System.Runtime.Serialization.Json": "4.3.0",
-          "runtime.any.System.Private.DataContractSerialization": "4.1.0"
+          "System.Runtime.Serialization.Json": "4.3.0"
         },
         "compile": {
           "netstandard1.6/AnomalyDetectionApi.dll": {}
@@ -5155,21 +5148,6 @@
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "tools/install.ps1"
-      ]
-    },
-    "runtime.any.System.Private.DataContractSerialization/4.1.0": {
-      "sha512": "nJ5sB6Q7vbOEZ+tm/L7XISxO0Az6tkMup5rhpgPboVpUKgMnsdWiDvSlzzpK/bsiYxMIJCJ4Xrt2abt8Z1beJw==",
-      "type": "package",
-      "path": "runtime.any.System.Private.DataContractSerialization/4.1.0",
-      "files": [
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "lib/DNXCore50/System.Private.DataContractSerialization.dll",
-        "lib/netcore50/System.Private.DataContractSerialization.dll",
-        "ref/dotnet/_._",
-        "runtime.any.System.Private.DataContractSerialization.4.1.0.nupkg.sha512",
-        "runtime.any.System.Private.DataContractSerialization.nuspec",
-        "runtimes/aot/lib/netcore50/_._"
       ]
     },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0": {

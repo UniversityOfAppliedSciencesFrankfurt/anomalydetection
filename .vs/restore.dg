@@ -1,3 +1,8 @@
-#:C:\GitHub\anomalydetection\Test\Test.xproj
-C:\GitHub\anomalydetection\Test\Test.xproj|C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
-C:\GitHub\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\GitHub\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\Users\KywAnn\Source\Repos\anomalydetection\Test\Test.xproj
+C:\Users\KywAnn\Source\Repos\anomalydetection\Test\Test.xproj|C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj
+#:C:\Users\KywAnn\Source\Repos\anomalydetection\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj
+C:\Users\KywAnn\Source\Repos\anomalydetection\src\AnomalyDetectionRestApi\AnomalyDetectionRestApi.xproj|C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj
+C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetectionApi\AnomalyDetectionApi.xproj|C:\Users\KywAnn\Source\Repos\anomalydetection\AnomalyDetection.Interfaces\AnomalyDetection.Interfaces.xproj

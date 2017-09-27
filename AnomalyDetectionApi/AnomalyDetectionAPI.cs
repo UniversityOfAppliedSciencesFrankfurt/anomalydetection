@@ -35,6 +35,11 @@ namespace AnomalyDetectionApi
             return m_instance.Centroids;
         }
 
+        public double[] GetInClusterMaxDistance()
+        {
+            return m_instance.InClusterMaxDistance;
+        }
+
         /// <summary>
         /// Ctreate Instance of AnomalyDetectionAPI
         /// </summary>
@@ -362,6 +367,7 @@ namespace AnomalyDetectionApi
         /// <li> - Method 0: Radial method in which the farthest sample of each cluster must be closer to the cluster centoid than the nearest foreign sample of the other clusters </li>
         /// <li> - Method 1: Standard Deviation method in which the standard deviation in each cluster must be less than the desired standard deviation </li>
         /// <li> - Method 2: Both. uses radial and standard deviation methods at the same time </li>
+        /// <li> - Method 3: Balanced clusters method in which the clusters contain the closest number of samples</li>
         /// </ul>
         /// </param>
         /// <param name="standardDeviation">The desired standard deviation upper limit in each cluster</param>
@@ -393,14 +399,14 @@ namespace AnomalyDetectionApi
                     minNumberOfClusters = 2;
                 }
 
-                if (method > 2 || method < 0)
+                if (method > 3 || method < 0)
                 {
                     recommendedNumbersOfCluster = 0;
 
-                    return new AnomalyDetectionResponse(122, "Function <RecommendedNumberOfClusters>: Method must be either 0,1 or 2");
+                    return new AnomalyDetectionResponse(122, "Function <RecommendedNumberOfClusters>: Method must be either 0,1,2 or 3");
                 }
 
-                if (method != 0 && standardDeviation == null)
+                if ((method == 1 || method == 2) && standardDeviation == null)
                 {
                     recommendedNumbersOfCluster = 0;
 
@@ -450,6 +456,7 @@ namespace AnomalyDetectionApi
                 Cluster[] cluster;
                 bool isRadial, isStandardDeviation;
                 Tuple<bool, AnomalyDetectionResponse> boolChecks;
+                double[] balancedError = new double[MaxClusters - minNumberOfClusters + 1];
 
                 for (int i = minNumberOfClusters; i <= MaxClusters; i++)
                 {
@@ -478,7 +485,7 @@ namespace AnomalyDetectionApi
 
                     isStandardDeviation = true;
 
-                    if (method != 1)
+                    if (method == 0 || method == 2) 
                     {
                         //radial method check
                         boolChecks = radialClustersCheck(cluster);
@@ -493,7 +500,7 @@ namespace AnomalyDetectionApi
                         isRadial = boolChecks.Item1;
                     }
 
-                    if (method != 0)
+                    if (method == 1 || method == 2)
                     {
                         //standard deviation check
                         boolChecks = stdDeviationClustersCheck(cluster, standardDeviation);
@@ -508,12 +515,46 @@ namespace AnomalyDetectionApi
                         isStandardDeviation = boolChecks.Item1;
                     }
 
-                    if (isRadial && isStandardDeviation == true)
+                    if(method == 3)
+                    {
+                        //start balanced check
+                        balancedError[i - minNumberOfClusters] = 0;
+                        double[] countSamples = new double[i];
+                        double average = 0;
+                        for (int c = 0; c < i; c++)
+                        {
+                            countSamples[c] = cluster[c].ClusterData.Length;
+                            average = average + countSamples[c]/i;
+                        }
+                        for (int c = 0; c < i; c++)
+                        {
+                            //error calculation
+                            balancedError[i-minNumberOfClusters] = balancedError[i-minNumberOfClusters] + Math.Pow(countSamples[c]-average,2)/i;
+                        }
+                    }
+                    else if (isRadial && isStandardDeviation)
                     {
                         recommendedNumbersOfCluster = i;
 
                         return new AnomalyDetectionResponse(0, "OK");
                     }
+                }
+
+                if (method == 3)
+                {
+                    // get minimum value (most balanced solution)
+                    int minIndex = 0;
+                    for (int l = 1; l < balancedError.Length; l++)
+                    {
+                        if (balancedError[l] < balancedError[minIndex])
+                        {
+                            minIndex = l;
+                        }
+                    }
+
+                    recommendedNumbersOfCluster = minIndex + minNumberOfClusters;
+
+                    return new AnomalyDetectionResponse(0, "OK");
                 }
 
                 recommendedNumbersOfCluster = 0;
@@ -1653,5 +1694,77 @@ namespace AnomalyDetectionApi
         }
 
         #endregion
+
+        /*
+        public static void GenerateSimilarFunctions(string path, int NumFunctions, double RandomNoiseLimit)
+        {
+            double[][] mFun = ReadCSV(path);
+            double[][] mFun2 = new double[mFun.Length - 1][];
+            for (int i = 0; i < mFun2.Length; i++)
+            {
+                mFun2[i] = new double[mFun[0].Length];
+            }
+            string fName = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + " SimilarFunctions.csv";
+            WriteCSV(fName, mFun);
+            int seed = 0;
+            for (int i = 0; i < NumFunctions; i++)
+            {
+                //only for 2 dimensions
+                for (int j = 0; j < mFun[0].Length; j++)
+                {
+                    //RandomClass rClass = new RandomClass();                 
+                    mFun2[0][j] = mFun[1][j] + GetRandomNumber(RandomNoiseLimit * -1, RandomNoiseLimit, seed);
+                    seed++;
+                }
+                WriteCSV(fName, mFun2, true);
+            }
+        }
+
+        private static double[][] ReadCSV(string path)
+        {
+            System.IO.MemoryStream mStream = new System.IO.MemoryStream(System.Text.Encoding.UTF8.GetBytes(path));
+            StreamReader sr = new StreamReader(mStream);
+            var lines = new List<double[]>();
+            while (!sr.EndOfStream)
+            {
+                string[] Line = sr.ReadLine().Split(',');
+                double[] dLine = new double[Line.Length];
+
+                for (int i = 0; i < Line.Length; i++)
+                {
+                    dLine[i] = Convert.ToDouble(Line[i]); // Convert to Double
+                }
+
+                lines.Add(dLine);
+            }
+
+            double[][] data = lines.ToArray();
+            sr.Close();
+            return data;
+        }
+
+        private static void WriteCSV(string path, double[][] mFunctions, bool Append = false)
+        {
+            StreamWriter file = new StreamWriter(path, Append);
+            string Text = "";
+            for (int i = 0; i < mFunctions.Length; i++)
+            {
+                for (int j = 0; j < mFunctions[0].Length; j++)
+                {
+                    Text = Text + mFunctions[i][j].ToString() + ",";
+                }
+                Text = Text.TrimEnd(',') + "\n"; // go to next line
+            }
+            //file.WriteLine(Text);
+            file.Write(Text);
+            file.Close();
+        }
+
+        private static double GetRandomNumber(double minimum, double maximum, int seed)
+        {
+            Random rnd = new Random(seed * DateTime.Now.Millisecond);
+            return rnd.NextDouble() * (maximum - minimum) + minimum;
+        }*/
+        
     }
 }

@@ -49,6 +49,7 @@ namespace Test
 
             api.UseDefaultDataMapper();
             api.UseGaussNormalizer();
+            
 
             //
             for (int i = 0; i < 15; i++)
@@ -97,6 +98,7 @@ namespace Test
 
             LearningApi api = new LearningApi(loadMetaData1());
             api.UseCsvDataProvider(isris_path, ',', 0);
+            
 
             return api.Run() as object[][];
         }

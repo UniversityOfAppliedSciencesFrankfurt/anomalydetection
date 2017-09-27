@@ -81,40 +81,6 @@
           "System.Xml.XDocument": "4.0.11"
         }
       },
-      "runtime.any.System.Private.DataContractSerialization/4.1.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Collections": "4.0.10",
-          "System.Diagnostics.Debug": "4.0.10",
-          "System.Globalization": "4.0.10",
-          "System.IO": "4.0.10",
-          "System.Linq": "4.0.0",
-          "System.Reflection": "4.0.10",
-          "System.Reflection.Emit.ILGeneration": "4.0.0",
-          "System.Reflection.Emit.Lightweight": "4.0.0",
-          "System.Reflection.Extensions": "4.0.0",
-          "System.Reflection.Primitives": "4.0.0",
-          "System.Reflection.TypeExtensions": "4.0.0",
-          "System.Resources.ResourceManager": "4.0.0",
-          "System.Runtime": "4.0.20",
-          "System.Runtime.Extensions": "4.0.10",
-          "System.Runtime.Serialization.Primitives": "4.1.0",
-          "System.Text.Encoding": "4.0.10",
-          "System.Text.Encoding.Extensions": "4.0.10",
-          "System.Text.RegularExpressions": "4.0.10",
-          "System.Threading": "4.0.10",
-          "System.Threading.Tasks": "4.0.10",
-          "System.Xml.ReaderWriter": "4.0.10",
-          "System.Xml.XmlDocument": "4.0.0",
-          "System.Xml.XmlSerializer": "4.0.10"
-        },
-        "compile": {
-          "ref/dotnet/_._": {}
-        },
-        "runtime": {
-          "lib/DNXCore50/System.Private.DataContractSerialization.dll": {}
-        }
-      },
       "runtime.native.System/4.0.0": {
         "type": "package",
         "dependencies": {
@@ -1302,21 +1268,6 @@
         "NETStandard.Library.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt"
-      ]
-    },
-    "runtime.any.System.Private.DataContractSerialization/4.1.0": {
-      "sha512": "nJ5sB6Q7vbOEZ+tm/L7XISxO0Az6tkMup5rhpgPboVpUKgMnsdWiDvSlzzpK/bsiYxMIJCJ4Xrt2abt8Z1beJw==",
-      "type": "package",
-      "path": "runtime.any.System.Private.DataContractSerialization/4.1.0",
-      "files": [
-        "ThirdPartyNotices.txt",
-        "dotnet_library_license.txt",
-        "lib/DNXCore50/System.Private.DataContractSerialization.dll",
-        "lib/netcore50/System.Private.DataContractSerialization.dll",
-        "ref/dotnet/_._",
-        "runtime.any.System.Private.DataContractSerialization.4.1.0.nupkg.sha512",
-        "runtime.any.System.Private.DataContractSerialization.nuspec",
-        "runtimes/aot/lib/netcore50/_._"
       ]
     },
     "runtime.native.System/4.0.0": {
@@ -4482,8 +4433,7 @@
       "AnomalyDetection.Interfaces >= 1.0.0-*",
       "NETStandard.Library >= 1.6.0",
       "System.Private.DataContractSerialization >= 4.3.0",
-      "System.Runtime.Serialization.Json >= 4.3.0",
-      "runtime.any.System.Private.DataContractSerialization >= 4.1.0"
+      "System.Runtime.Serialization.Json >= 4.3.0"
     ],
     ".NETStandard,Version=v1.6": []
   },

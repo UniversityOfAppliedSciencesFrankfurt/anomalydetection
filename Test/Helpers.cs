@@ -79,8 +79,8 @@ namespace Test
         /// <summary>
         /// This is for converting csv file to double array
         /// </summary>
-        /// <param name="FilePath"></param>
-        /// <returns></returns>
+        /// <param name="FilePath">path of file</param>
+        /// <returns>the data from file</returns>
         public static double[][] cSVtoDoubleJaggedArray(string FilePath)
         {
             if (FilePath.EndsWith(".csv"))
@@ -90,11 +90,19 @@ namespace Test
                     string CsvFile = "";
                     double[][] CsvData;
                     CsvFile = System.IO.File.ReadAllText(FilePath);
-                    if (CsvFile.EndsWith("\r\n"))
+
+                    string RD = "\r\n";
+                    if (CsvFile.EndsWith(",\r\n"))
+                    {
+                        CsvFile = CsvFile.Remove(CsvFile.Length - 3, 3);
+                        RD = ",\r\n" ;
+                    }
+                    else if (CsvFile.EndsWith("\r\n"))
                     {
                         CsvFile = CsvFile.Remove(CsvFile.Length - 2, 2);
                     }
-                    string[] RowDelimiter = { "\r\n" };
+
+                    string[] RowDelimiter = { RD };
                     string[] CellDelimiter = { "," };
 
                     int CsvFileRowsNumber, CsvFileCellsNumber;
@@ -153,6 +161,83 @@ namespace Test
                     outfile.WriteLine(content);
                 }
             }
+        }
+
+        // saves data of type double[][] into CSV file with append option
+        public static void Write2CSVFile(double[][] rawData, string path, bool Append=false)
+        {
+            double[,] data = new double[rawData.Length, rawData.Length];
+            if (Append)
+            {
+                using (StreamWriter outfile = new StreamWriter(File.Open(path, FileMode.Append)))
+                {
+                    for (int x = 0; x < rawData.Length; x++)
+                    {
+                        string content = "";
+                        for (int y = 0; y < rawData[x].Length; y++)
+                        {
+                            content += rawData[x][y] + ",";
+                        }
+                        outfile.WriteLine(content);
+                    }
+                }
+            }
+            else
+            {
+                System.IO.Directory.CreateDirectory(Path.GetDirectoryName(path));
+                using (StreamWriter outfile = new StreamWriter(File.Open(path, FileMode.Create)))
+                {
+                    for (int x = 0; x < rawData.Length; x++)
+                    {
+                        string content = "";
+                        for (int y = 0; y < rawData[x].Length; y++)
+                        {
+                            content += rawData[x][y] + ",";
+                        }
+                        outfile.WriteLine(content);
+                    }
+                }
+            }
+            
+        }
+
+        // saves data of type string[][] into CSV file with append option
+        public static void Write2CSVFile(string[][] rawData, string path, bool Append = false)
+        {
+            string[,] data = new string[rawData.Length, rawData.Length];
+            if (Append)
+            {
+                using (StreamWriter outfile = new StreamWriter(File.Open(path, FileMode.Append)))
+                {
+                    for (int x = 0; x < rawData.Length; x++)
+                    {
+                        string content = "";
+                        for (int y = 0; y < rawData[x].Length; y++)
+                        {
+                            // seperate data by ',' to save in CSV
+                            content += rawData[x][y] + ",";
+                        }
+                        outfile.WriteLine(content);
+                    }
+                }
+            }
+            else
+            {
+                using (StreamWriter outfile = new StreamWriter(File.Open(path, FileMode.Create)))
+                {
+                    for (int x = 0; x < rawData.Length; x++)
+                    {
+                        string content = "";
+                        for (int y = 0; y < rawData[x].Length; y++)
+                        {
+                            // seperate data by ',' to save in CSV
+                            content += rawData[x][y] + ",";
+                        }
+                        outfile.WriteLine(content);
+                    }
+                }
+            }
+
         }
     }
 }
