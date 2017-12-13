@@ -2,14 +2,14 @@
 using AnomalyDetectionApi;
 using LearningFoundation;
 using LearningFoundation.DataMappers;
-using LearningFoundation.DataProviders;
-using LearningFoundation.Normalizers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using LearningFoundation.Normalizers;
+using LearningFoundation.DataProviders;
 
 namespace Test
 {
