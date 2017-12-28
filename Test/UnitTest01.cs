@@ -101,7 +101,6 @@ namespace Test
                     Special2DWrite2CSV(SavePath, k);
                 }
             }
-
         }
 
         // Test: gets the recommended number of clusters based on the balanced clusters
@@ -240,6 +239,33 @@ namespace Test
             }
             // save results
             Helpers.Write2CSVFile(testFun, saveDirectory + "Results.csv");
+        }
+
+        [Fact]
+        public void Test_BitArray()
+        {
+            string myDirectorty = @"C:\Users\KywAnn\Desktop\Anomaly Detection Pattern Recognition\BitArray\";
+            string trainingFileName = "BitArrayTraining.txt";
+
+            string TrainingFile = Helpers.ReadTxtFile(myDirectorty + trainingFileName);
+            TrainingFile = TrainingFile.Remove(TrainingFile.Length - 4, 4);
+            TrainingFile = TrainingFile.Replace("\r\n", "");
+            string[] TrainingStrings = TrainingFile.Split(new[] { " 1" }, StringSplitOptions.None);
+            string[] CSVString = new string[TrainingStrings.Length+1];
+            for (int i = 0; i < TrainingStrings[0].Length; i++)
+            {
+                CSVString[0] += i.ToString() + ',';
+            }
+            for (int j = 0; j < TrainingStrings.Length; j++)
+            {
+                for (int i = 0; i < TrainingStrings[0].Length; i++)
+                {
+                    CSVString[j+1] += TrainingStrings[j][i].ToString() + ',';
+                }
+                CSVString[j+1] = CSVString[j+1].Remove(CSVString[j+1].Length - 1,1);
+            }
+
+            Helpers.Txt2CSV(CSVString, myDirectorty + "BitArrayTraining.csv");
         }
 
         // generates the similar functions (only 2d)

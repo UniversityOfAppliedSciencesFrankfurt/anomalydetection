@@ -239,5 +239,42 @@ namespace Test
             }
 
         }
+
+        public static string ReadTxtFile(string path)
+        {
+            if (path.EndsWith(".txt"))
+            {
+                if (System.IO.File.Exists(path))
+                {
+                    string TxtFile = System.IO.File.ReadAllText(path);
+                    return TxtFile;
+                }
+            }
+            return null;
+        }
+
+        public static void Txt2CSV(string[] Data, string path, bool Append = false)
+        {
+            if (Append)
+            {
+                using (StreamWriter outfile = new StreamWriter(File.Open(path, FileMode.Append)))
+                {
+                    for (int i = 0; i < Data.Length; i++)
+                    {
+                        outfile.WriteLine(Data[i]);
+                    }
+                }
+            }
+            else
+            {
+                using (StreamWriter outfile = new StreamWriter(File.Open(path, FileMode.Create)))
+                {
+                    for (int i = 0; i < Data.Length; i++)
+                    {
+                        outfile.WriteLine(Data[i]);
+                    }
+                }
+            }
+        }
     }
 }
